@@ -1,0 +1,38 @@
+{
+  "name": "mob-proj",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "migrate": "prisma migrate dev --name init",
+    "pull": "npx prisma db pull"
+  },
+  "devDependencies": {
+    "@sidebase/nuxt-auth": "^0.5.0-rc.0",
+    "autoprefixer": "^10.4.14",
+    "nuxt": "^3.3.2",
+    "postcss": "^8.4.21",
+    "prisma": "^4.12.0",
+    "sass": "^1.60.0",
+    "tailwindcss": "^3.3.1"
+  },
+  "dependencies": {
+    "@heroicons/vue": "^2.0.17",
+    "@nuxtjs/supabase": "^0.3.5",
+    "@nuxtjs/tailwindcss": "^6.6.5",
+    "@pinia-plugin-persistedstate/nuxt": "^1.1.1",
+    "@pinia/nuxt": "^0.4.8",
+    "@prisma/client": "^4.12.0",
+    "@tailwindcss/forms": "^0.5.3",
+    "animate.css": "^4.1.1",
+    "next-auth": "4.21.1",
+    "nuxt-headlessui": "^1.1.1",
+    "nuxt-icon": "^0.3.3",
+    "pinia": "^2.0.34",
+    "zod": "^3.21.4",
+    "zod-validation-error": "^1.1.0"
+  }
+}

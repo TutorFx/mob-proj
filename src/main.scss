@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  #__nuxt{
+    
+    min-height: 100vh;
+    min-height: 100svh;
+    .dashboard{
+      @apply bg-gray-950 text-white;
+      min-height: 100vh;
+      min-height: 100svh;
+      &--menu{
+        @apply flex p-4
+      }
+    }
+  }
+}
