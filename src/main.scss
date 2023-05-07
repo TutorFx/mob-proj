@@ -12,8 +12,57 @@
       min-height: 100vh;
       min-height: 100svh;
       &--menu{
-        @apply flex p-4
+        @apply flex p-4;
       }
+      &--business{
+        @apply p-6 gap-6 min-h-full;
+        &>div{
+          @apply mb-6 block;
+        }
+        @screen sm{
+          @apply grid;
+          &>div{
+            @apply mb-0;
+          }
+          grid-template:
+            "performance transactions" 1fr
+            "users transactions" 1fr
+            "support config" 1fr;
+        }
+        .performance{
+          grid-area: performance;
+        }
+        .transactions{
+          grid-area: transactions;
+        }
+        .users{
+          grid-area: users;
+        }
+        .support{
+          grid-area: support;
+        }
+        .config{
+          grid-area: config;
+        }
+      }
+    }
+  }
+  .scrollbar{
+    &::-webkit-scrollbar {
+      border: 5px solid transparent;
+      border-radius: 100px;
+      @apply bg-purple-600/50 w-1;
+      background-clip: content-box;
+    }
+    &::-webkit-scrollbar-track{
+      border-radius: 10px;
+      opacity: 50;
+    }
+    &::-webkit-scrollbar-thumb
+    {
+      border-radius: 10px;
+      width: 5px;
+      @apply bg-white/50 w-1;
     }
   }
 }

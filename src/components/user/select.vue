@@ -5,9 +5,9 @@
       <div class="relative mt-1">
         <ListboxButton
           class="group relative w-full cursor-default rounded-lg py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm"
-          :class="{'h-10 flex items-center': !currentUserName}"
-          >
-          <span class="block truncate font-semibold" :class="{'animate-pulse w-32 h-4 bg-gray-800 rounded-md': !currentUserName}">{{ currentUserName }}</span>
+          :class="{ 'h-10 flex items-center': !currentUserName }">
+          <span class="block truncate font-semibold"
+            :class="{ 'animate-pulse w-32 h-4 bg-gray-800 rounded-md': !currentUserName }">{{ currentUserName }}</span>
           <span
             class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-1 group-hover:bg-gray-800 rounded-md">
             <Icon class="h-5 w-5 text-gray-400" name="mdi:chevron-up-down" />
@@ -16,47 +16,51 @@
 
         <transition leave-active-class="transition duration-100 ease-in" leave-from-class="opacity-100"
           leave-to-class="opacity-0">
+
           <ListboxOptions
-            class="absolute border-primary border- mt-1 max-h-96 w-46 overflow-auto border border-gray-800 rounded-md bg-black p-2 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-            <div class="text-gray-400 px-4 py-3 truncate">Conta pessoal</div>
-            <ListboxOption v-slot="{ active, selected }" key="profile" value="" as="template">
-              <li :class="[
-                active ? 'bg-purple-100 text-purple-900' : 'text-gray-50',
-                'relative cursor-default select-none py-2 pr-10 pl-4 rounded-md',
-              ]">
-                <span :class="[
-                  selected ? 'font-medium' : 'font-normal',
-                  'block truncate',
-                ]">{{ data?.user?.email }}</span>
-                <span v-if="selected" class="absolute inset-y-0 right-0 flex items-center pr-3 text-purple-600">
-                  <Icon class="h-5 w-5" name="mdi:check" />
-                </span>
-              </li>
-            </ListboxOption>
-            <div class="text-gray-400 px-4 py-3 truncate">Conta empresarial</div>
-            <ListboxOption v-slot="{ active, selected }" v-for="place in scopedBusinesses" :key="place?.name"
-              :value="place" as="template">
-              <li :class="[
-                active ? 'bg-purple-100 text-purple-900' : 'text-gray-50',
-                'relative cursor-default select-none py-2 pr-10 pl-4 rounded-md',
-              ]">
-                <span :class="[
-                  selected ? 'font-medium' : 'font-normal',
-                  'block truncate',
-                ]">{{ place?.name }}</span>
-                <span v-if="selected" class="absolute inset-y-0 right-0 flex items-center pr-3 text-purple-600">
-                  <Icon class="h-5 w-5" name="mdi:check" />
-                </span>
-              </li>
-            </ListboxOption>
-            <button @click.prevent="businessStore.openPopup()"
-              class="group px-3 py-2 w-full flex items-center gap-2 truncate hover:bg-purple-100 hover:text-purple-900 rounded-lg cursor-pointer">
-              <Icon name="mdi:plus-circle-outline" size="20" />
-              <div>
-                adicionar empresa
-              </div>
-            </button>
+            class="scrollbar backdrop-blur-md bg-black/80 absolute border- mt-1 max-h-96 w-46 overflow-auto border border-gray-800 rounded-md p-2 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+            <div class="relative">
+              <div class="text-gray-400 px-4 py-3 truncate">Conta pessoal</div>
+              <ListboxOption v-slot="{ active, selected }" key="profile" value="" as="template">
+                <li :class="[
+                    active ? 'bg-purple-100 text-purple-900' : 'text-gray-50',
+                    'relative cursor-default select-none py-2 pr-10 pl-4 rounded-md',
+                  ]">
+                  <span :class="[
+                      selected ? 'font-medium' : 'font-normal',
+                      'block truncate',
+                    ]">{{ data?.user?.email }}</span>
+                  <span v-if="selected" class="absolute inset-y-0 right-0 flex items-center pr-3 text-purple-600">
+                    <Icon class="h-5 w-5" name="mdi:check" />
+                  </span>
+                </li>
+              </ListboxOption>
+              <div class="text-gray-400 px-4 py-3 truncate">Conta empresarial</div>
+              <ListboxOption v-slot="{ active, selected }" v-for="place in scopedBusinesses" :key="place?.name"
+                :value="place" as="template">
+                <li :class="[
+                    active ? 'bg-purple-100 text-purple-900' : 'text-gray-50',
+                    'relative cursor-default select-none py-2 pr-10 pl-4 rounded-md',
+                  ]">
+                  <span :class="[
+                      selected ? 'font-medium' : 'font-normal',
+                      'block truncate',
+                    ]">{{ place?.name }}</span>
+                  <span v-if="selected" class="absolute inset-y-0 right-0 flex items-center pr-3 text-purple-600">
+                    <Icon class="h-5 w-5" name="mdi:check" />
+                  </span>
+                </li>
+              </ListboxOption>
+              <button @click.prevent="businessStore.$open()"
+                class="group px-3 py-2 w-full flex items-center gap-2 truncate hover:bg-purple-100 hover:text-purple-900 rounded-lg cursor-pointer">
+                <Icon name="mdi:plus-circle-outline" size="20" />
+                <div>
+                  adicionar empresa
+                </div>
+              </button>
+            </div>
           </ListboxOptions>
+
         </transition>
       </div>
     </Listbox>
@@ -79,7 +83,6 @@ const { data } = useAuth()
 
 
 const businessStore = useBusiness();
-businessStore.getBusinesses();
 
 const { scopedBusinesses } = storeToRefs(businessStore)
 
@@ -90,7 +93,7 @@ const router = useRouter();
 const selectedUser = computed({
   get: () => {
     const { slug } = route.params;
-    return scopedBusinesses.value.find(e => e.id == slug);
+    return scopedBusinesses.value?.find(e => e.id == slug);
   },
   set: (user) => {
     router.push({ path: '/dashboard/' + (user?.id || '') });

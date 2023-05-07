@@ -26,7 +26,7 @@ export default defineEventHandler( async (event) => {
   
   if ( !email ) return;
 
-  event.context.user = await prisma.user.findFirst({
+  event.context.user = async () => await prisma.user.findFirst({
     where: {
       email
     },

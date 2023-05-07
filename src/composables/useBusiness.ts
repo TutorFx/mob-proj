@@ -1,53 +1,70 @@
 import { acceptHMRUpdate, defineStore } from "pinia";
 import { Business } from '@prisma/client';
+import { z } from 'zod';
 
-export const useBusiness = defineStore("business", {
-  state: () => {
-    return {
-      registerFieldVisible: false,
-      scopedBusinesses: [] as Business[],
-      scopedBusinessesFetching: false
-    };
-  },
-  actions: {
-    async create(business: IBusinessCreate): Promise<{ status: number, data?: Business }> {
-      let status = 0;
-      let data = null
-      this.scopedBusinessesFetching = true;
-      const response = await useFetch(`/api/v1/private/business`, {
-        async onResponse({ response }) {
-          status = response.status;
-        },
-        method: "POST",
+export const useBusiness = () => {
+
+  const { createBusinessSchema } = useSchemas;
+  type ICreateBusiness = z.infer<typeof createBusinessSchema>;
+  const router = useRouter()
+
+  const business = defineStore("business", () => {
+
+    const starterFields = {
+      name: '',
+      slug: ''
+    } as ICreateBusiness
+
+    const fields = ref<ICreateBusiness>({...starterFields})
+
+    const registerFieldVisible = ref(false);
+    const $close = () => registerFieldVisible.value = false
+    const $open = () => registerFieldVisible.value = true
+
+    const { pending: pendingBusinesses, error: gettingBusinessError, data: scopedBusinesses, refresh: $refresh } = useLazyAsyncData('business', () => $fetch('/api/v1/private/business', {
+        method: 'GET',
+      }),
+      {
+        immediate: false
+      }
+    )    
+    
+    const { error: creatingError, pending: isCreating, data: createdBusiness } = useLazyAsyncData('business-create', () => $fetch('/api/v1/private/business', {
+        method: 'POST',
         body: {
-          ...business
-        },
-      });
-      this.scopedBusinessesFetching = false;
-      if (response.data) {
-        this.scopedBusinesses.push(response.data.value as unknown as Business);
-        this.registerFieldVisible = false;
-        return { status, data: response.data.value }
+          ...fields.value
+        }
+      }).then(async (e: Business | "Unknown Error") => {
+        fields.value = starterFields;
+        if (e == "Unknown Error") return;
+        router.push({ path: `/dashboard/${e?.id}`});
+        await $refresh()
+        $close()
+      }),
+      {
+        immediate: false
       }
-      return { status }
-    },
-    openPopup() {
-      this.registerFieldVisible = true;
-    },
-    closePopup() {
-      this.registerFieldVisible = false;
-    },
-    async getBusinesses(): Promise<void> {
-      if (process.client){
-        const response = await $fetch('/api/v1/private/business', {
-          method: 'GET',
-        });
-        this.scopedBusinesses = response as unknown as Business[]
-      }
+    )
+    const $create = () => refreshNuxtData('business-create')
+    onBeforeMount(() => refreshNuxtData('business'))
+
+    return { 
+      $refresh,
+      $close,
+      $open,
+      $create,
+      fields,
+      registerFieldVisible, 
+      scopedBusinesses,
+      createdBusiness,
+      gettingBusinessError, 
+      creatingError,
+      pendingBusinesses,
+      isCreating,
     }
-  },
-  persist: true,
-});
+  });
+  return business();
+}
 
 if (import.meta.hot)
   // @ts-expect-error

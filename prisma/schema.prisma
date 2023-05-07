@@ -20,19 +20,19 @@ model User {
   cpf      String? @unique
   role     Role    @default(USER)
 
-  transactions  Transaction[]
-  Business Business[]
+  transactions Transaction[]
+  Business     Business[]
 
   @@map("user")
 }
 
 model Business {
-  id      String   @id @default(uuid())
-  Transaction  Transaction[]
-  Owner   User     @relation(fields: [OwnerId], references: [id])
-  OwnerId String
+  id          String        @id @default(uuid())
+  Transaction Transaction[]
+  Owner       User          @relation(fields: [OwnerId], references: [id])
+  OwnerId     String
 
-  name    String
+  name     String
   slug     String  @unique @default(uuid())
   logo_url String?
 
@@ -40,13 +40,14 @@ model Business {
 }
 
 model Transaction {
+  id String @id @default(uuid())
+
   business Business @relation(fields: [businessId], references: [id])
   user     User     @relation(fields: [userId], references: [id])
-  
-  amount   Float
+
+  amount     Float
   businessId String
   userId     String
 
-  @@id([businessId, userId])
   @@map("transaction")
 }

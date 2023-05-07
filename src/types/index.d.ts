@@ -7,9 +7,4 @@ interface ILoginParams {
   password: string;
 }
 
-interface IBusinessCreate {
-  name: string;
-  slug: string;
-}
-
 declare global {ILoginParams};

@@ -3,7 +3,6 @@ import { Prisma, PrismaClient } from '@prisma/client';
 import { ZodError } from 'zod';
 import { fromZodError } from 'zod-validation-error';
 import { useSchemas } from "~/composables/useSchemas"
-import { middleware } from "../../../../utils"
 const prisma = new PrismaClient()
 const { createBusinessSchema } = useSchemas;
 
@@ -23,14 +22,7 @@ export default defineEventHandler(async (event) => {
       );
     return 'Unknown Error'
   }
-  if (!session) return sendError(
-    event,
-    createError({
-      statusCode: 401,
-      statusMessage: 'Nice try, not authenticated.'
-    })
-  );
-  if (session.user?.email == null) return sendError(
+  if (session?.user?.email == null) return sendError(
     event,
     createError({
       statusCode: 500,
