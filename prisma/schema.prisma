@@ -14,20 +14,30 @@ enum Role {
 }
 
 model User {
-  id       String  @id @default(uuid())
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   email    String  @unique
   password String
+  phone    String? @unique
   cpf      String? @unique
+  nome     String?
+  birthday String?
   role     Role    @default(USER)
 
-  transactions Transaction[]
-  Business     Business[]
+  business             Business[]
+  transactionsAsUser   Transaction[] @relation("userTransactions")
+  transactionsAsOrigin Transaction[] @relation("originTransactions")
 
   @@map("user")
 }
 
 model Business {
-  id          String        @id @default(uuid())
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   Transaction Transaction[]
   Owner       User          @relation(fields: [OwnerId], references: [id])
   OwnerId     String
@@ -40,14 +50,17 @@ model Business {
 }
 
 model Transaction {
-  id String @id @default(uuid())
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
 
   business Business @relation(fields: [businessId], references: [id])
-  user     User     @relation(fields: [userId], references: [id])
+  user     User     @relation("userTransactions", fields: [userId], references: [id])
+  origin   User     @relation("originTransactions", fields: [originId], references: [id])
 
   amount     Float
   businessId String
   userId     String
+  originId   String
 
   @@map("transaction")
 }

@@ -26,6 +26,7 @@ export default defineEventHandler(async (event) => {
     await prisma.user.create({
       data: {
         email: body.email,
+        cpf: body.cpf,
         password: body.password,
       }
     })

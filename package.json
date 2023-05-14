@@ -11,7 +11,9 @@
     "pull": "npx prisma db pull"
   },
   "devDependencies": {
+    "@nuxt/devtools": "^0.4.6",
     "@sidebase/nuxt-auth": "^0.5.0-rc.0",
+    "@tailwindcss/typography": "^0.5.9",
     "autoprefixer": "^10.4.14",
     "nuxt": "^3.3.2",
     "postcss": "^8.4.21",
@@ -21,6 +23,7 @@
   },
   "dependencies": {
     "@heroicons/vue": "^2.0.17",
+    "@nuxtjs/color-mode": "^3.2.0",
     "@nuxtjs/supabase": "^0.3.5",
     "@nuxtjs/tailwindcss": "^6.6.5",
     "@pinia-plugin-persistedstate/nuxt": "^1.1.1",

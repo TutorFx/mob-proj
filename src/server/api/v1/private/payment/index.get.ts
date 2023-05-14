@@ -7,9 +7,11 @@ import { useRules } from '~/composables/useRules';
 const prisma = new PrismaClient()
 
 export default defineEventHandler(async (event) => {
+  setResponseHeaders(event, {
+    'Cache-Control': 's-maxage=30, max-age=30, stale-while-revalidate=30'
+  })
   const { getBusinessPaymentSchema } = useSchemas;
   type GetTransactionRequest = z.infer<typeof getBusinessPaymentSchema>;
-
   try {
     //@ts-ignore
     const query: GetTransactionRequest = getQuery(event);
@@ -60,6 +62,11 @@ export default defineEventHandler(async (event) => {
           }
         },
         user: {
+          select : {
+            email: true,
+          }
+        },
+        origin: {
           select : {
             email: true,
           }

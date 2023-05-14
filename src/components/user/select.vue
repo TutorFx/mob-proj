@@ -4,7 +4,7 @@
     <Listbox v-model="selectedUser">
       <div class="relative mt-1">
         <ListboxButton
-          class="group relative w-full cursor-default rounded-lg py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm"
+          class="group relative w-full cursor-default rounded-lg py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm"
           :class="{ 'h-10 flex items-center': !currentUserName }">
           <span class="block truncate font-semibold"
             :class="{ 'animate-pulse w-32 h-4 bg-gray-800 rounded-md': !currentUserName }">{{ currentUserName }}</span>
@@ -36,7 +36,10 @@
                 </li>
               </ListboxOption>
               <div class="text-gray-400 px-4 py-3 truncate">Conta empresarial</div>
-              <ListboxOption v-slot="{ active, selected }" v-for="place in scopedBusinesses" :key="place?.name"
+              <div class="flex justify-center py-3" v-if="pendingBusinesses">
+                <ui-spinner />
+              </div>
+              <ListboxOption v-else v-slot="{ active, selected }" v-for="place in scopedBusinesses" :key="place?.name"
                 :value="place" as="template">
                 <li :class="[
                     active ? 'bg-purple-100 text-purple-900' : 'text-gray-50',
@@ -66,7 +69,7 @@
     </Listbox>
     <template #fallback>
       <div
-        class="animate-pulse h-10 flex items-center group relative w-full cursor-default rounded-lg py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+        class="animate-pulse h-10 flex items-center group relative w-full cursor-default rounded-lg py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
         <span class="block bg-gray-800 truncate font-semibold w-32 h-4 rounded-md"></span>
         <span
           class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-1 group-hover:bg-gray-800 rounded-md">
@@ -84,7 +87,7 @@ const { data } = useAuth()
 
 const businessStore = useBusiness();
 
-const { scopedBusinesses } = storeToRefs(businessStore)
+const { scopedBusinesses, pendingBusinesses } = storeToRefs(businessStore)
 
 
 const route = useRoute();

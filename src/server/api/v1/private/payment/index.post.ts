@@ -1,5 +1,5 @@
 import { getServerSession } from '#auth'
-import { Prisma, PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient, User } from '@prisma/client';
 import { ZodError, z } from 'zod';
 import { fromZodError } from 'zod-validation-error';
 import { useSchemas } from "~/composables/useSchemas"
@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
     // @ts-expect-error
     const { businessId, userMail, amount } = body;
 
-    const user = await event.context.user();
+    const user : User = await event.context.user();
 
     const business = await prisma.business.findUnique({
       where: { id: businessId },
@@ -82,6 +82,7 @@ export default defineEventHandler(async (event) => {
         amount,
         businessId,
         userId: target.id,
+        originId: user.id,
       },
     })
 

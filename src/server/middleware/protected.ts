@@ -1,7 +1,7 @@
 const api_path = '/api/v1'
 import { getServerSession } from '#auth';
 import type { H3Event } from 'h3';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, User } from '@prisma/client';
 const prisma = new PrismaClient()
 
 export default defineEventHandler( async (event) => {
@@ -26,7 +26,7 @@ export default defineEventHandler( async (event) => {
   
   if ( !email ) return;
 
-  event.context.user = async () => await prisma.user.findFirst({
+  event.context.user = async () : Promise<User | null> => await prisma.user.findUnique({
     where: {
       email
     },

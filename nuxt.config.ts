@@ -2,12 +2,13 @@
 export default defineNuxtConfig({
   srcDir: "src/",
   modules: [
+    '@nuxt/devtools',
     '@nuxtjs/tailwindcss',
     'nuxt-headlessui',
     '@sidebase/nuxt-auth',
     'nuxt-icon',
     '@pinia/nuxt',
-    '@pinia-plugin-persistedstate/nuxt'
+    '@pinia-plugin-persistedstate/nuxt',
   ],
   auth: {
     origin: 'http://localhost:3000',
