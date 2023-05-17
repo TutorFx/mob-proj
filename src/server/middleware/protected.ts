@@ -25,7 +25,7 @@ export default defineEventHandler( async (event) => {
   const email = session?.user?.email;
   
   if ( !email ) return;
-
+  event.context.session = session;
   event.context.user = async () : Promise<User | null> => await prisma.user.findUnique({
     where: {
       email

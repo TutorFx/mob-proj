@@ -9,13 +9,13 @@
         <div class="-space-y-px rounded-md shadow-sm">
           <div>
             <label for="complete-name">Qual é seu nome pessoal?</label>
-            <input id="complete-name" name="name" type="name" autocomplete="name" required v-model="userdata.name"
+            <input id="complete-name" name="name" type="text" autocomplete="name" required v-model="userdata.name"
               class="px-3 relative block w-full rounded-md border-0 py-1.5 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
               placeholder="Ex: João Alberto">
           </div>
           <div>
             <label for="birthday">Quando é seu aniversário?</label>
-            <input id="birthday" name="birthday" type="birthday" autocomplete="birthday" required v-model="userdata.birthday"
+            <input id="birthday" name="birthday" type="date" autocomplete="birthday" required v-model="userdata.birthday"
               class="px-3 relative block w-full rounded-md border-0 py-1.5 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
               placeholder="">
           </div>
@@ -44,7 +44,7 @@ const userdata = ref({
 })
 
 async function finalizeRegister() {
-  useFetch('/api/v1/register', {
+  useFetch('/api/v1/private/user/complete', {
     method: 'POST',
     body: {
       ...userdata.value

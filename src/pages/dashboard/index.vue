@@ -1,5 +1,8 @@
 <template>
-  teste
+  <div>
+    Valores na conta
+    <BudgetView />
+  </div>
 </template>
 
 <script setup lang="ts">

@@ -3,6 +3,7 @@ export default defineNuxtConfig({
   srcDir: "src/",
   modules: [
     '@nuxt/devtools',
+    //'nuxt-typed-router',
     '@nuxtjs/tailwindcss',
     'nuxt-headlessui',
     '@sidebase/nuxt-auth',
