@@ -34,7 +34,7 @@ export const useBusiness = () => {
         body: {
           ...fields.value
         }
-      }).then(async (e: Business | "Unknown Error") => {
+      }).then(async (e: Business) => {
         fields.value = starterFields;
         if (e == "Unknown Error") return;
         router.push({ path: `/dashboard/${e?.id}`});

@@ -31,7 +31,10 @@ export const useTransactions = defineStore('transactions', () => {
       $close()
       requestState.value = starterTransaction;
       refreshNuxtData('transactions')
-    })
+    }),
+    {
+      immediate: false
+    }
   )
 
   const { pending: pendingList, error: listError, data: list } = useLazyAsyncData('transactions', () => $fetch('/api/v1/private/payment/', {

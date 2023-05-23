@@ -63,7 +63,7 @@
 definePageMeta({
   auth: {
     unauthenticatedOnly: true,
-    navigateAuthenticatedTo: '/',
+    navigateAuthenticatedTo: '/dashboard',
   }
 })
 
@@ -76,5 +76,5 @@ const userdata = ref({
 
 const { signIn, status } = useAuth()
 
-watchEffect(() => status.value !== 'authenticated' || router.push({path: '/'}))
+watchEffect(() => status.value !== 'authenticated' || router.push({path: '/dashboard'}))
 </script>

@@ -1,10 +1,11 @@
 <template>
   <div class="dashboard--menu flex justify-between items-center">
-    <div>
+    <div class="flex items-center gap-3">
+      <user-avatar />
       <user-select />
     </div>
-    <div>
-      <button class="btn btn-sm" @click.prevent="signOut()">Sair</button>
+    <div class="tooltip tooltip-left" data-tip="Sair da conta">
+      <button class="btn btn-circle btn-ghost" @click.prevent="signOut()"><Icon name="ic:baseline-output" size="22" /></button>
     </div>
   </div>
 </template>

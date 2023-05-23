@@ -1,6 +1,5 @@
 <template>
-  <div>
-    Valores na conta
+  <div class="bg-base-100">
     <BudgetView />
   </div>
 </template>

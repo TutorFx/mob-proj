@@ -29,15 +29,17 @@ model User {
   business             Business[]
   transactionsAsUser   Transaction[] @relation("userTransactions")
   transactionsAsOrigin Transaction[] @relation("originTransactions")
+  Product              Product[]
+  productId            String?
 
   @@map("user")
 }
 
 model Business {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  id          String        @id @default(uuid())
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  Products    Product[]
   Transaction Transaction[]
   Owner       User          @relation(fields: [OwnerId], references: [id])
   OwnerId     String
@@ -47,6 +49,37 @@ model Business {
   logo_url String?
 
   @@map("business")
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  name        String   @unique
+  description String
+  price       Int
+  Business    Business @relation(fields: [businessId], references: [id])
+  businessId  String
+  User        User     @relation(fields: [userId], references: [id])
+  userId      String
+  images      Image[]
+
+  @@map("product")
+}
+
+model Image {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  bytes             Int
+  secure_url        String
+  original_filename String
+
+  Product   Product? @relation(fields: [productId], references: [id])
+  productId String?
+
+  @@map("image")
 }
 
 model Transaction {

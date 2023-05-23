@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   srcDir: "src/",
   modules: [
     '@nuxt/devtools',
-    //'nuxt-typed-router',
+    'nuxt-typed-router',
     '@nuxtjs/tailwindcss',
     'nuxt-headlessui',
     '@sidebase/nuxt-auth',
@@ -12,7 +12,7 @@ export default defineNuxtConfig({
     '@pinia-plugin-persistedstate/nuxt',
   ],
   auth: {
-    origin: 'http://localhost:3000',
+    origin: process.env.URL || 'http://localhost:3000/',
   },
   css: ['@/main.scss'],
   postcss: {
