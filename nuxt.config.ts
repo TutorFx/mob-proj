@@ -10,7 +10,13 @@ export default defineNuxtConfig({
     'nuxt-icon',
     '@pinia/nuxt',
     '@pinia-plugin-persistedstate/nuxt',
+    '@nuxt/image-edge',
   ],
+  image: {
+    domains: [
+      'res.cloudinary.com'
+    ]
+  },
   auth: {
     origin: process.env.URL || 'http://localhost:3000/',
   },
@@ -20,6 +26,9 @@ export default defineNuxtConfig({
       tailwindcss: {},
       autoprefixer: {},
     },
+  },
+  routeRules: {
+    '/api/v1/business/**': { swr: true },
   },
   headlessui: {
     prefix: ''

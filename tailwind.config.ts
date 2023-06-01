@@ -10,6 +10,9 @@ module.exports = {
   content: [],
   theme: {
     extend: {},
+    boxShadow: {
+      '3xl': '0 20px 60px 0px rgba(0, 0, 0, 0.3)',
+    }
   },
   plugins: [
     require('@tailwindcss/forms'),

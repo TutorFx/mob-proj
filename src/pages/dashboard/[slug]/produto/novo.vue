@@ -2,11 +2,14 @@
   <div class="text-xl mb-4">Novo produto</div>
   <div>
     <div class="form-control w-full max-w-xs">
-    <form-product v-model="state" />
-    <button @click="post" class="btn btn-block btn-primary gap-3">
-      Postar Produto
-      <Icon size="24" name="ic:baseline-arrow-right-alt" />
-    </button>
+      <form-product v-model="state" />
+      <button v-if="!isCreating" @click="post" class="btn btn-block btn-primary gap-3">
+        Postar Produto
+        <Icon size="24" name="ic:baseline-arrow-right-alt" />
+      </button>
+      <div v-else class="btn btn-block btn-primary">
+        <ui-spinner />
+      </div>
     </div>
   </div>
 </template>
@@ -21,6 +24,8 @@ const state = ref({
   files: [] as Array<File>
 })
 
+const isCreating = ref(false);
+
 const formdata = computed(() => {
   const form = new FormData()
   form.append('fields', JSON.stringify({
@@ -28,24 +33,19 @@ const formdata = computed(() => {
     businessId: useRoute().params.slug.toString()
   }))
   state.value.files.forEach((file, i) => {
-    if(file instanceof File) return form.append(`files-${i}`, file);
+    if (file instanceof File) return form.append(`files-${i}`, file);
   });
   return form;
 })
 
-const { pending, error, refresh } = useLazyAsyncData('product-create', () => $fetch(`/api/v1/private/product`, {
-  method: "PUT",
-  body: formdata.value,
-}).then((e) => {
-  router.push({ path: `${e?.id}` });
-  refreshNuxtData('product-get');
-}),
-  {
-    immediate: false
-  }
-)
-
-const post = () => {
-  refreshNuxtData('product-create')
+const post = async () => {
+  isCreating.value = true;
+  await $fetch(`/api/v1/private/product`, {
+    method: "PUT",
+    body: formdata.value,
+  }).then(async (e) => {
+    await router.push({ path: `${e?.id}` });
+    await refreshNuxtData('product-get');
+  }).finally(() => isCreating.value = false)
 }
 </script>

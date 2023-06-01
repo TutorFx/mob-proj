@@ -75,6 +75,8 @@ model Image {
   bytes             Int
   secure_url        String
   original_filename String
+  public_id         String
+  etag              String
 
   Product   Product? @relation(fields: [productId], references: [id])
   productId String?

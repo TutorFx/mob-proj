@@ -9,11 +9,9 @@
         <input type="file" id="file" :multiple="true" ref="dropRef" class="modelValue" />
       </div>
     </div>
-    <div v-if="modelValue?.length > 0" ref="parent" @click.prevent class="grid gap-4 grid-cols-3 mt-4 mb-4">
+    <div v-if="modelValue?.length > 0" ref="parent" @click.prevent class="grid gap-4 grid-cols-3 mt-4">
       <div class="rounded-lg relative" style="aspect-ratio: 1" v-for="(image, i) in modelValue" :key="i">
-        <img v-if="image" class="object-cover rounded-lg w-full h-full" :alt="`uploaded-image-${i}`" :src="image instanceof file ?
-          url.createObjectURL(image) : image.url
-          " />
+        <img v-if="image" class="object-cover rounded-lg w-full h-full" :alt="`uploaded-image-${i}`" :src="url.createObjectURL(image)" />
         <Icon name="mdi:delete" class="absolute right-0 top-0 h-6 w-6 bg-white rounded-full m-2 p-1"
           @click="modelValue?.splice(i, 1)" />
       </div>
@@ -22,10 +20,10 @@
 </template>
 <script setup lang="ts">
 const props = defineProps<{
-  modelValue: Array<IFile | File>
+  modelValue: Array<File>
 }>()
 const emits = defineEmits<{
-  (e: 'update:modelValue', value: Array<IFile | File>): void
+  (e: 'update:modelValue', value: Array<File>): void
 }>()
 const modelValue = computed({
   get() {

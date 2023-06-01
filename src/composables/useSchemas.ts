@@ -23,9 +23,20 @@ export const useSchemas = {
     price: z.number().nonnegative(),
     businessId: z.string().refine(useRules.uuid)
   }),
+  editProductSchema: z.object({
+    name: z.string().min(1).optional(),
+    description: z.string().min(1).optional(),
+    price: z.number().nonnegative().optional(),
+    businessId: z.string().refine(useRules.uuid)
+  }),
   getProductSchema: z.object({
     businessId: z.string().refine(useRules.uuid),
     search: z.string().optional(),
     page: z.number().nonnegative().optional(),
-  })
+  }),
+  uuid: z.string().refine(useRules.uuid),
+  cart: z.array(z.object({
+    id: z.string().refine(useRules.uuid),
+    quantity: z.number().nonnegative()
+  }))
 }

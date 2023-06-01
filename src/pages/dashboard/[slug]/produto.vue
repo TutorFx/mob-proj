@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-flow-row grid-rows-[max-content] md:grid-rows-1 md:grid-flow-col md:grid-cols-[minmax(max-content,501px)_1fr] min-h-full">
+  <div class="grid grid-flow-row grid-rows-[max-content] md:grid-rows-1 md:grid-flow-col md:grid-cols-[minmax(max-content,401px)_1fr] min-h-full">
     <div class="md:border-r order-last md:order-first grid grid-rows-[max-content] md:grid-rows-[1fr_max-content]">
       <div class="relative">
         <div class="relative md:absolute inset-0 overflow-y-auto">

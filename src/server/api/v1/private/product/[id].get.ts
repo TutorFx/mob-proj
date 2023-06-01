@@ -4,14 +4,14 @@ import { fromZodError } from 'zod-validation-error';
 import { useSchemas } from '~/composables/useSchemas';
 
 const prisma = new PrismaClient()
-const { getProductSchema } = useSchemas;
-type IProductSchema = z.infer<typeof getProductSchema>;
+const { uuid } = useSchemas;
+type IUuid = z.infer<typeof uuid>;
 
 export default defineEventHandler(async (event) => {
   const session = await event.context.session;
-  const query = getQuery(event) as IProductSchema
+  const id = event.context.params?.id as IUuid;
   try {
-    getProductSchema.parse(query)
+    uuid.parse(id)
   } catch (error) {
     if (error instanceof ZodError)
       return sendError(
@@ -37,43 +37,17 @@ export default defineEventHandler(async (event) => {
     })
   );
   try {
-    const { businessId, search, page } = query;
 
-    const business = await prisma.business.findUnique({
-      where: { id: businessId },
-      include: { Owner: true },
-    })
-
-    if (!business) {
-      return sendError(
-        event,
-        createError({
-          statusCode: 404,
-          statusMessage: `Business with ID ${businessId} not found`
-        })
-      )
-    }
-    // Usuário autenticado tem permissão?
-    if (business.OwnerId !== session.id) {
-      return sendError(
-        event,
-        createError({
-          statusCode: 404,
-          statusMessage: `User with ID ${session.user.email} is not the owner of business ${business.name}`
-        })
-      )
-    }
-
-    const product = await prisma.product.findMany({
-      where: {
-        businessId,
+    const product = await prisma.product.findUnique({
+      where:{
+        id,
       },
-      include: {
-        images: true
-      },
-      orderBy: { updatedAt: 'desc' }
+      include:{
+        images: true,
+        Business: true,
+      }
     })
-
+    
     return product;
 
   } catch (error) {

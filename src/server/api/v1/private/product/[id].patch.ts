@@ -6,8 +6,9 @@ import { useSchemas } from '~/composables/useSchemas';
 import formidable from 'formidable';
 
 const prisma = new PrismaClient()
-const { createProductSchema } = useSchemas;
-type IProductSchema = z.infer<typeof createProductSchema>;
+const { editProductSchema, uuid } = useSchemas;
+type IProductSchema = z.infer<typeof editProductSchema>;
+type IUuid = z.infer<typeof uuid>;
 
 export default defineEventHandler(async (event) => {
   const session = await event.context.session;
@@ -23,9 +24,10 @@ export default defineEventHandler(async (event) => {
   // @ts-ignore
   const { fields, files } : { fields: any, files: any } = response
   const body : IProductSchema = JSON.parse(fields.fields);
-
+  const id = event.context.params?.id as IUuid;
   try {
-    createProductSchema.parse(body)
+    editProductSchema.parse(body)
+    uuid.parse(id)
   } catch (error) {
     if (error instanceof ZodError)
       return sendError(
@@ -53,12 +55,22 @@ export default defineEventHandler(async (event) => {
   try {
     const { name, description, price, businessId } = body;
 
-    const business = await prisma.business.findUnique({
-      where: { id: businessId },
-      include: { Owner: true },
+    const productBusiness = await prisma.product.findUnique({
+      where: {
+        id
+      },
+      select: {
+        Business: {
+          select: {
+            OwnerId: true,
+            name: true
+          },
+        },
+        businessId: true
+      }
     })
 
-    if (!business) {
+    if (!productBusiness?.Business) {
       return sendError(
         event,
         createError({
@@ -67,30 +79,33 @@ export default defineEventHandler(async (event) => {
         })
       )
     }
+
+
     // Usuário autenticado tem permissão?
-    if (business.OwnerId !== session.id) {
+    if (productBusiness?.Business.OwnerId !== session.id) {
       return sendError(
         event,
         createError({
           statusCode: 404,
-          statusMessage: `User with ID ${session.user.email} is not the owner of business ${business.name}`
+          statusMessage: `User with ID ${session.user.email} is not the owner of business ${productBusiness.Business.name}`
         })
       )
     }
 
-    const product = await prisma.product.create({
+    const product = await prisma.product.update({
+      where: {
+        id
+      },
       data:{
         name, 
         description, 
         price,
-        businessId,
         userId: session.id,
       }
     })
 
     await Promise.all(Object.keys(files).map(async (key: any) => {
       const file = files[key]
-
       const { bytes, secure_url, original_filename, public_id, etag } = await uploadToCloudinary(file.filepath)
       await prisma.image.create({
         data:{

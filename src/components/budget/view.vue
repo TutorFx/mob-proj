@@ -12,7 +12,7 @@
         </div>
       </div>
     </div>
-    <div class="container grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div class="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <div v-for="(wallet, i) in data?.wallets" class="bg-base-200 rounded-lg">
         <div class="truncate text-2xl capitalize font-bold p-3">{{ wallet.name }}</div>
         <div class="grid grid-flow-col justify-between items-end">
@@ -38,12 +38,9 @@
 </template>
 
 <script setup lang="ts">
-const { data, pending } = useLazyAsyncData('budget', () => $fetch('/api/v1/private/budget', {
+const headers = useRequestHeaders(['cookie'])
+const { data, pending } = await useFetch('/api/v1/private/budget', {
+  headers,
   method: 'GET',
-}),
-  {
-    immediate: false
-  }
-)
-refreshNuxtData('budget')
+});
 </script>
