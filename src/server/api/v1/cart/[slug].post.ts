@@ -1,19 +1,19 @@
 import { Prisma, PrismaClient, Product, Image } from '@prisma/client';
-import { ZodError, z } from 'zod';
+import { ZodError } from 'zod';
 import { fromZodError } from 'zod-validation-error';
 import { useSchemas } from '~/composables/useSchemas';
+import { IProductCart } from '~/types/cart';
+
 
 const prisma = new PrismaClient()
 const { cart } = useSchemas;
-type ICart = z.infer<typeof cart>;
-type IProductCart = Array<TItem & Product & {totalprice: number} & {images?: Image[]}>
 export default defineEventHandler(async (event) => {
 
   try {
     // @ts-ignore
     const { slug } = event.context.params;
-
     const body = await readBody(event);
+    console.log(body)
     cart.parse(body);
 
     const ids = body.map((item: TItem) => item.id)
@@ -61,12 +61,6 @@ export default defineEventHandler(async (event) => {
       )
 
     console.log(error)
-    return sendError(
-      event,
-      createError({
-        statusCode: 500,
-        statusMessage: 'bugou'
-      })
-    );
+    return { items: [], info:{ pricesum: 0, quantitysum: 0 }}
   }
 })

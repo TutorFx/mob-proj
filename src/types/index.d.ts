@@ -24,4 +24,4 @@ type INav = {
 type TItem = { id: string, quantity: number }
 type TCart = { [key: string]: Array<TItem> }
 
-declare global {ILoginParams};
+declare global { ILoginParams, IItem };

@@ -1,32 +1,26 @@
 import { defineStore } from "pinia";
-import { useLocalStorage, watchThrottled } from "@vueuse/core";
+import { useLocalStorage } from "@vueuse/core";
 
 export const useCart = defineStore('cart', () => {
   // @ts-ignore
   const default_key = () => useRoute().params?.slug
-
+  const isVisible = ref(false)
   const $state = ref<Ref<TCart>>(useLocalStorage('cart', {}))
 
   const $quantity = computed(() => $state.value[default_key()]?.reduce((accumulator, item) => {
     return accumulator + item.quantity;
   }, 0))
 
-  const { data: $get } = useAsyncData('cart', () => $fetch(`/api/v1/cart/${default_key()}`, {
+  const { data: $get, error, pending } = useAsyncData('cart', () => $fetch(`/api/v1/cart/${default_key()}`, {
     method: 'POST',
-    body: $state.value[default_key()]
+    body: $state.value[default_key()],
   }),
     {
-      immediate: false
+      watch: [$quantity]
     }
   )
 
-  watchThrottled(
-    $state,
-    async () => { 
-      await refreshNuxtData('cart')
-    },
-    { throttle: 1000 },
-  )
+  const $current_cart = computed(() => $state.value[default_key()])
 
   refreshNuxtData('cart').finally(() => console.log('🛒 Cart loaded'))
 
@@ -49,8 +43,10 @@ export const useCart = defineStore('cart', () => {
 
   const decrement_amount = (id: string, key: string = default_key()) => {
     const index = $state.value[key].findIndex((item) => item.id === id);
-    $state.value[key][index].quantity -= 1
-    if (!($state.value[key][index].quantity > 0)) return remove_product(id);
+    if (index !== -1) {
+      $state.value[key][index].quantity -= 1
+      if ($state.value[key][index].quantity <= 0) return remove_product(id);
+    }
   }
 
   const incrise_amount = (id: string, key: string = default_key()) => {
@@ -60,8 +56,8 @@ export const useCart = defineStore('cart', () => {
 
   const get_item_amount = (id: string, key: string = default_key()) => {
     const index = $state.value[key].findIndex((item) => item.id === id);
-    return $state.value[key][index].quantity
+    return $state.value[key][index]?.quantity
   }
 
-  return { $state, $quantity, $get, add_product, get_item_amount, remove_product, incrise_amount, decrement_amount }
+  return { $state, $quantity, $get, isVisible, add_product, get_item_amount, remove_product, incrise_amount, decrement_amount }
 })

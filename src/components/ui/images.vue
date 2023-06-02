@@ -3,10 +3,11 @@
     <div class="relative">
       <div>
         <client-only>
-          <Swiper :slides-per-view="1" :modules="[Pagination, Virtual]" :pagination="{ clickable: true }" virtual>
+          <Swiper :slides-per-view="1" :modules="[Pagination, Virtual, Autoplay]" :autoplay="{ delay: 5000 }" :pagination="{ clickable: true }" virtual>
             <SwiperSlide v-for="(image, i) in images">
               <div class="aspect-[4/3] lg:aspect-square flex items-center justify-center overflow-hidden">
-                <nuxt-img :src="image.secure_url" class="object-cover min-w-full min-h-full" :alt="'product-image-' + i" />
+                <nuxt-img :src="image.secure_url" class="object-cover min-w-full min-h-full"
+                  :alt="'product-image-' + i" />
               </div>
             </SwiperSlide>
           </Swiper>
@@ -23,7 +24,7 @@
 
 <script lang="ts" setup>
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { Pagination, Virtual } from 'swiper';
+import { Pagination, Virtual, Autoplay } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/pagination';
 defineProps<{
