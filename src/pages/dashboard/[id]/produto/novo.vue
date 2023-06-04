@@ -30,7 +30,7 @@ const formdata = computed(() => {
   const form = new FormData()
   form.append('fields', JSON.stringify({
     ...state.value,
-    businessId: useRoute().params.slug.toString()
+    businessId: useRoute().params.id.toString()
   }))
   state.value.files.forEach((file, i) => {
     if (file instanceof File) return form.append(`files-${i}`, file);

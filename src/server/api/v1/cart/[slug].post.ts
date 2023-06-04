@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
     // @ts-ignore
     const { slug } = event.context.params;
     const body = await readBody(event);
-    console.log(body)
+
     cart.parse(body);
 
     const ids = body.map((item: TItem) => item.id)

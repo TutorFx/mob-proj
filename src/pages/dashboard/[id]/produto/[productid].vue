@@ -8,7 +8,7 @@
         <div class="divider pt-0"><Icon name="mdi:cloud" class="text-base-300" size="50px" /></div>
 
         <div class="grid gap-4 grid-cols-3 mt-4 mb-4">
-          <div class="rounded-lg relative" v-for="(image, i) in product?.images" >
+          <div class="rounded-lg relative" v-for="(image, i) in product?.images" :key="i" >
             <img :src="image.secure_url" class="object-cover rounded-lg w-full h-full aspect-square">
             <Icon @click="deleteImage(image.id)" name="mdi:delete" class="absolute right-0 top-0 h-6 w-6 bg-white rounded-full m-2 p-1" />
           </div>
@@ -45,7 +45,7 @@ const formdata = computed(() => {
   const form = new FormData()
   form.append('fields', JSON.stringify({
     ...state.value,
-    businessId: useRoute().params.slug.toString()
+    businessId: useRoute().params.id.toString()
   }))
   state.value.files.forEach((file: any, i: number) => {
     if (file instanceof File) return form.append(`files-${i}`, file);

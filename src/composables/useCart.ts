@@ -2,10 +2,13 @@ import { defineStore } from "pinia";
 import { useLocalStorage } from "@vueuse/core";
 
 export const useCart = defineStore('cart', () => {
-  // @ts-ignore
-  const default_key = () => useRoute().params?.slug
+  const default_key = () => {
+    const slug = useRoute().params?.slug
+    return !(slug instanceof Array) ? slug : ''  
+  }
+
   const isVisible = ref(false)
-  const $state = ref<Ref<TCart>>(useLocalStorage('cart', {}))
+  const $state = ref<Ref<TCart>>(useLocalStorage('cart', {}, ))
 
   const $quantity = computed(() => $state.value[default_key()]?.reduce((accumulator, item) => {
     return accumulator + item.quantity;

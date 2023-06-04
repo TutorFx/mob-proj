@@ -1,14 +1,18 @@
 <template>
   <div v-if="!pending">
-    <nuxt-link class="group" v-for="(product, i) in data" :key="i" :to="`/dashboard/${useRoute().params?.slug}/produto/${product.id}`">
-      <div class="px-6 py-3 border-b group-last:border-b-0 items-center justify-start gap-3 grid grid-cols-[max-content_max-content_1fr_max-content]">
+    <nuxt-link class="group" v-for="(product, i) in data" :key="i"
+      :to="`/dashboard/${useRoute().params?.id}/produto/${product.id}`">
+      <div
+        class="px-6 py-3 border-b group-last:border-b-0 items-center justify-start gap-3 grid grid-cols-[max-content_max-content_1fr_max-content]">
         <div class="w-8 h-8 rounded-xl overflow-hidden">
-          <img class="object-cover min-h-full min-w-full" :src="product?.images[0]?.secure_url || `https://avatar.vercel.sh/${product.id}`" :alt="`Foto de um ${product.name} ${product.description}`">
+          <img class="object-cover min-h-full min-w-full"
+            :src="product?.images[0]?.secure_url || `https://avatar.vercel.sh/${product.id}`"
+            :alt="`Foto de um ${product.name} ${product.description}`">
         </div>
         <div class="truncate font-semibold">{{ product.name }}</div>
         <div class="truncate">{{ product.description }}</div>
         <div class="btn btn-circle btn-md btn-ghost group-hover:bg-base-300 group-hover:text-base-content">
-          <Icon name="mdi:edit" size="24"/>
+          <Icon name="mdi:edit" size="24" />
         </div>
       </div>
     </nuxt-link>
@@ -19,17 +23,19 @@
 </template>
 
 <script lang="ts" setup>
-const headers = useRequestHeaders(['cookie'])
-const { pending, error, refresh, data } = useAsyncData('product-get', () => $fetch(`/api/v1/private/product`, 
+const { pending, error, refresh, data } = useAsyncData('product-get', () => $fetch(`/api/v1/private/product`,
   {
     method: "GET",
-    headers,
     params: {
-      businessId: useRoute().params?.slug
+      businessId: useRoute().params?.id
     },
   }),
-  {
-    watch: [useRoute().params?.slug]
+);
+watch(useRoute(),
+  (newVal) => {
+    if (newVal.params.id) {
+      refresh()
+    }
   }
 )
 </script>

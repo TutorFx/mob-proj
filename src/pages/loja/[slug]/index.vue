@@ -4,12 +4,13 @@
     <ui-store-nav v-bind="{ data }" />
   </div>
   <div class="container grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 my-10">
-    <nuxt-link v-for="(product, i) in products" :to="{ name: 'loja-slug-product', params: { product: product.slug } }"
+    <nuxt-link v-for="(product, i) in products" :key="i"
+      :to="{ name: 'loja-slug-product', params: { product: product.slug } }"
       class="rounded-lg overflow-hidden bg-base shadow-3xl shadow-neutral/10 border border-base-300 group grid relative">
       <client-only>
         <div class="pt-3">
           <div class="carousel w-full relative gap-3 ">
-            <div v-for="(image, i) in product.images" class="carousel-item w-full aspect-video relative">
+            <div v-for="(image, i) in product.images" :key="i" class="carousel-item w-full aspect-video relative">
               <div class="aspect-video">
                 <div class="overflow-hidden px-3">
                   <div
@@ -23,7 +24,7 @@
         <template #fallback>
           <div class="pt-3">
             <div class="carousel w-full relative gap-3 ">
-              <div v-for="(image, i) in product.images" class="carousel-item w-full aspect-video relative">
+              <div v-for="(image, i) in product.images" :key="i" class="carousel-item w-full aspect-video relative">
                 <div class="aspect-video">
                   <div class="overflow-hidden px-3">
                     <div
@@ -60,6 +61,6 @@
 
 <script setup lang="ts">
 const route = useRoute()
-const data = await $fetch(`/api/v1/business/${route.params.slug}`)
-const products = await $fetch(`/api/v1/business/${route.params.slug}/products`)
+const { data } = await useAsyncData(() => $fetch(`/api/v1/business/${route.params.slug}`))
+const { data: products } = await useAsyncData(() => $fetch(`/api/v1/business/${route.params.slug}/products`))
 </script>

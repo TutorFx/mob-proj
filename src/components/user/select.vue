@@ -95,18 +95,23 @@ const router = useRouter();
 
 const selectedUser = computed({
   get: () => {
-    const { slug } = route.params;
-    return scopedBusinesses.value?.find(e => e.id == slug);
+    const { id } = route.params;
+    return scopedBusinesses.value?.find(e => e.id == id);
   },
   set: (user) => {
-    router.push({ path: '/dashboard/' + (user?.id || '') });
+    const id = user?.id
+    if (id) {
+      router.push({ name: 'dashboard-id', params: { id: user.id }});
+    } else {
+      router.push({ name: 'dashboard'});
+    }
   }
 })
 
 const currentUserName = computed(
   () => {
-    const { slug } = route.params;
-    return slug ? selectedUser.value?.name : data.value?.user?.email
+    const { id } = route.params;
+    return id ? selectedUser.value?.name : data.value?.user?.email
   }
 )
 </script>

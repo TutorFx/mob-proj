@@ -22,7 +22,8 @@
       </div>
     </div>
     <div class="posts relative">
-      <nuxt-link :to="`/dashboard/${$route.params.slug}/produto`" class="btn btn-lg btn-primary w-full gap-2">
+      <nuxt-link :to="{ name: `dashboard-id-produto`, params: { id: $route.params.id } }"
+        class="btn btn-lg btn-primary w-full gap-2">
         <Icon name="mdi:view-grid-outline" />
         Produtos
       </nuxt-link>

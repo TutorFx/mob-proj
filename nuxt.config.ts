@@ -3,7 +3,6 @@ export default defineNuxtConfig({
   srcDir: "src/",
   modules: [
     '@nuxt/devtools',
-    'nuxt-typed-router',
     '@nuxtjs/tailwindcss',
     'nuxt-headlessui',
     '@sidebase/nuxt-auth',
@@ -19,7 +18,7 @@ export default defineNuxtConfig({
     ]
   },
   auth: {
-    origin: process.env.URL || 'http://localhost:3000/',
+    origin: process.env.URL ?? 'http://localhost:3000/',
   },
   css: ['@/main.scss'],
   postcss: {
@@ -36,7 +35,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      URL: process.env.URL || 'http://localhost:3000/',
+      URL: process.env.URL ?? 'http://localhost:3000/',
     },
   },
 })

@@ -7,15 +7,15 @@
         </div>
       </div>
       <div class="order-first md:order-last border-b mb:border-b-0 border-t-0 md:border-t">
-        <div class="p-6" v-if="$route.name === 'dashboard-slug-produto-novo'">
-          <nuxt-link :to="{name: 'dashboard-slug-produto'}" class="btn btn-primary btn-outline w-full" >Voltar</nuxt-link>
+        <div class="p-6" v-if="$route.name === 'dashboard-id-produto-novo'">
+          <nuxt-link :to="{name: 'dashboard-id-produto'}" class="btn btn-primary btn-outline w-full" >Voltar</nuxt-link>
         </div>      
-        <div class="p-6" v-else-if="$route.name === 'dashboard-slug-produto-productid'">
-          <nuxt-link :to="{name: 'dashboard-slug-produto-novo'}" class="btn btn-primary w-full mb-3" >Novo produto</nuxt-link>
-          <nuxt-link :to="{name: 'dashboard-slug-produto'}" class="btn btn-error btn-outline w-full" >Cancelar Edição</nuxt-link>
+        <div class="p-6" v-else-if="$route.name === 'dashboard-id-produto-productid'">
+          <nuxt-link :to="{name: 'dashboard-id-produto-novo'}" class="btn btn-primary w-full mb-3" >Novo produto</nuxt-link>
+          <nuxt-link :to="{name: 'dashboard-id-produto'}" class="btn btn-error btn-outline w-full" >Cancelar Edição</nuxt-link>
         </div>
         <div class="p-6" v-else>
-          <nuxt-link :to="{name: 'dashboard-slug-produto-novo'}" class="btn btn-primary w-full" >Novo produto</nuxt-link>
+          <nuxt-link :to="{name: 'dashboard-id-produto-novo'}" class="btn btn-primary w-full" >Novo produto</nuxt-link>
         </div>
       </div>
     </div>

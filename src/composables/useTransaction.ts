@@ -22,32 +22,41 @@ export const useTransactions = defineStore('transactions', () => {
   })
 
   const { pending: pendingPayment, error: paymentError } = useLazyAsyncData('pay', () => $fetch(`/api/v1/private/payment`, {
-      method: "POST",
-      body: {
-        ...requestState.value,
-        businessId: useRoute().params.slug.toString()
-      } as ICreateTransaction,
-    }).then(() => {
-      $close()
-      requestState.value = starterTransaction;
-      refreshNuxtData('transactions')
-    }),
+    method: "POST",
+    body: {
+      ...requestState.value,
+      businessId: useRoute().params.id.toString()
+    } as ICreateTransaction,
+  }).then(() => {
+    $close()
+    requestState.value = starterTransaction;
+    refreshNuxtData('transactions')
+  }),
     {
       immediate: false
     }
   )
 
-  const { pending: pendingList, error: listError, data: list } = useLazyAsyncData('transactions', () => $fetch('/api/v1/private/payment/', {
+  const { pending: pendingList, error: listError, data: list, refresh } = useLazyAsyncData('transactions', () => $fetch('/api/v1/private/payment/', {
     method: 'GET',
-      query: {
-        businessId: useRoute().params.slug
-      }
-    }),
+    query: {
+      businessId: useRoute().params.id
+    }
+  }),
     {
       immediate: false,
-      watch: [useRoute()]
     }
-  )  
+  )
+
+  watch(
+    useRoute(),
+    (newVal) => {
+      if(newVal.params.id) {
+        refresh();
+      }
+    }
+  )
+  
   onBeforeMount(() => refreshNuxtData('transactions'))
 
   const $create = () => {
