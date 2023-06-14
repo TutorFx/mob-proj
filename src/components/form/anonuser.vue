@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import { TAnonymously } from '~/types/user';
+import { Tcontact } from '~/types/user';
 
 const props = withDefaults(defineProps<{
-  modelValue: TAnonymously,
+  modelValue: Tcontact,
   valid: boolean
 }>(), {})
 
 const emits = defineEmits<{
-  (e: 'update:modelValue', value: TAnonymously): void,
+  (e: 'update:modelValue', value: Tcontact): void,
   (e: 'update:valid', value: boolean): void,
 }>()
 
@@ -29,7 +29,7 @@ const valid = computed({
   }
 })
 
-const result = computed(() => useSchemas.anonymously.safeParse(state.value));
+const result = computed(() => useSchemas.contact.safeParse(state.value));
 const errors = computed(() => result.value.success ? {} : result.value.error.format());
 
 watchEffect(() => valid.value = result.value.success);

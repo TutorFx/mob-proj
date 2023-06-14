@@ -33,6 +33,7 @@ model User {
   productId            String?
   Order                Order[]
   Address              Address[]
+  Contact              Contact[]
 
   @@map("user")
 }
@@ -96,6 +97,17 @@ model ProductOnOrder {
   quantity  Int
 
   @@id([productId, orderId])
+}
+
+model Contact {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  nome      String
+  celular   String
+  whatsapp  Boolean
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    String?
 }
 
 model Order {

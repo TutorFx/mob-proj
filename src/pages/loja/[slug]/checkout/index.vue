@@ -75,7 +75,7 @@
 
 <script setup lang="ts">
 import { TAddress } from '~/types/addr';
-import { TAnonymously } from '~/types/user';
+import { Tcontact } from '~/types/user';
 import { useGeolocation } from '@vueuse/core'
 
 const { coords, locatedAt, error, resume, pause } = useGeolocation({ immediate: false })
@@ -110,7 +110,7 @@ const isAnonymous = ref<boolean>(false)
 
 const { data } = await useAsyncData(() => $fetch(`/api/v1/business/${route.params.slug}`));
 
-const PersonalState = ref<{ name: string, data: TAnonymously, valid: boolean, component: Component }>(
+const PersonalState = ref<{ name: string, data: Tcontact, valid: boolean, component: Component }>(
   {
     name: 'Dados de contato',
     data: personal_default,

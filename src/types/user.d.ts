@@ -1,3 +1,3 @@
-const { anonymously } = useSchemas;
+const { contact } = useSchemas;
 
-export type TAnonymously = z.infer<typeof anonymously>;
+export type Tcontact = z.infer<typeof contact>;

@@ -39,7 +39,7 @@ export const useSchemas = {
     id: z.string().refine(useRules.uuid),
     quantity: z.number().nonnegative()
   })),
-  anonymously: z.object({
+  contact: z.object({
     nome: z.string().nonempty('Campo obrigatório'),
     celular: z.string().nonempty('Campo obrigatório').min(14, 'Número de telefone inválido').max(16, 'Número de telefone inválido')
   }),
