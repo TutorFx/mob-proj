@@ -21,7 +21,29 @@ type INav = {
   id: string;
 }
 
+type IAddress = {
+  cep: string;
+  endereco: string;
+  numero: number | null;
+  bairro: string;
+  estado: number;
+  cidade: number;
+  complemento: string;
+}
+
+type IViacep = {
+  logradouro: string; 
+  complemento: string;
+  bairro: string;
+  uf: string;
+  localidade: string; 
+  ibge: string;
+  gia: string;
+  ddd: string;
+  siafi: string;
+}
+
 type TItem = { id: string, quantity: number }
 type TCart = { [key: string]: Array<TItem> }
 
-declare global { ILoginParams, IItem };
+declare global { ILoginParams, IItem, IAddress };

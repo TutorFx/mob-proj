@@ -33,6 +33,7 @@
     "@prisma/client": "^4.12.0",
     "@tailwindcss/forms": "^0.5.3",
     "@types/formidable": "^2.0.6",
+    "@vee-validate/zod": "^4.9.6",
     "@vueuse/core": "^10.1.2",
     "@vueuse/motion": "^2.0.0",
     "@vueuse/sound": "^2.0.1",
@@ -48,6 +49,7 @@
     "nuxt-icon": "^0.4.0",
     "pinia": "^2.0.34",
     "swiper": "^9.3.2",
+    "vee-validate": "^4.9.6",
     "vue3-apexcharts": "^1.4.1",
     "zod": "^3.21.4",
     "zod-validation-error": "^1.1.0"

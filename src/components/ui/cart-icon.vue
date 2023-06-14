@@ -43,6 +43,7 @@ watch(
   (newVal, oldVal) => {
     if (newVal > oldVal) {
       playPush();
+      cart.isVisible = true;
       isAnimated.value = true;
       setTimeout(() => {
         isAnimated.value = false;

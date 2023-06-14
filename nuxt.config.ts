@@ -17,6 +17,9 @@ export default defineNuxtConfig({
       'res.cloudinary.com'
     ]
   },
+  app: {
+    pageTransition: { name: 'page', mode: 'out-in' }
+  },
   auth: {
     origin: process.env.URL ?? 'http://localhost:3000/',
   },
@@ -29,6 +32,7 @@ export default defineNuxtConfig({
   },
   routeRules: {
     '/api/v1/business/**': { swr: true },
+    '/api/v1/address/state/**': { swr: true },
   },
   headlessui: {
     prefix: ''

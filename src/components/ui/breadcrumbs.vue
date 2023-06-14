@@ -2,7 +2,7 @@
   <nav aria-label="Breadcrumb">
     <ol class="flex items-stretch gap-2 list-none">
       <li class="items-center flex gap-2">
-        <nuxt-link :to="{name: 'loja-slug'}"
+        <nuxt-link to="#"
           class="flex max-w-[20ch] items-center gap-1 truncate whitespace-nowrap text-slate-700 transition-colors hover:text-primary">Loja</nuxt-link>
         <svg xmlns="http://www.w3.org/2000/svg"
           class="flex-none w-4 h-4 transition-transform stroke-slate-700 rotate-180" fill="none" viewBox="0 0 24 24"

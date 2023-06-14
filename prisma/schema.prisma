@@ -31,6 +31,8 @@ model User {
   transactionsAsOrigin Transaction[] @relation("originTransactions")
   Product              Product[]
   productId            String?
+  Order                Order[]
+  Address              Address[]
 
   @@map("user")
 }
@@ -47,22 +49,24 @@ model Business {
   name     String
   slug     String  @unique @default(uuid())
   logo_url String?
+  Order    Order[]
 
   @@map("business")
 }
 
 model Product {
-  id          String   @id @default(uuid())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  name        String   @unique
-  description String
-  price       Int
-  Business    Business @relation(fields: [businessId], references: [id])
-  businessId  String
-  User        User     @relation(fields: [userId], references: [id])
-  userId      String
-  images      Image[]
+  id             String           @id @default(uuid())
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  name           String           @unique
+  description    String
+  price          Int
+  Business       Business         @relation(fields: [businessId], references: [id])
+  businessId     String
+  User           User             @relation(fields: [userId], references: [id])
+  userId         String
+  images         Image[]
+  ProductOnOrder ProductOnOrder[]
 
   @@map("product")
 }
@@ -82,6 +86,45 @@ model Image {
   productId String?
 
   @@map("image")
+}
+
+model ProductOnOrder {
+  product   Product @relation(fields: [productId], references: [id])
+  productId String // relation scalar field (used in the `@relation` attribute above)
+  order     Order   @relation(fields: [orderId], references: [id])
+  orderId   String // relation scalar field (used in the `@relation` attribute above)
+  quantity  Int
+
+  @@id([productId, orderId])
+}
+
+model Order {
+  id             String           @id @default(uuid())
+  createdAt      DateTime         @default(now())
+  ProductOnOrder ProductOnOrder[]
+  Business       Business         @relation(fields: [businessId], references: [id])
+  businessId     String
+  User           User?            @relation(fields: [userId], references: [id])
+  userId         String?
+  address        Address[]
+
+  @@map("order")
+}
+
+model Address {
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  cep         String
+  estado      Int
+  cidade      Int
+  endereco    String
+  bairro      String
+  numero      Int
+  complemento String
+  Order       Order[]
+  User        User?    @relation(fields: [userId], references: [id])
+  orderId     String?
+  userId      String?
 }
 
 model Transaction {

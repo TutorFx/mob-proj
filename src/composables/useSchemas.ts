@@ -38,5 +38,18 @@ export const useSchemas = {
   cart: z.array(z.object({
     id: z.string().refine(useRules.uuid),
     quantity: z.number().nonnegative()
-  }))
+  })),
+  anonymously: z.object({
+    nome: z.string().nonempty('Campo obrigatório'),
+    celular: z.string().nonempty('Campo obrigatório').min(14, 'Número de telefone inválido').max(16, 'Número de telefone inválido')
+  }),
+  address: z.object({
+    cep: z.string().nonempty('Campo obrigatório').min(9, 'Cep inválido'),
+    estado: z.number().min(1, 'Campo obrigatório'),
+    cidade: z.number().min(1, 'Campo obrigatório'),
+    endereco: z.string({ required_error: 'Campo obrigatório', }).nonempty('Campo obrigatório'),
+    bairro: z.string({ required_error: 'Campo obrigatório', }).nonempty('Campo obrigatório'),
+    numero: z.number().nullable(),
+    complemento: z.string().nullable(),
+  })
 }

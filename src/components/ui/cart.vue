@@ -10,13 +10,13 @@
         <div class="flex justify-end max-h-full container">
           <div class="card-body gap-3 rounded-xl bg-base-100 max-w-md" ref="cartzone">
             <div class="font-bold text-lg">Meu carrinho ({{ cart.$quantity }})</div>
-            <ui-cart-item v-for="(item, i) in cart.$get?.items" :item="item" :key="item.id" />
+            <ui-cart-item v-for="(item) in cart.$get?.items" :item="item" :key="item.id" />
             <div class="grid grid-flow-col justify-between">
               <div>Valor</div>
               <span>{{ useMoney(cart.$get?.info.pricesum || 0) }}</span>
             </div>
             <div class="card-actions">
-              <button class="btn btn-primary btn-block">Finalizar Compra</button>
+              <nuxt-link :disabled="cart.$quantity === 0 ? true : undefined" class="btn btn-primary btn-block" :to="{ name: 'loja-slug-checkout' }">Finalizar Compra</nuxt-link>
             </div>
           </div>
         </div>

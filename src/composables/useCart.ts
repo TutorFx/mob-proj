@@ -14,9 +14,10 @@ export const useCart = defineStore('cart', () => {
     return accumulator + item.quantity;
   }, 0))
 
+  //@ts-ignore TODO: Fix the recursive stack change
   const { data: $get, error, pending } = useAsyncData('cart', () => $fetch(`/api/v1/cart/${default_key()}`, {
     method: 'POST',
-    body: $state.value[default_key()],
+    body: $state.value[default_key()] ?? [],
   }),
     {
       watch: [$quantity]

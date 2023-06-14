@@ -32,9 +32,9 @@ const { pending, error, refresh, data } = useAsyncData('product-get', () => $fet
   }),
 );
 watch(useRoute(),
-  (newVal) => {
+  async (newVal) => {
     if (newVal.params.id) {
-      refresh()
+      await refresh()
     }
   }
 )

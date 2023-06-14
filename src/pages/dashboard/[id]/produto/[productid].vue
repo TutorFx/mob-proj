@@ -1,26 +1,31 @@
 <template>
-  <div class="text-xl mb-4">Editar Produto</div>
   <div>
-    <div class="form-control w-full max-w-sm">
-      <form-product v-model="state" />
+    <div class="text-xl mb-4">Editar Produto</div>
+    <div>
+      <div class="form-control w-full max-w-sm">
+        <form-product v-model="state" />
 
-      <div v-if="product?.images?.length || 0 > 0">
-        <div class="divider pt-0"><Icon name="mdi:cloud" class="text-base-300" size="50px" /></div>
+        <div v-if="product?.images?.length || 0 > 0">
+          <div class="divider pt-0">
+            <Icon name="mdi:cloud" class="text-base-300" size="50px" />
+          </div>
 
-        <div class="grid gap-4 grid-cols-3 mt-4 mb-4">
-          <div class="rounded-lg relative" v-for="(image, i) in product?.images" :key="i" >
-            <img :src="image.secure_url" class="object-cover rounded-lg w-full h-full aspect-square">
-            <Icon @click="deleteImage(image.id)" name="mdi:delete" class="absolute right-0 top-0 h-6 w-6 bg-white rounded-full m-2 p-1" />
+          <div class="grid gap-4 grid-cols-3 mt-4 mb-4">
+            <div class="rounded-lg relative" v-for="(image, i) in product?.images" :key="i">
+              <img :src="image.secure_url" class="object-cover rounded-lg w-full h-full aspect-square">
+              <Icon @click="deleteImage(image.id)" name="mdi:delete"
+                class="absolute right-0 top-0 h-6 w-6 bg-white rounded-full m-2 p-1" />
+            </div>
           </div>
         </div>
-      </div>
 
-      <button v-if="!isSending" @click="edit()" class="btn btn-block btn-primary gap-3">
-        Postar Produto
-        <Icon size="24" name="ic:baseline-arrow-right-alt" />
-      </button>
-      <div v-else class="btn btn-block btn-primary">
-        <ui-spinner />
+        <button v-if="!isSending" @click="edit()" class="btn btn-block btn-primary gap-3">
+          Editar Produto
+          <Icon size="24" name="ic:baseline-arrow-right-alt" />
+        </button>
+        <div v-else class="btn btn-block btn-primary">
+          <ui-spinner />
+        </div>
       </div>
     </div>
   </div>
@@ -61,7 +66,7 @@ const edit = () => {
     await refreshNuxtData('product-get');
     state.value.files.length = 0;
     refresh();
-  }).finally(()=> isSending.value = false )
+  }).finally(() => isSending.value = false)
 }
 const deleteImage = async (id: string) => {
   await $fetch(`/api/v1/private/image/${id}`, {

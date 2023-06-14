@@ -31,5 +31,6 @@ export const useRules = {
     if (rev != parseInt(cpf.charAt(10))) return false;
     return true;
   },
-  uuid: (pattern: string): boolean => /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/.test(pattern)
+  uuid: (pattern: string): boolean => /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/.test(pattern),
+  
 };
