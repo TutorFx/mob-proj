@@ -41,7 +41,8 @@ export const useSchemas = {
   })),
   contact: z.object({
     nome: z.string().nonempty('Campo obrigatório'),
-    celular: z.string().nonempty('Campo obrigatório').min(14, 'Número de telefone inválido').max(16, 'Número de telefone inválido')
+    celular: z.string().nonempty('Campo obrigatório').min(14, 'Número de telefone inválido').max(16, 'Número de telefone inválido'),
+    whatsapp: z.boolean()
   }),
   address: z.object({
     cep: z.string().nonempty('Campo obrigatório').min(9, 'Cep inválido'),

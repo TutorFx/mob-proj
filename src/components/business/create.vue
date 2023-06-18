@@ -55,7 +55,7 @@ const config = useRuntimeConfig()
 const url = config.public.URL;
 
 const createBusiness = async() => {
-  if (businessStore.$state.pendingBusinesses) return;
+  if (businessStore.pendingBusinesses) return;
   await businessStore.$create()
 }
 </script>

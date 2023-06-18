@@ -90,13 +90,13 @@ model Image {
 }
 
 model ProductOnOrder {
-  product   Product @relation(fields: [productId], references: [id])
-  productId String // relation scalar field (used in the `@relation` attribute above)
-  order     Order   @relation(fields: [orderId], references: [id])
-  orderId   String // relation scalar field (used in the `@relation` attribute above)
-  quantity  Int
+  product  Product @relation(fields: [id], references: [id])
+  id       String // relation scalar field (used in the `@relation` attribute above)
+  order    Order   @relation(fields: [orderId], references: [id])
+  orderId  String // relation scalar field (used in the `@relation` attribute above)
+  quantity Int
 
-  @@id([productId, orderId])
+  @@id([id, orderId])
 }
 
 model Contact {
@@ -108,6 +108,9 @@ model Contact {
   whatsapp  Boolean
   User      User?    @relation(fields: [userId], references: [id])
   userId    String?
+  Order     Order[]
+
+  @@map("contact")
 }
 
 model Order {
@@ -118,7 +121,10 @@ model Order {
   businessId     String
   User           User?            @relation(fields: [userId], references: [id])
   userId         String?
-  address        Address[]
+  contact        Contact?         @relation(fields: [contactId], references: [id])
+  address        Address?         @relation(fields: [addressId], references: [id])
+  contactId      String?
+  addressId      String?
 
   @@map("order")
 }
@@ -131,12 +137,14 @@ model Address {
   cidade      Int
   endereco    String
   bairro      String
-  numero      Int
+  numero      Int?
   complemento String
   Order       Order[]
   User        User?    @relation(fields: [userId], references: [id])
   orderId     String?
   userId      String?
+
+  @@map("address")
 }
 
 model Transaction {

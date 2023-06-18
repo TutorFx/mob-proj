@@ -63,6 +63,10 @@
 
 <script setup lang="ts">
 const route = useRoute()
-const { data } = await useAsyncData(() => $fetch(`/api/v1/business/${route.params.slug}`))
+//const router = useRouter()
+const { data, error } = await useAsyncData(() => $fetch(`/api/v1/business/${route.params.slug}`))
+if(error.value) {
+  console.error('404');
+}
 const { data: products } = await useAsyncData(() => $fetch(`/api/v1/business/${route.params.slug}/products`))
 </script>

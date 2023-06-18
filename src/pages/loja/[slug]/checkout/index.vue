@@ -60,8 +60,7 @@
           <div class="grid gap-3 grid-flow-col">
             <div @click="backstep()" v-if="Step > 0" :disabled="!backstatus ? true : undefined"
               class="btn btn-primary btn-block">Voltar</div>
-            <nuxt-link v-else :to="{ name: 'loja-slug' }" 
-              class="btn btn-primary btn-block">Adicionar produtos</nuxt-link>
+            <nuxt-link v-else :to="{ name: 'loja-slug' }" class="btn btn-primary btn-block">Adicionar produtos</nuxt-link>
             <div @click="finalizar()" v-if="Step + 1 === Steps.length" :disabled="!allsteps ? true : undefined"
               class="btn btn-primary btn-block">Finalizar</div>
             <div @click="nextstep()" v-else :disabled="!nextstatus || !current.valid ? true : undefined"
@@ -91,6 +90,7 @@ const addr_component = resolveComponent('FormAddr')
 const personal_default = {
   nome: '',
   celular: '',
+  whatsapp: true
 }
 
 const addr_default = {
@@ -152,7 +152,8 @@ const nextstep = () => {
   if (!current.value.valid) return;
   Step.value++
 }
-const finalizar = () => {
-  alert('EHEHEHEH')
+const finalizar = async () => {
+  const { data, pending, error } = await useFetch(`/api/v1/order/${route.params.slug}`, { method: 'post', body: { contact: PersonalState.value.data, address: AddrState.value.data, cart: cart.$current_cart } })
+  console.log(data, pending, error)
 }
 </script>
