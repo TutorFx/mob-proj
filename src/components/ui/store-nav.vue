@@ -1,7 +1,7 @@
 <template>
   <ui-nav>
     <template #default>
-      <nuxt-link :to="{ name: 'loja-slug' }" class="btn btn-ghost normal-case font-black text-xl">{{ data.name }}</nuxt-link>
+      <nuxt-link :to="{ name: 'loja-slug' }" class="btn btn-ghost normal-case font-black text-xl">{{ data?.name }}</nuxt-link>
     </template>
     <template #end>
       <ui-cart-icon />

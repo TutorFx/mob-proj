@@ -5,13 +5,13 @@
     </div>
     <div class="grid items-start lg:items-center min-h-full">
       <div class="grid gap-3 md:gap-6">
-        <ui-breadcrumbs> {{ productdata.name }} </ui-breadcrumbs>
-        <h2 class="text-4xl font-bold">{{ productdata.name }}</h2>
-        <h4 class="text-2xl font-medium text-neutral">{{ productdata.description }}</h4>
-        <h5 class="text-2xl font-medium">{{ useMoney(productdata.price) }} {{ quantity > 1 ? `(${useMoney(productdata.price*quantity)})`:undefined }}</h5>
+        <ui-breadcrumbs> {{ productdata?.name }} </ui-breadcrumbs>
+        <h2 class="text-4xl font-bold">{{ productdata?.name }}</h2>
+        <h4 class="text-2xl font-medium text-neutral">{{ productdata?.description }}</h4>
+        <h5 class="text-2xl font-medium">{{ useMoney(productdata?.price ?? 0) }} {{ quantity > 1 ? `(${useMoney(productdata?.price ?? 0 * quantity)})`:undefined }}</h5>
         <div class="grid grid-flow-row lg:grid-flow-col justify-start gap-3 md:gap-6">
           <ui-quantity v-model="quantity" class="order-last md:order-first" />
-          <button class="btn btn-primary gap-6" @click.prevent="cart.add_product(productdata.id, quantity)">
+          <button class="btn btn-primary gap-6" @click.prevent="productdata?.id ? cart.add_product(productdata?.id, quantity) : null">
             <Icon name="mdi:cart-plus" size="18" /> Adicionar ao carrinho
           </button>
         </div>
@@ -32,7 +32,7 @@ defineProps<{
       id: string;
       secure_url: string;
     }[]
-  }
+  } | null
 }>()
 const quantity = ref(1)
 const cart = useCart()

@@ -13,7 +13,7 @@
           </Swiper>
           <template #fallback>
             <div class="aspect-[4/3] lg:aspect-square flex items-center justify-center overflow-hidden">
-              <nuxt-img :src="images[0].secure_url" class="object-cover min-w-full min-h-full" alt="product-image" />
+              <nuxt-img :src="images?.at(0)?.secure_url" class="object-cover min-w-full min-h-full" alt="product-image" />
             </div>
           </template>
         </client-only>
@@ -28,10 +28,10 @@ import { Pagination, Virtual, Autoplay } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/pagination';
 defineProps<{
-  images: [{
+  images: {
     id: string,
     secure_url: string,
-  }]
+  }[] | undefined
 }>()
 </script>
 

@@ -2,7 +2,7 @@
   <div>
     <NuxtLoadingIndicator color="false" class="bg-primary" />
     <div class="container">
-      <ui-store-nav v-bind="{ data }" />
+      <ui-store-nav :data="data" />
     </div>
     <div class="container grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 my-10">
       <nuxt-link v-for="(product, i) in products" :key="i"
@@ -63,10 +63,21 @@
 
 <script setup lang="ts">
 const route = useRoute()
-//const router = useRouter()
+
 const { data, error } = await useAsyncData(() => $fetch(`/api/v1/business/${route.params.slug}`))
+
+/* onErrorCaptured(() => {
+  throw createError({
+    statusCode: 404,
+    statusMessage: 'Business Not Found'
+  })
+})
+
 if(error.value) {
-  console.error('404');
-}
+  throw createError({
+    statusCode: 404,
+    statusMessage: 'Business Not Found'
+  })
+}  */
 const { data: products } = await useAsyncData(() => $fetch(`/api/v1/business/${route.params.slug}/products`))
 </script>

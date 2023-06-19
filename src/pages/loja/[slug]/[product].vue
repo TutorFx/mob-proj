@@ -2,15 +2,39 @@
   <div>
     <NuxtLoadingIndicator color="false" class="bg-primary" />
     <div class="container grid fill-screen grid-rows-[max-content_1fr]">
-      <ui-store-nav v-bind="{ data }" />
-      <ui-product-page v-bind="{ productdata }" />
+      <ui-store-nav :data="data" />
+      <ui-product-page :productdata="productdata" />
     </div>
   </div>
-
 </template>
 
 <script setup lang="ts">
-  const { slug, product } = useRoute().params
-  const data = await $fetch(`/api/v1/business/${slug}`)
-  const productdata = await $fetch(`/api/v1/business/${slug}/${product}`)
+const { slug, product } = useRoute().params
+/* if (!slug) {
+  throw createError({
+    statusCode: 404,
+    statusMessage: 'Product Not Found'
+  })
+} */
+
+const { data, error } = useAsyncData(() => $fetch(`/api/v1/business/${slug}`));
+/* if (error.value) {
+  throw createError({
+    statusCode: 404,
+    statusMessage: 'Business Not Found'
+  })
+} */
+const { data: productdata, error: producterror } = useAsyncData(() => $fetch(`/api/v1/business/${slug}/${product}`));
+/* if (producterror.value) {
+  throw createError({
+    statusCode: 404,
+    statusMessage: 'Product Not Found'
+  })
+} */
+/* onErrorCaptured(() => {
+  throw createError({
+    statusCode: 404,
+    statusMessage: 'Product Not Found'
+  })
+}) */
 </script>

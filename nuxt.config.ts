@@ -21,7 +21,7 @@ export default defineNuxtConfig({
     pageTransition: { name: 'page', mode: 'out-in' }
   },
   auth: {
-    origin: process.env.URL ?? 'http://localhost:3000/',
+    origin: process.env.VERCEL_URL ?? 'http://localhost:3000/',
   },
   css: ['@/main.scss'],
   postcss: {
@@ -39,7 +39,10 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      URL: process.env.URL ?? 'http://localhost:3000/',
+      URL: process.env.VERCEL_URL ?? 'http://localhost:3000/',
     },
+  },
+  nitro: {
+    preset: "vercel",
   },
 })

@@ -19,7 +19,7 @@ type INav = {
   name: string;
   logo_url: string;
   id: string;
-}
+} | null;
 
 type IAddress = {
   cep: string;

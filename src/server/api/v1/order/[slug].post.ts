@@ -7,6 +7,7 @@ import { IContact, ICart, IAddress } from '~/types/cart';
 import { getServerSession } from '#auth';
 const { contact, address, cart } = useSchemas;
 
+//TODO: Validate if the product is from this business
 
 export default defineEventHandler(async (event) => {
   const prisma = new PrismaClient();
@@ -33,7 +34,7 @@ export default defineEventHandler(async (event) => {
     const createdOrder = await prisma.order.create({
       data: {
         Business: { connect: { slug } },
-        User: { connect: { id: userId } },
+        userId,
         ProductOnOrder: {
           create: cartData
         },
@@ -47,7 +48,7 @@ export default defineEventHandler(async (event) => {
           create: {
             ...contData,
             userId,
-            
+
           }
         }
       },
@@ -57,14 +58,15 @@ export default defineEventHandler(async (event) => {
         ProductOnOrder: true
       }
     });
+    if (createdOrder.addressId){
+      await prisma.address.update({
+        where: { id: createdOrder.addressId },
+        data: {
+          orderId: createdOrder.id
+        }
+      })
+    }
 
-    await prisma.address.update({
-      where: { id:createdOrder.addressId },
-      data: {
-        orderId: createdOrder.id
-      }
-    })
-    
     return createdOrder;
   } catch (error) {
     console.log(error)
