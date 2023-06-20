@@ -31,6 +31,7 @@ export default defineNuxtConfig({
     },
   },
   routeRules: {
+    '/api/auth/**': { cors: true },
     '/api/v1/business/**': { swr: true },
     '/api/v1/address/state/**': { swr: true },
   },
