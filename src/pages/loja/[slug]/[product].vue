@@ -17,14 +17,14 @@ const { slug, product } = useRoute().params
   })
 } */
 
-const { data, error } = useAsyncData(() => $fetch(`/api/v1/business/${slug}`));
+const data = await $fetch(`/api/v1/business/${slug}`)
 /* if (error.value) {
   throw createError({
     statusCode: 404,
     statusMessage: 'Business Not Found'
   })
 } */
-const { data: productdata, error: producterror } = useAsyncData(() => $fetch(`/api/v1/business/${slug}/${product}`));
+const productdata = await $fetch(`/api/v1/business/${slug}/${product}`);
 /* if (producterror.value) {
   throw createError({
     statusCode: 404,
