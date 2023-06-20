@@ -9,7 +9,7 @@
       <div v-if="modelValue" class="fixed inset-0 pt-16 z-50">
         <div class="flex justify-end max-h-full container">
           <div class="card-body gap-3 rounded-xl bg-base-100 max-w-md" ref="cartzone">
-            <div class="font-bold text-lg">Meu carrinho ({{ cart.$quantity }})</div>
+            <div class="font-bold text-lg">Meu carrinho ({{ cart.$quantity ?? 0 }})</div>
             <ui-cart-item v-for="(item) in cart.$get?.items" :item="item" :key="item.id" />
             <div class="grid grid-flow-col justify-between">
               <div>Valor</div>

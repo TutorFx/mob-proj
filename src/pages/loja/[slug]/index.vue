@@ -13,10 +13,10 @@
             <div class="carousel w-full relative gap-3 ">
               <div v-for="(image, i) in product.images" :key="i" class="carousel-item w-full aspect-video relative">
                 <div class="aspect-video">
-                  <div class="overflow-hidden px-3">
-                    <div
-                      class="group-hover:scale-110 transition-all ease-in-out duration-1000 bg-cover bg-center aspect-video rounded-lg group-hover:rounded-none"
-                      :style="`background-image: url(${image.secure_url})`" alt="" />
+                  <div class="aspect-video overflow-hidden px-3 flex items-center justify-center">
+                    <nuxt-img
+                      class="object-cover group-hover:scale-110 min-w-full min-h-full aspect-auto transition-all ease-in-out duration-1000 bg-cover bg-center rounded-lg group-hover:rounded-none"
+                      :src="image?.secure_url" alt="" />
                   </div>
                 </div>
               </div>
@@ -27,10 +27,10 @@
               <div class="carousel w-full relative gap-3 ">
                 <div v-for="(image, i) in product.images" :key="i" class="carousel-item w-full aspect-video relative">
                   <div class="aspect-video">
-                    <div class="overflow-hidden px-3">
-                      <div
-                        class="group-hover:scale-110 transition-all ease-in-out duration-1000 bg-cover bg-center aspect-video rounded-lg group-hover:rounded-none"
-                        :style="`background-image: url(${image.secure_url})`" alt="" />
+                    <div class="aspect-video overflow-hidden px-3 flex items-center justify-center">
+                      <nuxt-img
+                        class="object-cover group-hover:scale-110 min-w-full min-h-full aspect-auto transition-all ease-in-out duration-1000 bg-cover bg-center rounded-lg group-hover:rounded-none"
+                        :src="image?.secure_url" alt="" />
                     </div>
                   </div>
                 </div>
