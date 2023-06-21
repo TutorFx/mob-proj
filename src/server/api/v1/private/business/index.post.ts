@@ -20,7 +20,14 @@ export default defineEventHandler(async (event) => {
           statusMessage: `${fromZodError(error)}`,
         })
       );
-    return 'Unknown Error'
+    else
+      return sendError(
+        event,
+        createError({
+          statusCode: 400,
+          statusMessage: 'Unknown Error',
+        })
+      );
   }
   if (session?.user?.email == null) return sendError(
     event,
@@ -36,7 +43,7 @@ export default defineEventHandler(async (event) => {
       }
     })
 
-    if (!getUser)return sendError(
+    if (!getUser) return sendError(
       event,
       createError({
         statusCode: 500,
@@ -54,7 +61,7 @@ export default defineEventHandler(async (event) => {
     return newBusiness
 
   } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') 
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002')
       // The .code property can be accessed in a type-safe manner
       return sendError(
         event,
@@ -63,8 +70,8 @@ export default defineEventHandler(async (event) => {
           statusMessage: 'Nao pode fazer entrada'
         })
       );
-      
-    
+
+
     return sendError(
       event,
       createError({
