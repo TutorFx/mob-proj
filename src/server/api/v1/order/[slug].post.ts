@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
     const createdOrder = await prisma.order.create({
       data: {
         Business: { connect: { slug } },
-        userId,
+        User: userId ? { connect: { id: userId } } : undefined,
         ProductOnOrder: {
           create: cartData
         },
@@ -48,7 +48,6 @@ export default defineEventHandler(async (event) => {
           create: {
             ...contData,
             userId,
-
           }
         }
       },
