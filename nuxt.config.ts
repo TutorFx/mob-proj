@@ -38,6 +38,14 @@ export default defineNuxtConfig({
   headlessui: {
     prefix: ''
   },
+  vite: {
+    vue: {
+      script: {
+        defineModel: true,
+        propsDestructure: true
+      }
+    }
+  },
   runtimeConfig: {
     public: {
       URL: process.env.ORIGIN ?? 'http://localhost:3000/',
