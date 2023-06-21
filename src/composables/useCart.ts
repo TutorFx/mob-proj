@@ -53,6 +53,10 @@ export const useCart = defineStore('cart', () => {
     }
   }
 
+  const clean_cart = (key: string = default_key()) => {
+    $raw.value[key].length = 0
+  }
+
   const incrise_amount = (id: string, key: string = default_key()) => {
     const index = $raw.value[key].findIndex((item) => item.id === id);
     $raw.value[key][index].quantity += 1
@@ -63,5 +67,5 @@ export const useCart = defineStore('cart', () => {
     return $raw.value[key][index]?.quantity
   }
 
-  return { $raw, $quantity, $get, isVisible, add_product, get_item_amount, remove_product, incrise_amount, decrement_amount, $current_cart }
+  return { $raw, $quantity, $get, isVisible, add_product, get_item_amount, remove_product, incrise_amount, decrement_amount, clean_cart, $current_cart }
 })
