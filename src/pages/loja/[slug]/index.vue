@@ -6,7 +6,7 @@
     </div>
     <div class="container grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 my-10">
       <nuxt-link v-for="(product, i) in products" :key="i"
-        :to="{ name: 'loja-slug-product', params: { product: product?.slug } }"
+        :to="{ name: 'loja-slug-product', params: { slug: route.params.slug, product: product?.slug } }"
         class="rounded-lg overflow-hidden bg-base shadow-3xl shadow-neutral/10 border border-base-300 group grid relative">
         <client-only>
           <div class="pt-3">
@@ -66,18 +66,12 @@ const route = useRoute()
 
 const { data, error } = await useAsyncData(() => $fetch(`/api/v1/business/${route.params.slug}`))
 
-/* onErrorCaptured(() => {
-  throw createError({
-    statusCode: 404,
-    statusMessage: 'Business Not Found'
-  })
-})
-
 if(error.value) {
   throw createError({
     statusCode: 404,
-    statusMessage: 'Business Not Found'
+    statusMessage: 'Estabelecimento não encontrado'
   })
-}  */
+}
+
 const { data: products } = await useAsyncData(() => $fetch(`/api/v1/business/${route.params.slug}/products`))
 </script>
