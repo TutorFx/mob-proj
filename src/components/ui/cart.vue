@@ -16,7 +16,7 @@
               <span>{{ useMoney(cart.$get?.info.pricesum || 0) }}</span>
             </div>
             <div class="card-actions">
-              <nuxt-link :disabled="cart.$quantity === 0 ? true : undefined" class="btn btn-primary btn-block" :to="{ name: 'loja-slug-checkout' }">Finalizar Compra</nuxt-link>
+              <nuxt-link :disabled="cart.$quantity === 0 ? true : undefined" class="btn btn-primary btn-block" :to="{ name: 'loja-slug-checkout', params: { slug:route.params.slug } }">Finalizar Compra</nuxt-link>
             </div>
           </div>
         </div>
@@ -29,6 +29,7 @@
 import { onClickOutside } from '@vueuse/core';
 const cart = useCart()
 const cartzone = ref(null)
+const route = useRoute()
 
 const props = defineProps<{
   modelValue: boolean

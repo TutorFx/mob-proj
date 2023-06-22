@@ -82,10 +82,22 @@
 </template>
 
 <script setup lang="ts">
+import { Business } from '@prisma/client';
 import { storeToRefs } from 'pinia'
 const { data } = useAuth()
 const { uuid } = useSchemas
 
+const props = defineProps<{modelValue: Business | undefined}>()
+const emits = defineEmits<(e: 'update:modelValue', value: Business | undefined) => void>()
+
+const model = computed({
+  get(){
+    return props.modelValue
+  },
+  set(value){
+    emits('update:modelValue', value)
+  }
+})
 
 const businessStore = useBusiness();
 
@@ -120,6 +132,9 @@ const selectedUser = computed({
     }
   }
 })
+
+// @ts-expect-error
+watchEffect(() => model.value = selectedUser.value);
 
 const currentUserName = computed(
   () => {
