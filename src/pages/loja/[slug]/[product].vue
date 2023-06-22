@@ -11,24 +11,17 @@
 <script setup lang="ts">
 const { slug, product } = useRoute().params
 
-const data = await $fetch(`/api/v1/business/${slug}`)
-/* if (error.value) {
+const data = await $fetch(`/api/v1/business/${slug}`).catch(() => {
   throw createError({
     statusCode: 404,
-    statusMessage: 'Business Not Found'
+    statusMessage: 'Estabelecimento não encontrado'
   })
-} */
-const productdata = await $fetch(`/api/v1/business/${slug}/${product}`);
-/* if (producterror.value) {
+})
+
+const productdata = await $fetch(`/api/v1/business/${slug}/${product instanceof Array ? product[0] : product}`).catch(() => {
   throw createError({
     statusCode: 404,
-    statusMessage: 'Product Not Found'
+    statusMessage: 'Produto não encontrado'
   })
-} */
-/* onErrorCaptured(() => {
-  throw createError({
-    statusCode: 404,
-    statusMessage: 'Product Not Found'
-  })
-}) */
+});
 </script>
