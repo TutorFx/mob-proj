@@ -9,14 +9,14 @@
       <div v-if="modelValue" class="fixed inset-0 pt-16 z-50">
         <div class="flex justify-end max-h-full container">
           <div class="card-body gap-3 rounded-xl bg-base-100 max-w-md" ref="cartzone">
-            <div class="font-bold text-lg">Meu carrinho ({{ cart.$quantity }})</div>
+            <div class="font-bold text-lg">Meu carrinho ({{ cart.$quantity ?? 0 }})</div>
             <ui-cart-item v-for="(item) in cart.$get?.items" :item="item" :key="item.id" />
             <div class="grid grid-flow-col justify-between">
               <div>Valor</div>
               <span>{{ useMoney(cart.$get?.info.pricesum || 0) }}</span>
             </div>
             <div class="card-actions">
-              <nuxt-link :disabled="cart.$quantity === 0 ? true : undefined" class="btn btn-primary btn-block" :to="{ name: 'loja-slug-checkout' }">Finalizar Compra</nuxt-link>
+              <nuxt-link :disabled="cart.$quantity === 0 ? true : undefined" class="btn btn-primary btn-block" :to="{ name: 'loja-slug-checkout', params: { slug:route.params.slug } }">Finalizar Compra</nuxt-link>
             </div>
           </div>
         </div>
@@ -29,6 +29,7 @@
 import { onClickOutside } from '@vueuse/core';
 const cart = useCart()
 const cartzone = ref(null)
+const route = useRoute()
 
 const props = defineProps<{
   modelValue: boolean
@@ -47,5 +48,4 @@ const modelValue = computed({
 onClickOutside(cartzone, (event) => (
   modelValue.value = false
 ))
-
 </script>

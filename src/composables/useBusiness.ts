@@ -15,49 +15,61 @@ export const useBusiness = () => {
       slug: ''
     } as ICreateBusiness
 
-    const fields = ref<ICreateBusiness>({...starterFields})
+    const fields = ref<ICreateBusiness>({ ...starterFields })
 
     const registerFieldVisible = ref(false);
     const $close = () => registerFieldVisible.value = false
     const $open = () => registerFieldVisible.value = true
 
-    const { pending: pendingBusinesses, error: gettingBusinessError, data: scopedBusinesses, refresh: $refresh } = useLazyAsyncData('business', () => $fetch('/api/v1/private/business', {
-        method: 'GET',
-      }),
+    const { 
+      pending: pendingBusinesses, 
+      error: gettingBusinessError, 
+      data: scopedBusinesses, 
+      refresh: $refresh } = useAsyncData('business', 
+        () => $fetch('/api/v1/private/business', {
+          method: 'GET',
+        }),
       {
-        immediate: false
+        immediate: true,
       }
-    )    
-    
-    const { error: creatingError, pending: isCreating, data: createdBusiness } = useLazyAsyncData('business-create', () => $fetch('/api/v1/private/business', {
+    )
+
+    const creatingError = ref(false);
+    const isCreating = ref(false);
+    const $createBusiness = async () => {
+      if (pendingBusinesses.value) return;
+      isCreating.value = true;
+      creatingError.value = false;
+      const response = await $fetch('/api/v1/private/business', {
         method: 'POST',
         body: {
           ...fields.value
         }
-      }).then(async (e: Business) => {
-        fields.value = starterFields;
-        if (e == "Unknown Error") return;
-        router.push({ path: `/dashboard/${e?.id}`});
-        await $refresh()
-        $close()
-      }),
-      {
-        immediate: false
+      })
+      if (!response) {
+        creatingError.value = true;
       }
-    )
+      isCreating.value = false;
+
+      fields.value = starterFields;
+      router.push({ path: `/dashboard/${response?.id}` });
+      await $refresh()
+      $close()
+    }
+
     const $create = () => refreshNuxtData('business-create')
     onBeforeMount(() => refreshNuxtData('business'))
 
-    return { 
+    return {
+      $createBusiness,
       $refresh,
       $close,
       $open,
       $create,
       fields,
-      registerFieldVisible, 
+      registerFieldVisible,
       scopedBusinesses,
-      createdBusiness,
-      gettingBusinessError, 
+      gettingBusinessError,
       creatingError,
       pendingBusinesses,
       isCreating,

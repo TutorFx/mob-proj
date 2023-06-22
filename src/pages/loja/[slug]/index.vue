@@ -6,17 +6,17 @@
     </div>
     <div class="container grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 my-10">
       <nuxt-link v-for="(product, i) in products" :key="i"
-        :to="{ name: 'loja-slug-product', params: { product: product?.slug } }"
+        :to="{ name: 'loja-slug-product', params: { slug: route.params.slug, product: product?.slug } }"
         class="rounded-lg overflow-hidden bg-base shadow-3xl shadow-neutral/10 border border-base-300 group grid relative">
         <client-only>
           <div class="pt-3">
             <div class="carousel w-full relative gap-3 ">
               <div v-for="(image, i) in product.images" :key="i" class="carousel-item w-full aspect-video relative">
                 <div class="aspect-video">
-                  <div class="overflow-hidden px-3">
-                    <div
-                      class="group-hover:scale-110 transition-all ease-in-out duration-1000 bg-cover bg-center aspect-video rounded-lg group-hover:rounded-none"
-                      :style="`background-image: url(${image.secure_url})`" alt="" />
+                  <div class="aspect-video overflow-hidden px-3 flex items-center justify-center">
+                    <nuxt-img
+                      class="object-cover group-hover:scale-110 min-w-full min-h-full aspect-auto transition-all ease-in-out duration-1000 bg-cover bg-center rounded-lg group-hover:rounded-none"
+                      :src="image?.secure_url" alt="" />
                   </div>
                 </div>
               </div>
@@ -27,10 +27,10 @@
               <div class="carousel w-full relative gap-3 ">
                 <div v-for="(image, i) in product.images" :key="i" class="carousel-item w-full aspect-video relative">
                   <div class="aspect-video">
-                    <div class="overflow-hidden px-3">
-                      <div
-                        class="group-hover:scale-110 transition-all ease-in-out duration-1000 bg-cover bg-center aspect-video rounded-lg group-hover:rounded-none"
-                        :style="`background-image: url(${image.secure_url})`" alt="" />
+                    <div class="aspect-video overflow-hidden px-3 flex items-center justify-center">
+                      <nuxt-img
+                        class="object-cover group-hover:scale-110 min-w-full min-h-full aspect-auto transition-all ease-in-out duration-1000 bg-cover bg-center rounded-lg group-hover:rounded-none"
+                        :src="image?.secure_url" alt="" />
                     </div>
                   </div>
                 </div>
@@ -66,18 +66,12 @@ const route = useRoute()
 
 const { data, error } = await useAsyncData(() => $fetch(`/api/v1/business/${route.params.slug}`))
 
-/* onErrorCaptured(() => {
-  throw createError({
-    statusCode: 404,
-    statusMessage: 'Business Not Found'
-  })
-})
-
 if(error.value) {
   throw createError({
     statusCode: 404,
-    statusMessage: 'Business Not Found'
+    statusMessage: 'Estabelecimento não encontrado'
   })
-}  */
+}
+
 const { data: products } = await useAsyncData(() => $fetch(`/api/v1/business/${route.params.slug}/products`))
 </script>

@@ -32,11 +32,20 @@ export default defineNuxtConfig({
   },
   routeRules: {
     '/api/auth/**': { cors: true },
-    '/api/v1/business/**': { swr: true },
+    '/api/v1/business/**': { swr: 60 * 30 },
     '/api/v1/address/state/**': { swr: true },
+    '/loja/**/*': { isr: 60 * 30 },
   },
   headlessui: {
     prefix: ''
+  },
+  vite: {
+    vue: {
+      script: {
+        defineModel: true,
+        propsDestructure: true
+      }
+    }
   },
   runtimeConfig: {
     public: {

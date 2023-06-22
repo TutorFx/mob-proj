@@ -105,6 +105,7 @@ const addr_default = {
 
 const auth = useAuth();
 const route = useRoute();
+const router = useRouter();
 const cart = useCart();
 const isAnonymous = ref<boolean>(false)
 
@@ -154,6 +155,9 @@ const nextstep = () => {
 }
 const finalizar = async () => {
   const { data, pending, error } = await useFetch(`/api/v1/order/${route.params.slug}`, { method: 'post', body: { contact: PersonalState.value.data, address: AddrState.value.data, cart: cart.$current_cart } })
-  console.log(data, pending, error)
+  if(!error.value) {
+    cart.clean_cart();
+    router.push({name: 'loja-slug'});
+  }
 }
 </script>
