@@ -4,7 +4,7 @@
       <button class="btn btn-neutral rounded-r-none" @click.prevent="modelValue -= 1">
         -
       </button>
-      <input type="text" v-model.number="modelValue" v-maska data-maska="###"
+      <input type="text" v-model.number="modelValue" aria-labelledby="Número de produtos" v-maska data-maska="###"
         class="h-full w-12 border-neutral text-center px-0">
       <button class="btn btn-neutral rounded-l-none" @click.prevent="modelValue += 1">
         +

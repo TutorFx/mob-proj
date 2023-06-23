@@ -62,16 +62,20 @@
 </template>
 
 <script setup lang="ts">
-const route = useRoute()
+const route = useRoute();
+const config = useRuntimeConfig();
 
-const { data, error } = await useAsyncData(() => $fetch(`/api/v1/business/${route.params.slug}`))
-
-if(error.value) {
+const data = await $fetch(`/api/v1/business/${route.params.slug}`).catch(() => {
   throw createError({
     statusCode: 404,
     statusMessage: 'Estabelecimento não encontrado'
   })
-}
+})
 
-const { data: products } = await useAsyncData(() => $fetch(`/api/v1/business/${route.params.slug}/products`))
+const products = await $fetch(`/api/v1/business/${route.params.slug}/products`)
+
+useSeoMeta({
+  title: `${data?.name} | ${config.public.APP_NAME}`,
+  ogTitle: `${data?.name} | ${config.public.APP_NAME}`,
+})
 </script>
