@@ -12,7 +12,7 @@ export const useCart = defineStore('cart', () => {
 
   const $quantity = computed(() => $raw.value[default_key()]?.reduce((accumulator, item) => {
     return accumulator + item.quantity;
-  }, 0))
+  }, 0)) ?? 0
 
   //@ts-ignore TODO: Fix the recursive stack change
   const { data: $get, error, pending } = useAsyncData('cart', () => $fetch(`/api/v1/cart/${default_key()}`, {
