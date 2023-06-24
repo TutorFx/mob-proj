@@ -4,10 +4,9 @@
       <ui-images :images="productdata?.images" />
     </div>
     <div class="grid items-start lg:items-center min-h-full">
-      <div class="grid gap-3 md:gap-6">
+      <div class="grid gap-3 md:gap-6" v-motion-slide-visible-once-bottom>
         <ui-breadcrumbs> {{ productdata?.name }} </ui-breadcrumbs>
-        <h2 class="text-4xl font-bold grid grid-flow-col justify-start gap-6 items-center"><span>{{ productdata?.name }}</span> <client-only><span @click="startShare" v-if="isSupported" class="btn btn-ghost btn-sm btn-circle"><Icon name="mdi:share-variant" size="24" /></span></client-only>
-      </h2>
+        <h2 class="text-4xl font-bold grid grid-flow-col justify-start gap-6 items-center"><span>{{ productdata?.name }}</span> <client-only><span @click="startShare" v-if="isSupported" class="btn btn-ghost btn-sm btn-circle"><Icon name="mdi:share-variant" size="24" /></span></client-only></h2>
         <h4 class="text-2xl font-medium text-neutral">{{ productdata?.description }}</h4>
         <h5 class="text-2xl font-medium">{{ useMoney(productdata?.price ?? 0) }} {{ quantity > 1 ? `(${useMoney((productdata?.price ?? 0) * quantity)})`:undefined }}</h5>
         <div class="grid grid-flow-row lg:grid-flow-col justify-start gap-3 md:gap-6">
