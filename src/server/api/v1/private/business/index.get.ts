@@ -2,9 +2,6 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient()
 
 export default defineEventHandler(async (event) => {
-  setResponseHeaders(event, {
-    'Cache-Control': 'max-age=30'
-  })
   const user = await event.context.session;
   try {
     const getBusiness = await prisma.business.findMany({

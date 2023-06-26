@@ -11,8 +11,8 @@ export const useSchemas = {
     amount: z.number(),
   }),
   createBusinessSchema: z.object({
-    name: z.string().min(1).max(18),
-    slug: z.string(),
+    name: z.string().nonempty('Campo obrigatório'),
+    slug: z.string().nonempty('Campo obrigatório'),
   }),
   getBusinessPaymentSchema: z.object({
     businessId: z.string().refine(useRules.uuid)
@@ -52,5 +52,5 @@ export const useSchemas = {
     bairro: z.string({ required_error: 'Campo obrigatório', }).nonempty('Campo obrigatório'),
     numero: z.number().nullable(),
     complemento: z.string().nullable(),
-  })
+  }),
 }

@@ -50,12 +50,15 @@ export default defineEventHandler(async (event) => {
             Business: true
           }
         },
+        Business: true,
         original_filename: true,
         public_id: true
       }
     })
 
-    if (!image?.Product?.Business) {
+    console.log(image)
+
+    if (!image?.Product?.Business && !image?.Business) {
       return sendError(
         event,
         createError({
@@ -66,12 +69,12 @@ export default defineEventHandler(async (event) => {
     }
 
     // Usuário autenticado tem permissão?
-    if (image?.Product?.Business.OwnerId !== session.id) {
+    if (image?.Product?.Business.OwnerId !== session.id && image?.Business?.OwnerId !== session.id) {
       return sendError(
         event,
         createError({
           statusCode: 404,
-          statusMessage: `User with ID ${session.user.email} is not the owner of business ${image?.Product?.Business.name}`
+          statusMessage: `User with ID ${session.user.email} is not the owner of business ${image?.Product?.Business.name ?? image?.Business?.name}`
         })
       )
     }

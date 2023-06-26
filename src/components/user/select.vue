@@ -84,6 +84,7 @@
 <script setup lang="ts">
 import { Business } from '@prisma/client';
 import { storeToRefs } from 'pinia'
+
 const { data } = useAuth()
 const { uuid } = useSchemas
 
@@ -133,7 +134,6 @@ const selectedUser = computed({
   }
 })
 
-// @ts-expect-error
 watchEffect(() => model.value = selectedUser.value);
 
 const currentUserName = computed(

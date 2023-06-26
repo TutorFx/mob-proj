@@ -37,7 +37,7 @@ watch(() => state.value.complemento, (newVal) => {
   input.value = newVal
 }, { deep: true })
 
-const { data: viacep, error: viacepError }: AsyncData<IViacep, Error | null> = useAsyncData('cep', () => $fetch(`https://viacep.com.br/ws/${state.value.cep}/json/`), { immediate: false });
+const { data: viacep, error: viacepError }: AsyncData<IViacep, Error | null> = useAsyncData('cep', () => $fetch<IViacep>(`https://viacep.com.br/ws/${state.value.cep}/json/`), { immediate: false });
 const { data: estados } = await useAsyncData('state', () => $fetch('/api/v1/address/state'));
 const { data: cidades } = await useAsyncData('city', () => $fetch(`/api/v1/address/city/${state.value.estado}`), { immediate: false });
 watch(() => state.value.cep,

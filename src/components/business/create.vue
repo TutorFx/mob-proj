@@ -24,7 +24,7 @@
               </div>
               <div class="grid grid-flow-col rounded border border-base-300">
                 <div class="bg-base flex items-center border-r border-base-300 justify-center px-4 text-xs truncate rounded-l">
-                  {{ url }}
+                  {{ url }}loja/
                 </div>
                 <input v-model="businessStore.fields.slug" type="text" class="bg-base border-0 w-full rounded-r text-sm" placeholder="minha-empresa">
               </div>
