@@ -24,7 +24,12 @@ CREATE TABLE "business" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "OwnerId" TEXT NOT NULL,
+    "whatsapp" TEXT,
+    "email" TEXT,
+    "imageId" TEXT,
+    "addressId" TEXT,
     "name" TEXT NOT NULL,
+    "description" TEXT,
     "slug" TEXT NOT NULL,
     "logo_url" TEXT,
 
@@ -56,6 +61,7 @@ CREATE TABLE "image" (
     "public_id" TEXT NOT NULL,
     "etag" TEXT NOT NULL,
     "productId" TEXT,
+    "businessId" TEXT,
 
     CONSTRAINT "image_pkey" PRIMARY KEY ("id")
 );
@@ -138,8 +144,14 @@ CREATE UNIQUE INDEX "business_slug_key" ON "business"("slug");
 -- CreateIndex
 CREATE UNIQUE INDEX "product_name_key" ON "product"("name");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "image_businessId_key" ON "image"("businessId");
+
 -- AddForeignKey
 ALTER TABLE "business" ADD CONSTRAINT "business_OwnerId_fkey" FOREIGN KEY ("OwnerId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "business" ADD CONSTRAINT "business_addressId_fkey" FOREIGN KEY ("addressId") REFERENCES "address"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "product" ADD CONSTRAINT "product_businessId_fkey" FOREIGN KEY ("businessId") REFERENCES "business"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -149,6 +161,9 @@ ALTER TABLE "product" ADD CONSTRAINT "product_userId_fkey" FOREIGN KEY ("userId"
 
 -- AddForeignKey
 ALTER TABLE "image" ADD CONSTRAINT "image_productId_fkey" FOREIGN KEY ("productId") REFERENCES "product"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "image" ADD CONSTRAINT "image_businessId_fkey" FOREIGN KEY ("businessId") REFERENCES "business"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ProductOnOrder" ADD CONSTRAINT "ProductOnOrder_id_fkey" FOREIGN KEY ("id") REFERENCES "product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

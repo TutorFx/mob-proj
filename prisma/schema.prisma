@@ -3,9 +3,10 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider          = "postgresql"
+  url               = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl         = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  //shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations
 }
 
 enum Role {
@@ -50,7 +51,7 @@ model Business {
   whatsapp String?
   email    String?
 
-  Image   Image?  @relation(fields: [imageId], references: [id])
+  Image   Image?
   imageId String?
 
   Address   Address? @relation(fields: [addressId], references: [id])
@@ -93,9 +94,10 @@ model Image {
   public_id         String
   etag              String
 
-  Product   Product?   @relation(fields: [productId], references: [id])
-  productId String?
-  Business  Business[]
+  Product    Product?  @relation(fields: [productId], references: [id])
+  productId  String?
+  Business   Business? @relation(fields: [businessId], references: [id])
+  businessId String?   @unique
 
   @@map("image")
 }
