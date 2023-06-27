@@ -1,12 +1,12 @@
 <template>
   <div class="container fill-screen grid gap-6 grid-rows-[max-content_1fr] items-start">
-    <ui-nav>
+    <ui-nav class="grid grid-cols-[max-content_1fr] gap-3">
       <template #default>
         <nuxt-link :to="{ name: 'loja-slug' }" class="btn btn-ghost normal-case font-black text-xl">{{ data?.name
         }}</nuxt-link>
       </template>
       <template #end>
-        <div class="max-w-lg w-screen hidden md:block">
+        <div class="max-w-lg w-full hidden md:block ml-auto">
           <ui-stepper :steps="StepperData" v-model="Step" />
         </div>
       </template>
@@ -25,7 +25,7 @@
             <div @click="selectAnon()" class="btn btn-sm btn-primary rounded-full">
               Anônima
             </div>
-            <div class="btn btn-sm btn-primary rounded-full gap-3">
+            <div @click="selectRewards()" class="btn btn-sm btn-primary rounded-full gap-3">
               <div>
                 Resgatar prêmios (<span
                   class="break-keep whitespace-nowrap bg-clip-text bg-gradient-to-r from-yellow-500 to-orange-400 text-transparent font-bold">
@@ -48,11 +48,11 @@
           v-model:valid="Steps[Step].value.valid"></component>
       </div>
       <div class="p-6 max-w-sm border border-base-200 rounded-lg grid grid-rows-[max-content_1fr] gap-6 items-start">
-        <div class="grid gap-3">
+        <div class="grid gap-3 sm:order-first order-last">
           <ui-cart-item v-for="(item) in cart.$get?.items" class="lg:max-w-sm" :item="item" :key="item.id" />
         </div>
         <div class="border-b" />
-        <div class="grid gap-4">
+        <div class="grid gap-4 order-first sm:order-last">
           <div class="grid grid-flow-col justify-between">
             <div>Valor final</div>
             <span>{{ useMoney(cart.$get?.info.pricesum || 0) }} + entrega</span>
@@ -77,11 +77,16 @@ import { TAddress } from '~/types/addr';
 import { Tcontact } from '~/types/user';
 import { useGeolocation } from '@vueuse/core'
 
+const { signIn } = useAuth()
+const route = useRoute();
 const { coords, locatedAt, error, resume, pause } = useGeolocation({ immediate: false })
 
 const selectAnon = () => {
   isAnonymous.value = !isAnonymous.value
   resume()
+}
+const selectRewards = async () => {
+  await signIn(undefined, { callbackUrl: route.fullPath })
 }
 
 const personal_component = resolveComponent('FormAnonuser')
@@ -104,7 +109,6 @@ const addr_default = {
 }
 
 const auth = useAuth();
-const route = useRoute();
 const router = useRouter();
 const cart = useCart();
 const isAnonymous = ref<boolean>(false)
@@ -154,10 +158,10 @@ const nextstep = () => {
   Step.value++
 }
 const finalizar = async () => {
-  const { data, pending, error } = await useFetch(`/api/v1/order/${route.params.slug}`, { method: 'post', body: { contact: PersonalState.value.data, address: AddrState.value.data, cart: cart.$current_cart } })
-  if(!error.value) {
+  try {
+    const data = await $fetch(`/api/v1/order/${route.params.slug}`, { method: 'post', body: { contact: PersonalState.value.data, address: AddrState.value.data, cart: cart.$current_cart } })
+    router.push({ name: 'loja-slug-checkout-id', params: { id: data.id } });
     cart.clean_cart();
-    router.push({name: 'loja-slug'});
-  }
+  } catch (e) {console.error(e)}
 }
 </script>

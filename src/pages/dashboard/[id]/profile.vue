@@ -1,18 +1,4 @@
 
 <template>
-  <div class="p-6 grid gap-6">
-    <h2 class="text-xl font-bold">Perfil da Empresa</h2>
-    <form-edit-image v-if="business" v-model="business" :refresh="namingRefresh" />
-    <form-edit-business v-if="business" v-model="business" :refresh="namingRefresh" />
-  </div>
+  <business-edit-profile class="p-6" />
 </template>
-
-<script setup lang="ts">
-import { IEditBusiness } from "~/types/edit";
-
-const route = useRoute()
-const { data: business, refresh: namingRefresh } = await useAsyncData<IEditBusiness>(() => $fetch<IEditBusiness>(`/api/v1/private/business/${route.params.id}`, { headers: useRequestHeaders() }))
-if(business.value === null){
-  throw createError({ statusCode: 500, statusMessage: 'Erro ao carregar empresa' })
-}
-</script>
