@@ -40,7 +40,8 @@ export default defineNuxtConfig({
     '/api/auth/**': { cors: true },
     '/api/v1/business/**': { swr: 60 * 30 },
     '/api/v1/address/state/**': { swr: true },
-    '/loja/**/*': { isr: 60 * 30 },
+    '/loja/**/*': { isr: 60 },
+    '/dashboard/**/**': { ssr: false },
   },
   headlessui: {
     prefix: ''
