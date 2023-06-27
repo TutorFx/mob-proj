@@ -77,7 +77,7 @@ import { TAddress } from '~/types/addr';
 import { Tcontact } from '~/types/user';
 import { useGeolocation } from '@vueuse/core'
 
-const {signIn} = useAuth()
+const { signIn } = useAuth()
 const route = useRoute();
 const { coords, locatedAt, error, resume, pause } = useGeolocation({ immediate: false })
 
@@ -158,10 +158,10 @@ const nextstep = () => {
   Step.value++
 }
 const finalizar = async () => {
-  const { data, pending, error } = await useFetch(`/api/v1/order/${route.params.slug}`, { method: 'post', body: { contact: PersonalState.value.data, address: AddrState.value.data, cart: cart.$current_cart } })
-  if(!error.value) {
+  try {
+    const data = await $fetch(`/api/v1/order/${route.params.slug}`, { method: 'post', body: { contact: PersonalState.value.data, address: AddrState.value.data, cart: cart.$current_cart } })
+    router.push({ name: 'loja-slug-checkout-id', params: { id: data.id } });
     cart.clean_cart();
-    router.push({name: 'loja-slug'});
-  }
+  } catch (e) {console.error(e)}
 }
 </script>
