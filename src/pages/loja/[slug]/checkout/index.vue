@@ -1,12 +1,12 @@
 <template>
   <div class="container fill-screen grid gap-6 grid-rows-[max-content_1fr] items-start">
-    <ui-nav>
+    <ui-nav class="grid grid-cols-[max-content_1fr] gap-3">
       <template #default>
         <nuxt-link :to="{ name: 'loja-slug' }" class="btn btn-ghost normal-case font-black text-xl">{{ data?.name
         }}</nuxt-link>
       </template>
       <template #end>
-        <div class="max-w-lg w-screen hidden md:block">
+        <div class="max-w-lg w-full hidden md:block ml-auto">
           <ui-stepper :steps="StepperData" v-model="Step" />
         </div>
       </template>
@@ -48,11 +48,11 @@
           v-model:valid="Steps[Step].value.valid"></component>
       </div>
       <div class="p-6 max-w-sm border border-base-200 rounded-lg grid grid-rows-[max-content_1fr] gap-6 items-start">
-        <div class="grid gap-3">
+        <div class="grid gap-3 sm:order-first order-last">
           <ui-cart-item v-for="(item) in cart.$get?.items" class="lg:max-w-sm" :item="item" :key="item.id" />
         </div>
         <div class="border-b" />
-        <div class="grid gap-4">
+        <div class="grid gap-4 order-first sm:order-last">
           <div class="grid grid-flow-col justify-between">
             <div>Valor final</div>
             <span>{{ useMoney(cart.$get?.info.pricesum || 0) }} + entrega</span>
