@@ -5,7 +5,7 @@
         <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-primary">Registro</h2>
         <p class="mt-2 text-center text-sm text-gray-600">
           Já tem uma
-          <nuxt-link href="/login" class="font-medium text-primary hover:text-secondary">conta</nuxt-link>?
+          <nuxt-link :to="{name: 'login', query: $route.query}" class="font-medium text-primary hover:text-secondary">conta</nuxt-link>?
         </p>
       </div>
       <form class="mt-8 space-y-6" action="#" method="POST">
@@ -74,9 +74,9 @@ definePageMeta({
 const router = useRouter();
 
 const userdata = ref({
-  email: null,
-  cpf: null,
-  password: null,
+  email: '',
+  cpf: '',
+  password: '',
 })
 
 const { signIn, status } = useAuth()
@@ -89,7 +89,7 @@ async function signUp() {
     },
     onResponse({ request, response, options }) {
       // Process the response data
-      if(response.status == 200) return signIn('credentials', {
+      if(response.status == 200) return useSignInHandler({
         username: userdata.value.email,
         password: userdata.value.password,
       });
@@ -100,7 +100,4 @@ async function signUp() {
   })
 
 }
-
-
-watchEffect(() => status.value !== 'authenticated' || router.push({ path: '/complete-register/' }))
 </script>

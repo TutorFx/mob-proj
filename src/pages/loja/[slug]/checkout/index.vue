@@ -77,6 +77,8 @@ import { TAddress } from '~/types/addr';
 import { Tcontact } from '~/types/user';
 import { useGeolocation } from '@vueuse/core'
 
+const {signIn} = useAuth()
+const route = useRoute();
 const { coords, locatedAt, error, resume, pause } = useGeolocation({ immediate: false })
 
 const selectAnon = () => {
@@ -84,7 +86,7 @@ const selectAnon = () => {
   resume()
 }
 const selectRewards = async () => {
-  await signIn()
+  await signIn(undefined, { callbackUrl: route.fullPath })
 }
 
 const personal_component = resolveComponent('FormAnonuser')
@@ -107,7 +109,6 @@ const addr_default = {
 }
 
 const auth = useAuth();
-const route = useRoute();
 const router = useRouter();
 const cart = useCart();
 const isAnonymous = ref<boolean>(false)
