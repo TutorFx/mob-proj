@@ -25,7 +25,7 @@
             <div @click="selectAnon()" class="btn btn-sm btn-primary rounded-full">
               Anônima
             </div>
-            <div class="btn btn-sm btn-primary rounded-full gap-3">
+            <div @click="selectRewards()" class="btn btn-sm btn-primary rounded-full gap-3">
               <div>
                 Resgatar prêmios (<span
                   class="break-keep whitespace-nowrap bg-clip-text bg-gradient-to-r from-yellow-500 to-orange-400 text-transparent font-bold">
@@ -82,6 +82,9 @@ const { coords, locatedAt, error, resume, pause } = useGeolocation({ immediate: 
 const selectAnon = () => {
   isAnonymous.value = !isAnonymous.value
   resume()
+}
+const selectRewards = async () => {
+  await signIn()
 }
 
 const personal_component = resolveComponent('FormAnonuser')
