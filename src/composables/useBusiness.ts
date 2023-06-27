@@ -26,16 +26,18 @@ export const useBusiness = () => {
       error: gettingBusinessError, 
       data: scopedBusinesses, 
       refresh: $refresh } = useAsyncData('business', 
-        () => $fetch('/api/v1/private/business', {
+        () => $fetch<Business[]>('/api/v1/private/business', {
           method: 'GET',
         }),
       {
         immediate: true,
+        server: true
       }
     )
 
     const creatingError = ref(false);
     const isCreating = ref(false);
+
     const $createBusiness = async () => {
       if (pendingBusinesses.value) return;
       isCreating.value = true;
@@ -57,8 +59,8 @@ export const useBusiness = () => {
       $close()
     }
 
+    refreshNuxtData('business');
     const $create = () => refreshNuxtData('business-create')
-    onBeforeMount(() => refreshNuxtData('business'))
 
     return {
       $createBusiness,

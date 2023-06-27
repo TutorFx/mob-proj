@@ -3,9 +3,10 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider          = "postgresql"
+  url               = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl         = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  //shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations
 }
 
 enum Role {
@@ -47,10 +48,20 @@ model Business {
   Owner       User          @relation(fields: [OwnerId], references: [id])
   OwnerId     String
 
-  name     String
-  slug     String  @unique @default(uuid())
-  logo_url String?
-  Order    Order[]
+  whatsapp String?
+  email    String?
+
+  Image   Image?
+  imageId String?
+
+  Address   Address? @relation(fields: [addressId], references: [id])
+  addressId String?
+
+  name        String
+  description String?
+  slug        String  @unique @default(uuid())
+  logo_url    String?
+  Order       Order[]
 
   @@map("business")
 }
@@ -83,8 +94,10 @@ model Image {
   public_id         String
   etag              String
 
-  Product   Product? @relation(fields: [productId], references: [id])
-  productId String?
+  Product    Product?  @relation(fields: [productId], references: [id])
+  productId  String?
+  Business   Business? @relation(fields: [businessId], references: [id])
+  businessId String?   @unique
 
   @@map("image")
 }
@@ -130,8 +143,8 @@ model Order {
 }
 
 model Address {
-  id          String   @id @default(uuid())
-  createdAt   DateTime @default(now())
+  id          String     @id @default(uuid())
+  createdAt   DateTime   @default(now())
   cep         String
   estado      Int
   cidade      Int
@@ -140,9 +153,10 @@ model Address {
   numero      Int?
   complemento String
   Order       Order[]
-  User        User?    @relation(fields: [userId], references: [id])
+  User        User?      @relation(fields: [userId], references: [id])
   orderId     String?
   userId      String?
+  Business    Business[]
 
   @@map("address")
 }
