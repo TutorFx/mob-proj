@@ -14,6 +14,10 @@ export const useSchemas = {
     name: z.string().nonempty('Campo obrigatório'),
     slug: z.string().nonempty('Campo obrigatório'),
   }),
+  businessContact: z.object({
+    whatsapp: z.string({ invalid_type_error: "Campo obrigatório"}).nonempty('Campo obrigatório').min(14, 'Número de telefone inválido').max(16, 'Número de telefone inválido'),
+    email: z.string({ invalid_type_error: "Campo obrigatório"}).nonempty('Campo obrigatório').email("Email não é válido")
+  }),
   getBusinessPaymentSchema: z.object({
     businessId: z.string().refine(useRules.uuid)
   }),
