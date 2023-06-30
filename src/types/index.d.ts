@@ -32,16 +32,37 @@ type IAddress = {
 }
 
 type IViacep = {
-  logradouro: string; 
+  logradouro: string;
   complemento: string;
   bairro: string;
   uf: string;
-  localidade: string; 
+  localidade: string;
   ibge: string;
   gia: string;
   ddd: string;
   siafi: string;
 }
+
+type TokenData = {
+  id: string;
+  nome: string | null;
+  email: string;
+}
+
+type validateToken = {
+  id: string;
+  nome: string | null;
+  email: string;
+  iat: number;
+  exp: number;
+}
+
+type Session = {
+  user: { nome: string | null; email: string; }
+  id: string;
+}
+
+type ValidateResponse = { user: Session, token: string }
 
 type TItem = { id: string, quantity: number }
 type TCart = { [key: string]: Array<TItem> }

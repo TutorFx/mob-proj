@@ -11,7 +11,7 @@
         </nuxt-link>
       </div>
       <div class="tooltip tooltip-left" data-tip="Sair da conta">
-        <button class="btn btn-circle btn-ghost" @click.prevent="signOut()">
+        <button class="btn btn-circle btn-ghost" @click.prevent="useDeleteAuthetication()">
           <Icon name="ic:baseline-output" size="22" />
         </button>
       </div>
@@ -21,6 +21,6 @@
 
 <script setup lang="ts">
 import { Business } from "@prisma/client"
-const { signOut } = useAuth()
+// TODO: Logout
 const selected = ref<Business | undefined>()
 </script>

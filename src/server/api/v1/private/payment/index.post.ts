@@ -1,4 +1,4 @@
-import { getServerSession } from '#auth'
+import { getServerSession } from '@/server/utils/auth';
 import { Prisma, PrismaClient, User } from '@prisma/client';
 import { ZodError, z } from 'zod';
 import { fromZodError } from 'zod-validation-error';
@@ -9,7 +9,7 @@ type TransactionRequest = z.infer<typeof createMoneyDepositSchema>;
 
 export default defineEventHandler(async (event) => {
   const body: TransactionRequest = await readBody(event);
-  const session = await getServerSession(event)
+  const session = getServerSession(event)
   try {
     createMoneyDepositSchema.parse(body)
   } catch (error) {

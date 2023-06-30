@@ -1,12 +1,13 @@
 const api_path = '/api/v1'
-import { getServerSession } from '#auth';
+import { getServerSession } from '@/server/utils/auth';
 import type { H3Event } from 'h3';
 import { PrismaClient, User } from '@prisma/client';
+import jwt from "jsonwebtoken";
 const prisma = new PrismaClient()
 
 export default defineEventHandler( async (event) => {
   const { url, method } = event.node.req;
-  const session = await getServerSession(event);
+  const session = getServerSession(event)
 
   const notAuth = (event: H3Event) => sendError(
     event,

@@ -6,6 +6,17 @@ export const useSchemas = {
     email: z.string().min(1).max(50),
     password: z.string(),
   }),
+  loginSchema: z.object({
+    username: z.string().min(1).max(50),
+    password: z.string(),
+  }),
+  User: z.object({
+    id: z.string().refine(useRules.uuid),
+    nome: z.string().nonempty('Campo obrigatório').nullable(),
+    email: z.string().min(1).max(50),
+    iat: z.number(),
+    exp: z.number(),
+  }),
   createMoneyDepositSchema: z.object({
     userMail: z.string().email().min(5),
     amount: z.number(),

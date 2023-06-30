@@ -71,15 +71,13 @@ definePageMeta({
   }
 })
 
-const router = useRouter();
-
 const userdata = ref({
   email: '',
   cpf: '',
   password: '',
 })
 
-const { signIn, status } = useAuth()
+const auth = new CreateAuthentication()
 
 async function signUp() {
   useFetch('/api/v1/register', {
@@ -89,7 +87,7 @@ async function signUp() {
     },
     onResponse({ request, response, options }) {
       // Process the response data
-      if(response.status == 200) return useSignInHandler({
+      if(response.status == 200) return auth.login({
         username: userdata.value.email,
         password: userdata.value.password,
       });
@@ -98,6 +96,5 @@ async function signUp() {
       // Handle the response errors
     }
   })
-
 }
 </script>
