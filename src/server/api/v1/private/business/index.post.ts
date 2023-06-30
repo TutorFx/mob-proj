@@ -1,4 +1,4 @@
-import { getServerSession } from '#auth'
+import { getServerSession } from '@/server/utils/auth';
 import { Prisma, PrismaClient } from '@prisma/client';
 import { ZodError } from 'zod';
 import { fromZodError } from 'zod-validation-error';
@@ -8,7 +8,7 @@ const { createBusinessSchema } = useSchemas;
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
-  const session = await getServerSession(event)
+  const session = getServerSession(event)
   try {
     createBusinessSchema.parse(body)
   } catch (error) {

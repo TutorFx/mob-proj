@@ -6,6 +6,17 @@ export const useSchemas = {
     email: z.string().min(1).max(50),
     password: z.string(),
   }),
+  loginSchema: z.object({
+    username: z.string().min(1).max(50),
+    password: z.string(),
+  }),
+  User: z.object({
+    id: z.string().refine(useRules.uuid),
+    nome: z.string().nonempty('Campo obrigatório').nullable(),
+    email: z.string().min(1).max(50),
+    iat: z.number(),
+    exp: z.number(),
+  }),
   createMoneyDepositSchema: z.object({
     userMail: z.string().email().min(5),
     amount: z.number(),
@@ -13,6 +24,10 @@ export const useSchemas = {
   createBusinessSchema: z.object({
     name: z.string().nonempty('Campo obrigatório'),
     slug: z.string().nonempty('Campo obrigatório'),
+  }),
+  businessContact: z.object({
+    whatsapp: z.string({ invalid_type_error: "Campo obrigatório"}).nonempty('Campo obrigatório').min(14, 'Número de telefone inválido').max(16, 'Número de telefone inválido'),
+    email: z.string({ invalid_type_error: "Campo obrigatório"}).nonempty('Campo obrigatório').email("Email não é válido")
   }),
   getBusinessPaymentSchema: z.object({
     businessId: z.string().refine(useRules.uuid)

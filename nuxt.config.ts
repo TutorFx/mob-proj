@@ -5,7 +5,6 @@ export default defineNuxtConfig({
     '@nuxt/devtools',
     '@nuxtjs/tailwindcss',
     'nuxt-headlessui',
-    '@sidebase/nuxt-auth',
     'nuxt-icon',
     '@pinia/nuxt',
     '@pinia-plugin-persistedstate/nuxt',
@@ -25,9 +24,6 @@ export default defineNuxtConfig({
         { name: 'description', content: 'Lorem ipsun!.' }
       ],
     }
-  },
-  auth: {
-    origin: process.env.ORIGIN ?? 'http://localhost:3000/',
   },
   css: ['@/main.scss'],
   postcss: {

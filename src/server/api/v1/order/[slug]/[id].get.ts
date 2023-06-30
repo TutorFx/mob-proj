@@ -4,7 +4,6 @@ import { z, ZodError } from 'zod';
 import { useSchemas } from "~/composables/useSchemas"
 import { fromZodError } from 'zod-validation-error';
 import { IContact, ICart, IAddress } from '~/types/cart';
-import { getServerSession } from '#auth';
 const { contact, address, cart } = useSchemas;
 
 //TODO: Validate if the product is from this business

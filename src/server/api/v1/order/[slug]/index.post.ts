@@ -4,8 +4,7 @@ import { z, ZodError } from 'zod';
 import { useSchemas } from "~/composables/useSchemas"
 import { fromZodError } from 'zod-validation-error';
 import { IContact, ICart, IAddress } from '~/types/cart';
-import { getServerSession } from '#auth';
-import { createError } from '#app';
+import { getServerSession } from '@/server/utils/auth';
 const { contact, address, cart } = useSchemas;
 
 //TODO: Validate if the product is from this business
@@ -25,11 +24,10 @@ export default defineEventHandler(async (event) => {
   );
 
   try {
-    const session = await getServerSession(event);
+    const session = getServerSession(event);
     contact.parse(body.contact);
     address.parse(body.address);
     cart.parse(body.cart);
-    //@ts-expect-error
     const userId = session?.id;
     const { contact: contData, address: addrData, cart: cartData }: { contact: IContact, address: IAddress, cart: ICart } = body;
     const createdOrder = await prisma.order.create({
@@ -58,7 +56,7 @@ export default defineEventHandler(async (event) => {
         ProductOnOrder: true
       }
     });
-    if (createdOrder.addressId){
+    if (createdOrder.addressId) {
       await prisma.address.update({
         where: { id: createdOrder.addressId },
         data: {

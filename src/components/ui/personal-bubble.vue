@@ -16,8 +16,8 @@
       <li><nuxt-link :to="{ name: 'carteira' }">
           <Icon name="ic:outline-wallet" />Carteira
         </nuxt-link></li>
-      <li v-if="status === 'authenticated'">
-        <a @click.prevent="signOut()">
+      <li v-if="auth.isAuthenticated">
+        <a @click.prevent="useDeleteAuthetication">
           <Icon name="ic:baseline-output" /> Sair
         </a>
       </li>
@@ -26,5 +26,5 @@
 </template>
 
 <script lang="ts" setup>
-const { signOut, status } = useAuth()
+const auth = useAuthentication()
 </script>

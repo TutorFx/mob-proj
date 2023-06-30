@@ -39,7 +39,7 @@
         </div>
 
         <div>
-          <button @click.prevent="useSignInHandler(userdata)"
+          <button @click.prevent="auth.login(userdata)"
             class="group relative flex w-full justify-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
             <span class="absolute inset-y-0 left-0 flex items-center pl-3">
               <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -57,12 +57,7 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({
-  auth: {
-    unauthenticatedOnly: true,
-    navigateAuthenticatedTo: '/dashboard',
-  }
-})
+const auth = new CreateAuthentication()
 
 const userdata = ref({
   username: '',

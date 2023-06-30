@@ -1,9 +1,9 @@
-import { getServerSession } from '#auth';
+import { getServerSession } from '@/server/utils/auth';
 import type { H3Event } from 'h3';
 import { DeleteApiResponse, UploadApiResponse, v2 as _cloudinary } from 'cloudinary';
 
 export const middleware = async (event: H3Event, callback: Function) => {
-  const session = await getServerSession(event);
+  const session = getServerSession(event);
   if (!session) sendError(
     event,
     createError({

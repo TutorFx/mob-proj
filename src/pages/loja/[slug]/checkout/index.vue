@@ -11,7 +11,7 @@
         </div>
       </template>
     </ui-nav>
-    <div v-if="auth.status.value !== 'authenticated' && !isAnonymous" class="grid min-h-full pb-6">
+    <div v-if="!auth.isAuthenticated && !isAnonymous" class="grid min-h-full pb-6">
       <div class="text-center grid items-center bg-primary/5 rounded-xl">
         <div class="max-w-md mx-auto px-6">
           <h2 class="text-xl font-semibold mb-3">
@@ -77,7 +77,8 @@ import { TAddress } from '~/types/addr';
 import { Tcontact } from '~/types/user';
 import { useGeolocation } from '@vueuse/core'
 
-const { signIn } = useAuth()
+const auth = useAuthentication()
+
 const route = useRoute();
 const { coords, locatedAt, error, resume, pause } = useGeolocation({ immediate: false })
 
@@ -86,7 +87,12 @@ const selectAnon = () => {
   resume()
 }
 const selectRewards = async () => {
-  await signIn(undefined, { callbackUrl: route.fullPath })
+  //await signIn(undefined, { callbackUrl: route.fullPath })
+  router.push({
+    path: '/login', query: {
+      callback: route.fullPath
+    }
+  })
 }
 
 const personal_component = resolveComponent('FormAnonuser')
@@ -108,7 +114,6 @@ const addr_default = {
   complemento: '',
 }
 
-const auth = useAuth();
 const router = useRouter();
 const cart = useCart();
 const isAnonymous = ref<boolean>(false)
@@ -162,6 +167,6 @@ const finalizar = async () => {
     const data = await $fetch(`/api/v1/order/${route.params.slug}`, { method: 'post', body: { contact: PersonalState.value.data, address: AddrState.value.data, cart: cart.$current_cart } })
     router.push({ name: 'loja-slug-checkout-id', params: { id: data.id } });
     cart.clean_cart();
-  } catch (e) {console.error(e)}
+  } catch (e) { console.error(e) }
 }
 </script>
