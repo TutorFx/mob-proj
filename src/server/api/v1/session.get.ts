@@ -4,6 +4,12 @@ export default defineEventHandler(async (event) => {
     const auth = new VerifyAuthentication(event);
     return auth.getSession()
   } catch (error) {
-    return { status: 401, message:'Invalid Token - Not authorized' }
+    return sendError(
+      event,
+      createError({
+        statusCode: 401,
+        statusMessage: 'Invalid Token - Not authorized'
+      })
+    )
   }
 })
