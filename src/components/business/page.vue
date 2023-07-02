@@ -36,7 +36,11 @@
       </div>
     </div>
     <div class="config">
-      <lazy-business-edit-profile />
+      <div class="border base-300 p-6 rounded-lg min-h-full">
+        <div class="text-xl font-bold">
+          Config
+        </div>
+      </div>
     </div>
   </div>
 </template>

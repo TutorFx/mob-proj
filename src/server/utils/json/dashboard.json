@@ -1,0 +1,27 @@
+[
+  {
+    "icon": "mdi:view-dashboard-outline",
+    "name": "Informações",
+    "path": { "name": "dashboard-id" }
+  },
+  {
+    "icon": "mdi:view-grid-outline",
+    "name": "Produtos",
+    "path": { "name": "dashboard-id-produto" }
+  },
+  {
+    "icon": "mdi:view-grid-plus-outline",
+    "name": "Novo Produto",
+    "path": { "name": "dashboard-id-produto-novo" }
+  },
+  {
+    "icon": "mdi:store-settings-outline",
+    "name": "Perfil da Empresa",
+    "path": { "name": "dashboard-id-profile" }
+  },
+  {
+    "icon": "mdi:basket-fill",
+    "name": "Fechamentos",
+    "path": { "name": "dashboard-id-fechamentos" }
+  }
+]
