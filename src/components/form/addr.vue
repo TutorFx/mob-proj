@@ -7,7 +7,7 @@ const { textarea, input } = useTextareaAutosize()
 
 const props = withDefaults(defineProps<{
   modelValue: TAddress,
-  valid: boolean
+  valid: boolean,
 }>(), {})
 
 const emits = defineEmits<{
@@ -40,6 +40,11 @@ watch(() => state.value.complemento, (newVal) => {
 const { data: viacep, error: viacepError }: AsyncData<IViacep, Error | null> = useAsyncData('cep', () => $fetch<IViacep>(`https://viacep.com.br/ws/${state.value.cep}/json/`), { immediate: false });
 const { data: estados } = await useAsyncData('state', () => $fetch('/api/v1/address/state'));
 const { data: cidades } = await useAsyncData('city', () => $fetch(`/api/v1/address/city/${state.value.estado}`), { immediate: false });
+
+if(state.value.estado){
+  await refreshNuxtData('city');
+}
+
 watch(() => state.value.cep,
   async (newVal, oldVal) => {
     if (state.value.cep?.length !== 9) return;

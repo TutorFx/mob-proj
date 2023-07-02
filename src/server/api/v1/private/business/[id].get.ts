@@ -13,6 +13,7 @@ export default defineEventHandler(async (event) => {
       },
       include: {
         Image: true,
+        Address: true
       }
     })
 

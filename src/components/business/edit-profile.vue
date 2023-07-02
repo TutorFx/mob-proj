@@ -4,6 +4,7 @@
     <form-edit-image v-if="business" v-model="business" :refresh="namingRefresh" />
     <form-edit-business v-if="business" v-model="business" :refresh="namingRefresh" />
     <form-edit-business-contact v-if="business" v-model="business" :refresh="namingRefresh" />
+    <form-edit-business-addr v-if="business" v-model="business" :refresh="namingRefresh" />
   </div>
 </template>
 
