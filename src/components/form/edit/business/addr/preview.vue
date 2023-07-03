@@ -1,14 +1,50 @@
 <template>
-    <div class="grid gap-6 justify-start grid-cols-1 md:grid-cols-2 max-w-3xl">
-      <div class="grid gap-3">
-        <div class="text-neutral">Número de Whatsapp</div>
-        <div class="text-content text-lg">{{ state.whatsapp ?? 'Sem Whatsapp' }}</div>
+  <div class="grid gap-3 grid-cols-1 lg:grid-cols-3">
+    <div class="form-control">
+      <label>
+        <span class="label-text">CEP</span>
+      </label>
+      <div>
+        {{ state.Address.cep  ?? 'CEP não definido' }}
       </div>
-      <div class="grid gap-3">
-        <div class="text-neutral">Email Empresarial</div>
-        <div class="text-content text-lg">{{ state.email?? 'Sem e-mail' }}</div>
-      </div>      
     </div>
+    <div class="form-control">
+      <label>
+        <span class="label-text">Estado</span>
+      </label>
+      <div>{{ place?.stateData.Nome ?? 'Estado não definido' }}</div>
+    </div>
+    <div class="form-control">
+      <label>
+        <span class="label-text">Cidade</span>
+      </label>
+      <div>{{ place?.cityData.Nome ?? 'Cidade não definida' }}</div>
+    </div>
+    <div class="form-control">
+      <label>
+        <span class="label-text">Bairro</span>
+      </label>
+      <div>{{ state.Address.bairro ?? 'Bairro não definido' }}</div>
+    </div>
+    <div class="form-control">
+      <label>
+        <span class="label-text">Endereço</span>
+      </label>
+      <div>{{ state.Address.endereco ?? 'Endereço não definido' }}</div>
+    </div>
+    <div class="form-control">
+      <label>
+        <span class="label-text">Numero</span>
+      </label>
+      <div>{{ state.Address.numero ?? 'Numero não definido' }}</div>
+    </div>
+    <div class="form-control col-span-1 md:col-span-2">
+      <label>
+        <span class="label-text">Complemento</span>
+      </label>
+      <div>{{ state.Address.complemento ?? 'Complemento não definido' }}</div>
+    </div>
+  </div>
 </template>
 <script lang="ts" setup>
 import { IEditBusiness } from '~/types/edit';
@@ -28,5 +64,7 @@ const state = computed({
     emits('update:modelValue', value)
   }
 })
+
+const { data: place } = await useFetch('/api/v1/address/', { query: { cityId: state.value.Address.cidade, stateId: state.value.Address.estado } })
 
 </script>

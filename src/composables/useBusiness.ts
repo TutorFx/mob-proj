@@ -26,7 +26,7 @@ export const useBusiness = () => {
       error: gettingBusinessError, 
       data: scopedBusinesses, 
       refresh: $refresh } = useAsyncData('business', 
-        () => $fetch<Business[]>('/api/v1/private/business', {
+        async () => await $fetch<Business[]>('/api/v1/private/business', {
           method: 'GET',
         }),
       {

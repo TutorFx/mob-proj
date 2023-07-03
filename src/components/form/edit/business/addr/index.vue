@@ -1,7 +1,7 @@
 <template>
   <ui-card-edit title="Endereço">
-    <form-edit-business-addr-preview v-if="!editing" v-model="state" />
-    <form-addr v-else v-model="editingState" :valid="valid" />
+    <form-edit-business-addr-preview class="max-w-3xl" v-if="!editing" v-model="state" />
+    <form-addr class="max-w-3xl" v-else v-model="editingState" :valid="valid" />
     <template #action>
       <form-edit-btn v-if="!editing" @click.prevent="onEdit" />
       <div class="grid gap-3 grid-flow-col" v-else>
