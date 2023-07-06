@@ -40,7 +40,11 @@ export default defineEventHandler(async (event) => {
         contact: true,
         address: true,
         ProductOnOrder: {
-          include: { product: true }
+          include: {
+            product: {
+              include: { images: { take: 1 } }
+            }
+          }
         },
         Business: { include: { Image: true } },
       }

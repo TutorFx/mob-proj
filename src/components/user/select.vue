@@ -6,8 +6,8 @@
         <ListboxButton
           class="group relative w-full cursor-default rounded-lg py-2 pl-3 pr-10 text-left focus:outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm grid-flow-col grid"
           :class="{ 'h-10 flex items-center': !currentUserName }">
-          <span class="block truncate font-semibold"
-            :class="{ 'animate-pulse w-32 h-4 bg-primary-content rounded-md': !currentUserName }">{{ currentUserName}}</span>
+          <span class="block truncate font-semibold "
+            :class="{ 'isloading w-32 h-4 bg-primary-content rounded-md': !currentUserName }">{{ currentUserName}}</span>
           <span
             class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-1 group-hover:bg-base-200 rounded-md">
             <Icon class="h-5 w-5 text-gray-400" name="mdi:chevron-up-down" />
