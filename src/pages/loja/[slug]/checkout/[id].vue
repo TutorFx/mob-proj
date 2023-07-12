@@ -2,7 +2,7 @@
   <div class="grid gap-3 min-h-[100svh] grid-rows-[max-content_1fr]">
     <NuxtLoadingIndicator color="false" class="bg-primary" />
     <div class="container">
-      <ui-store-nav :data="data.Business" />
+      <ui-store-nav :data="data?.Business" />
     </div>
     <div class="container grid md:grid-cols-2 gap-6 pb-6">
       <div>
@@ -77,7 +77,7 @@
       </div>
       <div class="grid gap-3 grid-rows-[1fr_max-content] bg-base-200 rounded-md">
         <div class="overflow-y-auto max-h-64 md:max-h-none">
-          <div class="relative p-6 pb-3">
+          <div class="relative p-6 pb-3 grid gap-3">
             <div class="grid grid-cols-[max-content_1fr] gap-3" v-for="(item, i) in data?.ProductOnOrder" :key="i">
               <div class="indicator">
                 <div class="h-16 w-16 flex rounded-lg overflow-hidden">

@@ -22,6 +22,5 @@
 
 <script setup lang="ts">
 import { Business } from "@prisma/client"
-// TODO: Logout
 const selected = ref<Business | undefined>()
 </script>
