@@ -14,6 +14,13 @@ enum Role {
   ADMIN
 }
 
+enum OrderStatus {
+  NEW
+  PRODUCING
+  PENDING
+  DELIVERED
+}
+
 model User {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
@@ -138,6 +145,7 @@ model Order {
   address        Address?         @relation(fields: [addressId], references: [id])
   contactId      String?
   addressId      String?
+  status         OrderStatus      @default(NEW)
 
   @@map("order")
 }
