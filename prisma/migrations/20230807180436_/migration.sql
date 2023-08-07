@@ -1,6 +1,12 @@
 -- CreateEnum
 CREATE TYPE "Role" AS ENUM ('USER', 'ADMIN');
 
+-- CreateEnum
+CREATE TYPE "Plan" AS ENUM ('FREE', 'BASIC', 'ADVANCED', 'AGENCY');
+
+-- CreateEnum
+CREATE TYPE "OrderStatus" AS ENUM ('NEW', 'PRODUCING', 'PENDING', 'DELIVERED');
+
 -- CreateTable
 CREATE TABLE "user" (
     "id" TEXT NOT NULL,
@@ -13,6 +19,9 @@ CREATE TABLE "user" (
     "nome" TEXT,
     "birthday" TEXT,
     "role" "Role" NOT NULL DEFAULT 'USER',
+    "plan" "Plan" NOT NULL DEFAULT 'FREE',
+    "stripe_costumer_id" TEXT,
+    "stripe_subscription_id" TEXT,
     "productId" TEXT,
 
     CONSTRAINT "user_pkey" PRIMARY KEY ("id")
@@ -96,6 +105,7 @@ CREATE TABLE "order" (
     "userId" TEXT,
     "contactId" TEXT,
     "addressId" TEXT,
+    "status" "OrderStatus" NOT NULL DEFAULT 'NEW',
 
     CONSTRAINT "order_pkey" PRIMARY KEY ("id")
 );
@@ -113,6 +123,7 @@ CREATE TABLE "address" (
     "complemento" TEXT NOT NULL,
     "orderId" TEXT,
     "userId" TEXT,
+    "businessId" TEXT,
 
     CONSTRAINT "address_pkey" PRIMARY KEY ("id")
 );
@@ -147,11 +158,11 @@ CREATE UNIQUE INDEX "product_name_key" ON "product"("name");
 -- CreateIndex
 CREATE UNIQUE INDEX "image_businessId_key" ON "image"("businessId");
 
--- AddForeignKey
-ALTER TABLE "business" ADD CONSTRAINT "business_OwnerId_fkey" FOREIGN KEY ("OwnerId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+-- CreateIndex
+CREATE UNIQUE INDEX "address_businessId_key" ON "address"("businessId");
 
 -- AddForeignKey
-ALTER TABLE "business" ADD CONSTRAINT "business_addressId_fkey" FOREIGN KEY ("addressId") REFERENCES "address"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "business" ADD CONSTRAINT "business_OwnerId_fkey" FOREIGN KEY ("OwnerId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "product" ADD CONSTRAINT "product_businessId_fkey" FOREIGN KEY ("businessId") REFERENCES "business"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -188,6 +199,9 @@ ALTER TABLE "order" ADD CONSTRAINT "order_addressId_fkey" FOREIGN KEY ("addressI
 
 -- AddForeignKey
 ALTER TABLE "address" ADD CONSTRAINT "address_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "address" ADD CONSTRAINT "address_businessId_fkey" FOREIGN KEY ("businessId") REFERENCES "business"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "transaction" ADD CONSTRAINT "transaction_businessId_fkey" FOREIGN KEY ("businessId") REFERENCES "business"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

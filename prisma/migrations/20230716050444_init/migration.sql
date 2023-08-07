@@ -1,2 +1,0 @@
--- CreateEnum
-CREATE TYPE "Plan" AS ENUM ('FREE', 'BASIC', 'ADVANCED', 'AGENCY');
