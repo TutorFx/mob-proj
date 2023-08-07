@@ -1,8 +1,13 @@
-import { User } from '@prisma/client';
+import { User, Prisma, PrismaClient } from '@prisma/client';
 import { H3Event } from 'h3'
 import { validateToken, generateToken } from './token';
 import { useSchemas } from '@/composables/useSchemas'
+import Stripe from 'stripe';
+const config = useRuntimeConfig();
+const stripe = new Stripe(config.stripeSecretKey, { apiVersion: '2022-11-15' });
 
+
+const prisma = new PrismaClient()
 
 export class Authentication {
   static token: string;
@@ -11,7 +16,9 @@ export class Authentication {
     const data = {
       id: user.id,
       nome: user.nome,
-      email: user.email
+      email: user.email,
+      plan: user.plan,
+      isCostumer: Boolean(user.stripe_costumer_id)
     } as validateToken;
     Authentication.user = data;
     Authentication.token = generateToken(data);
@@ -23,7 +30,7 @@ export class Authentication {
 
 export class VerifyAuthentication {
   static token: string;
-  static user: User;
+  static user: validateToken;
   constructor(event: H3Event) {
     const token = getCookie(event, 'token');
     if (!token) throw new Error('Invalid_Token', { cause: 'You got an invalid token' })
@@ -36,9 +43,9 @@ export class VerifyAuthentication {
   getUser() { return VerifyAuthentication.user };
   getToken() { return VerifyAuthentication.token };
   getSession() {
-    const { id, email, nome } = VerifyAuthentication.user
+    const { id, email, nome, plan, isCostumer } = VerifyAuthentication.user
     return {
-      user: { email, nome },
+      user: { email, nome, plan, isCostumer },
       id
     } as Session
   }
@@ -50,5 +57,55 @@ export const getServerSession = (event: H3Event): Session | null => {
     return auth.getSession()
   } catch (error) {
     return null;
+  }
+}
+
+export class CreatePaymentAccount extends VerifyAuthentication {
+  constructor(event: H3Event) {
+    super(event);
+  }
+  async init(price_id: string, callback: Function){
+    const session = this.getSession();
+    if (!session.user.isCostumer) {
+      const user = await prisma.user.findUnique({
+        where: {
+          id: session.id,
+        },
+        select: {
+          stripe_costumer_id: true
+        }
+      })
+      if (user?.stripe_costumer_id) return;
+      try {
+        await prisma.user.update({
+          where: {
+            id: session.id,
+          },
+          data: {
+            stripe_costumer_id: session.id
+          }
+        })
+        const stripe_session = await stripe.checkout.sessions.create({
+          mode: 'subscription',
+          line_items: [
+            {
+              price: price_id,
+              quantity: 1,
+            },
+          ],
+          // {CHECKOUT_SESSION_ID} is a string literal; do not change it!
+          // the actual Session ID is returned in the query parameter when your customer
+          // is redirected to the success page.
+          success_url: `${config.public.URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+          cancel_url: `${config.public.URL}/cancel`,
+          customer: session.id
+        });
+        console.log(stripe_session)
+        callback.bind(stripe_session)();
+      } catch {
+        console.log('Subscription FAILED')
+      }
+    }
+    callback.bind(this)();
   }
 }

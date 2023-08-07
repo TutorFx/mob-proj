@@ -30,7 +30,7 @@ export const useAuthentication = defineStore("authentication", () => {
     try {
       return JSON.parse(atob(token.value?.split('.')[1])) as validateToken
     } catch (e) {
-      return { id: null, nome: null, email: null, iat: null, exp: null }
+      return { id: null, nome: null, email: null, plan: null, iat: null, exp: null }
     }
   })
 

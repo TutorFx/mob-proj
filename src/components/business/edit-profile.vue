@@ -1,5 +1,5 @@
 <template>
-  <div class="grid gap-6">
+  <div class="grid gap-6 bg-base-200">
     <h2 class="text-xl font-bold">Perfil da Empresa</h2>
     <form-edit-image v-if="business" v-model="business" :refresh="namingRefresh" />
     <form-edit-business v-if="business" v-model="business" :refresh="namingRefresh" />

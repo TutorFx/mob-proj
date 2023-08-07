@@ -51,12 +51,18 @@ export default defineNuxtConfig({
     }
   },
   runtimeConfig: {
+    stripeSecretKey: process.env.STRIPE_KEY,
+    stripeEndpointSecret: process.env.STRIPE_KEY_PUBLIC,
+    subscriptionGraceDays: 3,
+    initialPlanName: 'Free Trial',
+    initialPlanActiveMonths: 1,
     public: {
       URL: process.env.ORIGIN ?? 'http://localhost:3000/',
-      APP_NAME: 'Mob-Proj 0.1v'
+      APP_NAME: 'Nuxa'
     },
   },
   nitro: {
     preset: "vercel",
+    experimental: { openAPI: true },
   },
 })

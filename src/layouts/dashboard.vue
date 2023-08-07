@@ -7,8 +7,8 @@
       </div>
     </dashboard-menu>
     <div class="bg-base-100 grid md:grid-cols-[max-content_1fr]">
-      <div class="relative hidden md:block md:border-r border-base-300">
-        <ui-side-menu-business v-if="$route.params.id" />
+      <div class="relative hidden md:block">
+        <ui-side-menu-business v-if="$route.params.id" class="md:border-r border-base-300 min-h-full" />
       </div>
       <router-view v-if="!menu" />
       <div v-else>
