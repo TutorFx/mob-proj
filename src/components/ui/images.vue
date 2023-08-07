@@ -3,7 +3,7 @@
     <div class="relative">
       <div>
         <client-only>
-          <Swiper :slides-per-view="1" :modules="[Pagination, Virtual, Autoplay]" :autoplay="{ delay: 5000 }" :pagination="{ clickable: true }" virtual>
+          <Swiper class="fallimg" :slides-per-view="1" :modules="[Pagination, Virtual, Autoplay]" :autoplay="{ delay: 5000 }" :pagination="{ clickable: true }" virtual>
             <SwiperSlide v-for="(image, i) in images" :key="i">
               <div class="aspect-[4/3] lg:aspect-square flex items-center justify-center overflow-hidden">
                 <nuxt-img :src="image?.secure_url" class="object-cover min-w-full min-h-full"
@@ -12,7 +12,7 @@
             </SwiperSlide>
           </Swiper>
           <template #fallback>
-            <div class="aspect-[4/3] lg:aspect-square flex items-center justify-center overflow-hidden">
+            <div class="fallimg aspect-[4/3] lg:aspect-square flex items-center justify-center overflow-hidden">
               <nuxt-img v-if="images?.at(0)?.secure_url" :src="images?.at(0)?.secure_url" class="object-cover min-w-full min-h-full" alt="product-image" />
             </div>
           </template>
@@ -48,7 +48,7 @@ defineProps<{
 </style>
 
 <style scoped>
-img {
+.fallimg {
   view-transition-name: selected-product;
 }
 </style>
