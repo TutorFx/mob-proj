@@ -10,6 +10,22 @@ module.exports = {
   content: [],
   theme: {
     extend: {
+      colors: {
+        'nuxa': {
+          DEFAULT: '#F42272',
+          50: '#FDD1E2',
+          100: '#FCBDD5',
+          200: '#FA97BC',
+          300: '#F870A4',
+          400: '#F6498B',
+          500: '#F42272',
+          600: '#D30B57',
+          700: '#9E0841',
+          800: '#68052B',
+          900: '#330315',
+          950: '#18010A'
+        },
+      },
       keyframes: {
         'skeleton-loading': {
           '0%': { backgroundPosition: '200% 0' },

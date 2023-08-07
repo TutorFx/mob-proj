@@ -8,7 +8,7 @@
             :value="order.id" v-model="state">
         </label>
         <div class="grid gap-2">
-          <div class="grid md:grid-cols-[1fr_max-content] gap-2">
+          <nuxt-link class="grid md:grid-cols-[1fr_max-content] gap-2" :to="{ name: 'dashboard-id-fechamento-idcheckout', params: { id: order.Business.id, idcheckout: order.id } }">
             <div class="grid grid-flow-col gap-1 items-center justify-start">
               <div class="font-bold truncate">
                 Pedido
@@ -22,7 +22,7 @@
               {{ useMoney(order?.ProductOnOrder?.reduce((red, item) => red += (item.quantity * item.product.price), 0) ??
                 0) }}
             </div>
-          </div>
+          </nuxt-link>
           <div class="grid grid-flow-col items-center justify-start gap-3">
             <Icon class="text-base-content/50" name="mdi:calendar-outline" />
             <span class="hidden md:inline-flex">

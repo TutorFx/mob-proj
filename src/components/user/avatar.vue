@@ -1,7 +1,5 @@
 <template>
-  <img :src="`https://avatar.vercel.sh/user`" class="w-8 h-8 rounded-full" alt="" srcset="">
+  <div class="aspect-square block w-10 h-10">
+    <Icon name="Logo" class="h-full w-full" />
+  </div>
 </template>
-
-<script lang="ts" setup>
-
-</script>

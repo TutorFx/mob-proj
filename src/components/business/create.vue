@@ -36,7 +36,7 @@
               Cancelar
             </button>
             <button @click.prevent="businessStore.$createBusiness()"
-              class="btn btn-primary relative">
+              class="btn btn-primary relative overflow-hidden">
               <div v-if="businessStore.isCreating" class="absolute inset-0 flex items-center justify-center bg-primary text-base-100 cursor-wait">
                 <ui-spinner />
               </div>

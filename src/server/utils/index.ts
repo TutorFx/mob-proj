@@ -17,32 +17,32 @@ export const middleware = async (event: H3Event, callback: Function) => {
 
 const cloudinary = () => {
   _cloudinary.config({
-      cloud_name: process.env.CLOUDINARY_NAME, 
-      api_key: process.env.CLOUDINARY_KEY,
-      api_secret: process.env.CLOUDINARY_SECRET
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_KEY,
+    api_secret: process.env.CLOUDINARY_SECRET
   })
 
   return _cloudinary
 }
 
-export const uploadToCloudinary = (image_path: string) : Promise<UploadApiResponse> => {
+export const uploadToCloudinary = (image_path: string): Promise<UploadApiResponse> => {
   return new Promise((resolve, reject) => {
-      cloudinary().uploader.upload(image_path, (error, data) => {
-          if (error) {
-              reject(error)
-          }
-          if(data) return resolve(data);
-      })
+    cloudinary().uploader.upload(image_path, (error, data) => {
+      if (error) {
+        reject(error)
+      }
+      if (data) return resolve(data);
+    })
   })
 }
 
-export const deleteCloudinaryImage = (image_id: string) : Promise<DeleteApiResponse> => {
+export const deleteCloudinaryImage = (image_id: string): Promise<DeleteApiResponse> => {
   return new Promise((resolve, reject) => {
-      cloudinary().uploader.destroy(image_id, (error, data) => {
-          if (error) {
-              reject(error)
-          }
-          if(data) return resolve(data);
-      })
+    cloudinary().uploader.destroy(image_id, (error, data) => {
+      if (error) {
+        reject(error)
+      }
+      if (data) return resolve(data);
+    })
   })
 }

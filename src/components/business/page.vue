@@ -17,7 +17,7 @@
         </div>
         <div>
           <transaction-create />
-          <button @click.prevent="transaction.$open()" class="btn btn-sm">Nova transação</button>
+          <button @click.prevent="transaction.$open()" class="btn btn-sm btn-primary">Nova transação</button>
         </div>
       </div>
     </div>

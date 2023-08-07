@@ -47,18 +47,21 @@ type TokenData = {
   id: string;
   nome: string | null;
   email: string;
+  isCostumer: boolean;
 }
 
 type validateToken = {
   id: string;
   nome: string | null;
   email: string;
+  plan: string;
   iat: number;
   exp: number;
+  isCostumer: boolean;
 }
 
 type Session = {
-  user: { nome: string | null; email: string; }
+  user: { nome: string | null; email: string; plan: string; isCostumer: boolean;}
   id: string;
 }
 

@@ -38,3 +38,16 @@ useSeoMeta({
   twitterCard: 'summary_large_image',
 })
 </script>
+
+<style lang="scss" scoped>
+.title-transition {
+  view-transition-name: header;
+}
+</style>
+
+<style lang="scss">
+::view-transition-old(header),
+::view-transition-new(header) {
+  width: auto;
+}
+</style>

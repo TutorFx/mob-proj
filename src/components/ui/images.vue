@@ -46,3 +46,9 @@ defineProps<{
   @apply bg-primary;
 }
 </style>
+
+<style scoped>
+img {
+  view-transition-name: selected-product;
+}
+</style>

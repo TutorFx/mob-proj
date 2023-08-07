@@ -51,6 +51,9 @@ watch(
     }
     if (oldVal > newVal) {
       playPop();
+      if (newVal === 0) {
+        cart.isVisible = false;
+      }
     }
   }
 )

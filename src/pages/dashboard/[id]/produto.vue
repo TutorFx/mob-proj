@@ -24,9 +24,10 @@
     </div>
     <div class="border-b md:border-b-0 relative">
       <div class="relative md:absolute inset-0 overflow-auto">
-        <div class="p-6">
+        <div class="p-6 min-h-full">
           <NuxtPage />
         </div>
       </div>
     </div>
-</div></template>
+  </div>
+</template>
