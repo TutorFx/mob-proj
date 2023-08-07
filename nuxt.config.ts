@@ -17,7 +17,7 @@ export default defineNuxtConfig({
     ]
   },
   app: {
-    pageTransition: { name: 'page', mode: 'out-in' },
+    //pageTransition: { name: 'page', mode: 'out-in' },
     head: {
       title: 'Mob-Proj 0.1v',
       meta: [
@@ -60,6 +60,9 @@ export default defineNuxtConfig({
       URL: process.env.ORIGIN ?? 'http://localhost:3000/',
       APP_NAME: 'Nuxa'
     },
+  },
+  experimental: {
+    viewTransition: true,
   },
   nitro: {
     preset: "vercel",

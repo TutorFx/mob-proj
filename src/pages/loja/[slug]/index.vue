@@ -5,49 +5,27 @@
       <ui-store-nav :data="data" />
     </div>
     <div class="container grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 my-10">
-      <nuxt-link v-motion-pop-visible v-for="(product, i) in products" :key="i"
+      <nuxt-link v-for="(product, i) in products" :key="i" @click="active = product.id" :class="{ active: active === product.id }"
         :to="{ name: 'loja-slug-product', params: { slug: route.params.slug, product: product?.slug } }"
         class="rounded-lg overflow-hidden bg-base shadow-3xl shadow-neutral/10 border border-base-300 group grid relative">
-        <client-only>
-          <div class="pt-3">
-            <div class="carousel w-full relative gap-3 ">
-              <div v-for="(image, i) in product.images" :key="i" class="carousel-item w-full aspect-video relative">
-                <div class="aspect-video">
-                  <div class="aspect-video overflow-hidden px-3 flex items-center justify-center">
-                    <nuxt-img
-                      class="object-cover group-hover:scale-110 min-w-full min-h-full aspect-auto transition-all ease-in-out duration-1000 bg-cover bg-center rounded-lg group-hover:rounded-none"
-                      :src="image?.secure_url" alt="" />
-                  </div>
-                </div>
-              </div>
-            </div>
+        <div>
+          <div class="img-container pt-3 aspect-video overflow-hidden flex items-center justify-center">
+            <nuxt-img
+              class="object-cover group-hover:scale-110 min-w-full min-h-full aspect-auto transition-all ease-in-out duration-1000 bg-cover bg-center rounded-lg group-hover:rounded-none"
+              :src="product.images.at(0)?.secure_url" alt="" />
           </div>
-          <template #fallback>
-            <div class="pt-3">
-              <div class="carousel w-full relative gap-3 ">
-                <div v-for="(image, i) in product.images" :key="i" class="carousel-item w-full aspect-video relative">
-                  <div class="aspect-video">
-                    <div class="aspect-video overflow-hidden px-3 flex items-center justify-center">
-                      <nuxt-img
-                        class="object-cover group-hover:scale-110 min-w-full min-h-full aspect-auto transition-all ease-in-out duration-1000 bg-cover bg-center rounded-lg group-hover:rounded-none"
-                        :src="image?.secure_url" alt="" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </template>
-        </client-only>
+        </div>
+
 
         <div class="p-3 grid grid-flow-col justify-between">
           <div class="grid">
-            <span class="font-bold text-lg truncate">
+            <span class="font-bold text-lg truncate header">
               {{ product.name }}
             </span>
-            <span class="font-medium truncate">
+            <span class="font-medium truncate subheader">
               {{ product.description }}
             </span>
-            <span class="font-medium text-xl truncate">
+            <span class="font-medium text-xl truncate pricing">
               {{ useMoney(product.price) }}
             </span>
           </div>
@@ -78,4 +56,38 @@ useSeoMeta({
   title: `${data?.name} | ${config.public.APP_NAME}`,
   ogTitle: `${data?.name} | ${config.public.APP_NAME}`,
 })
+
+const active = useState();
 </script>
+
+<style scoped lang="scss">
+.active {
+  .img-container {
+    view-transition-name: selected-product;
+    contain: layout;
+  }
+  .header {
+    view-transition-name: header;
+  }
+  .subheader {
+    view-transition-name: subheader;
+  }
+  .pricing {
+    view-transition-name: pricing;
+  }
+}
+</style>
+
+<style>
+::view-transition-old(header),
+::view-transition-new(header) {
+  width: auto;
+}
+::view-transition-old(subheader),
+::view-transition-new(subheader) {
+  width: auto;
+}::view-transition-old(pricing),
+::view-transition-new(pricing) {
+  width: auto;
+}
+</style>

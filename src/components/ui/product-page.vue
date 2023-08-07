@@ -1,14 +1,14 @@
 <template>
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 grid-rows-[max-content_1fr] lg:grid-rows-[1fr] items-start lg:items-center mb-6 lg:mb-0">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 grid-rows-[max-content_1fr] lg:grid-rows-[1fr] items-start lg:items-center mb-6 lg:mb-0 overflow-hidden">
     <div>
       <ui-images :images="productdata?.images" />
     </div>
     <div class="grid items-start lg:items-center min-h-full">
-      <div class="grid gap-3 md:gap-6" v-motion-slide-visible-once-bottom>
+      <div class="grid gap-3 md:gap-6">
         <ui-breadcrumbs> {{ productdata?.name }} </ui-breadcrumbs>
-        <h2 class="text-4xl font-bold grid grid-flow-col justify-start gap-6 items-center"><span>{{ productdata?.name }}</span> <client-only><span @click="startShare" v-if="isSupported" class="btn btn-ghost btn-sm btn-circle"><Icon name="mdi:share-variant" size="24" /></span></client-only></h2>
-        <h4 class="text-2xl font-medium text-neutral">{{ productdata?.description }}</h4>
-        <h5 class="text-2xl font-medium">{{ useMoney(productdata?.price ?? 0) }} {{ quantity > 1 ? `(${useMoney((productdata?.price ?? 0) * quantity)})`:undefined }}</h5>
+        <h2 class="text-4xl font-bold grid grid-flow-col justify-start gap-6 items-center header"><span>{{ productdata?.name }}</span> <client-only><span @click="startShare" v-if="isSupported" class="btn btn-ghost btn-sm btn-circle"><Icon name="mdi:share-variant" size="24" /></span></client-only></h2>
+        <h4 class="text-2xl font-medium text-neutral subheader">{{ productdata?.description }}</h4>
+        <h5 class="text-2xl font-medium pricing">{{ useMoney(productdata?.price ?? 0) }} {{ quantity > 1 ? `(${useMoney((productdata?.price ?? 0) * quantity)})`:undefined }}</h5>
         <div class="grid grid-flow-row lg:grid-flow-col justify-start gap-3 md:gap-6">
           <ui-quantity v-model="quantity" class="order-last md:order-first" />
           <button class="btn btn-primary gap-6" @click.prevent="productdata?.id ? cart.add_product(productdata?.id, quantity) : null">
@@ -53,3 +53,15 @@ function startShare() {
 const quantity = ref(1)
 const cart = useCart()
 </script>
+
+<style scoped>
+.pricing {
+  view-transition-name: pricing;
+}
+.header {
+  view-transition-name: header;
+}
+.subheader {
+  view-transition-name: subheader;
+}
+</style>
