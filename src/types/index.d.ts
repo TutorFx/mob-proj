@@ -1,3 +1,5 @@
+import { RouteLocationRaw } from "vue-router";
+
 interface ILoginParams {
   nome: string;
   sobrenome: string;
@@ -64,6 +66,13 @@ type Session = {
   user: { nome: string | null; email: string; plan: string; isCostumer: boolean;}
   id: string;
 }
+
+type MenuItem = {
+  title: string,
+  to: RouteLocationRaw,
+}
+
+type MenuItems = MenuItem[]
 
 type ValidateResponse = { user: Session, token: string }
 
