@@ -13,6 +13,9 @@
             <nuxt-img
               class="object-cover group-hover:scale-110 min-w-full min-h-full aspect-auto transition-all ease-in-out duration-1000 bg-cover bg-center rounded-lg group-hover:rounded-none"
               v-if="product.images.at(0)?.Key"
+              fit="cover"
+              width="362"
+              height="120"
               :src="usePrefixImages(product.images.at(0)?.Key)" alt="" />
           </div>
         </div>
