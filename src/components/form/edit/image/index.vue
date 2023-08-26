@@ -15,7 +15,7 @@
           </div>
 
           <nuxt-img v-if="!state.Image" :src="`https://avatar.vercel.sh/${state.name}`" />
-          <nuxt-img v-else class="object-cover min-h-full min-w-full" :src="state.Image?.secure_url" />
+          <nuxt-img v-else class="object-cover min-h-full min-w-full" :src="usePrefixImages(state.Image?.Key)" />
           <input type="file" accept="image/png, image/jpeg" name="profile" id="profile-img" ref="filepicker" hidden>
         </div>
         <div class="relative grow grid-flow-row">

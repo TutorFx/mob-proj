@@ -12,7 +12,7 @@
 
           <div class="grid gap-4 grid-cols-3 mt-4 mb-4">
             <div class="rounded-lg relative" v-for="(image, i) in product?.images" :key="i">
-              <img :src="image.secure_url" class="object-cover rounded-lg w-full h-full aspect-square">
+              <img :src="usePrefixImages(image.Key)" class="object-cover rounded-lg w-full h-full aspect-square">
               <Icon @click="deleteImage(image.id)" name="mdi:delete"
                 class="absolute right-0 top-0 h-6 w-6 bg-white rounded-full m-2 p-1" />
             </div>

@@ -54,14 +54,12 @@ export default defineEventHandler(async (event) => {
 
     await Promise.all(Object.keys(files).map(async (key: any) => {
       const file = files[key]
-      const { bytes, secure_url, original_filename, public_id, etag } = await uploadToCloudinary(file.filepath)
+      const { $metadata, ETag, Key } = await uploadToS3(file)
+      //const { bytes, secure_url, original_filename, public_id, etag } = await uploadToCloudinary(file.filepath)
       await prisma.image.create({
         data: {
-          bytes,
-          secure_url,
-          original_filename,
-          public_id,
-          etag,
+          Key,
+          bytes: file.bytes,
           businessId: business.id
         },
       })

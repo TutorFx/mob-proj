@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "image" ALTER COLUMN "bytes" DROP NOT NULL,
+ALTER COLUMN "Etag" DROP NOT NULL;

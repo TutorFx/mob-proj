@@ -19,3 +19,9 @@ export const useGreeting = (): string => {
     return 'Boa noite';
   }
 };
+
+export const usePrefixImages = (key?: string): string | undefined  => {
+  const config = useRuntimeConfig();
+  if (!key) return undefined;
+  return config.public.cdnBaseUrl + key;
+}

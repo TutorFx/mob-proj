@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
       include: {
         images: {
           select: {
-            secure_url: true
+            Key: true
           },
           take: 1
         }
