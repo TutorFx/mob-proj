@@ -19,6 +19,7 @@
     "@tailwindcss/typography": "^0.5.9",
     "@types/bcryptjs": "^2.4.2",
     "@types/jsonwebtoken": "^9.0.2",
+    "@types/uuid": "^9.0.2",
     "autoprefixer": "^10.4.14",
     "dotenv": "^16.3.1",
     "dotenv-cli": "^7.2.1",
@@ -30,6 +31,7 @@
     "tailwindcss": "^3.3.1"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.397.0",
     "@heroicons/vue": "^2.0.17",
     "@nuxt/image-edge": "^1.0.0-28085504.69f8eb0",
     "@nuxtjs/color-mode": "^3.2.0",
@@ -64,6 +66,7 @@
     "swiper": "^9.3.2",
     "twilio": "^4.12.0",
     "universal-cookie": "^4.0.4",
+    "uuid": "^9.0.0",
     "vee-validate": "^4.9.6",
     "vue3-apexcharts": "^1.4.1",
     "zod": "^3.21.4",

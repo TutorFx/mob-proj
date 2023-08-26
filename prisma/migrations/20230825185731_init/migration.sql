@@ -65,10 +65,8 @@ CREATE TABLE "image" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "bytes" INTEGER NOT NULL,
-    "secure_url" TEXT NOT NULL,
-    "original_filename" TEXT NOT NULL,
-    "public_id" TEXT NOT NULL,
-    "etag" TEXT NOT NULL,
+    "Key" TEXT NOT NULL,
+    "Etag" TEXT NOT NULL,
     "productId" TEXT,
     "businessId" TEXT,
 

@@ -7,7 +7,7 @@
     <div ref="target" :class="{ animated: !isSwiping }" :style="{ left, opacity }"
       class="overlay rounded-lg bg-base-100 relative grid grid-cols-[max-content_1fr_max-content] items-center gap-3 justify-start">
       <div class="w-16 h-16 row-span-2 rounded-lg overflow-hidden">
-        <nuxt-img class="object-cover min-h-full min-w-full" :src="item.images?.at(0)?.secure_url"></nuxt-img>
+        <nuxt-img class="object-cover min-h-full min-w-full" :src="usePrefixImages(item.images?.at(0)?.Key)"></nuxt-img>
       </div>
       <div class="truncate">{{ item.name }}</div>
       <div>{{ useMoney(item.price || 0) }}</div>

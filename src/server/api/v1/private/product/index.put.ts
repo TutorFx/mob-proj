@@ -1,4 +1,4 @@
-import { uploadToCloudinary } from "@/server/utils"
+import { uploadToCloudinary, uploadToS3 } from "@/server/utils"
 import { Prisma, PrismaClient, Image } from '@prisma/client';
 import { ZodError, z } from 'zod';
 import { fromZodError } from 'zod-validation-error';
@@ -21,8 +21,8 @@ export default defineEventHandler(async (event) => {
     });
   });
   // @ts-ignore
-  const { fields, files } : { fields: any, files: any } = response
-  const body : IProductSchema = JSON.parse(fields.fields);
+  const { fields, files }: { fields: any, files: formidable.PersistentFile[] } = response
+  const body: IProductSchema = JSON.parse(fields.fields);
 
   try {
     createProductSchema.parse(body)
@@ -79,9 +79,9 @@ export default defineEventHandler(async (event) => {
     }
 
     const product = await prisma.product.create({
-      data:{
-        name, 
-        description, 
+      data: {
+        name,
+        description,
         price,
         businessId,
         userId: session.id,
@@ -89,21 +89,24 @@ export default defineEventHandler(async (event) => {
     })
 
     await Promise.all(Object.keys(files).map(async (key: any) => {
-      const file = files[key]
-
-      const { bytes, secure_url, original_filename, public_id, etag } = await uploadToCloudinary(file.filepath)
-      await prisma.image.create({
-        data:{
-          bytes,
-          secure_url,
-          original_filename,
-          public_id,
-          etag,
-          productId: product.id,
-        }
-      })
+      try {
+        const file = files[key]
+        const { $metadata, ETag, Key } = await uploadToS3(file)
+        const { requestId, extendedRequestId } = $metadata;
+        if (!Key || !ETag) return;
+        //const { bytes, secure_url, original_filename, public_id, etag } = await uploadToCloudinary(file.filepath)
+        await prisma.image.create({
+          data: {
+            Key,
+            bytes: file.bytes,
+            productId: product.id,
+          }
+        })
+      } catch (e) {
+        console.log(e)
+      }
     }))
-    
+
     return product;
 
   } catch (error) {

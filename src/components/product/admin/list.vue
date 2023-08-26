@@ -6,7 +6,7 @@
         class="px-6 py-3 border-b group-last:border-b-0 items-center justify-start gap-3 grid grid-cols-[max-content_1fr_1fr_max-content]">
         <div class="w-8 h-8 rounded-xl overflow-hidden">
           <img class="object-cover min-h-full min-w-full"
-            :src="product?.images[0]?.secure_url || `https://avatar.vercel.sh/${product.id}`"
+            :src="product?.images[0]?.Key ? usePrefixImages(product?.images[0]?.Key) : `https://avatar.vercel.sh/${product.id}`"
             :alt="`Foto de um ${product.name} ${product.description}`">
         </div>
         <div class="truncate font-semibold">{{ product.name }}</div>
@@ -29,6 +29,7 @@ const { pending, error, refresh, data } = useAsyncData('product-get', () => $fet
     params: {
       businessId: useRoute().params?.id
     },
+    headers: useRequestHeaders(['cookie'])
   }),
 );
 watch(useRoute(),
