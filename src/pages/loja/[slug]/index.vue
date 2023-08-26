@@ -12,6 +12,7 @@
           <div class="img-container pt-3 aspect-video overflow-hidden flex items-center justify-center">
             <nuxt-img
               class="object-cover group-hover:scale-110 min-w-full min-h-full aspect-auto transition-all ease-in-out duration-1000 bg-cover bg-center rounded-lg group-hover:rounded-none"
+              v-if="product.images.at(0)?.Key"
               :src="usePrefixImages(product.images.at(0)?.Key)" alt="" />
           </div>
         </div>

@@ -81,7 +81,7 @@
             <div class="grid grid-cols-[max-content_1fr] gap-3" v-for="(item, i) in data?.ProductOnOrder" :key="i">
               <div class="indicator">
                 <div class="h-16 w-16 flex rounded-lg overflow-hidden">
-                  <nuxt-img class="object-cover" :src="usePrefixImages(item.product?.images?.at(0)?.Key)" />
+                  <nuxt-img class="object-cover" v-if="item.product?.images?.at(0)?.Key" :src="usePrefixImages(item.product?.images?.at(0)?.Key)" />
                 </div>
                 <span class="badge badge-primary indicator-item aspect-square">{{ item.quantity }}</span>
               </div>
