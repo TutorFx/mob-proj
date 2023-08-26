@@ -15,7 +15,8 @@ export default defineNuxtConfig({
     domains: [
       'res.cloudinary.com',
       `${process.env.S3_BUCKET_NAME}.s3.${process.env.S3_DEFAULT_REGION}.amazonaws.com/`
-    ]
+    ],
+    format: ['webp']
   },
   app: {
     //pageTransition: { name: 'page', mode: 'out-in' },

@@ -2,6 +2,7 @@
 import { TAddress } from '@/types/addr';
 import { AsyncData } from "#app";
 import { useTextareaAutosize } from '@vueuse/core';
+import { IViacep } from '~/types';
 
 const { textarea, input } = useTextareaAutosize()
 
