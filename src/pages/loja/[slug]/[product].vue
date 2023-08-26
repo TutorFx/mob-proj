@@ -34,7 +34,7 @@ useSeoMeta({
   ogTitle: productdata?.name,
   description: productdata?.description,
   ogDescription: productdata?.description,
-  ogImage: productdata?.images?.at(0)?.secure_url,
+  ogImage: usePrefixImages(productdata?.images?.at(0)?.Key),
   twitterCard: 'summary_large_image',
 })
 </script>

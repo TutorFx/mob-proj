@@ -167,6 +167,7 @@ const finalizar = async () => {
     const data = await $fetch(`/api/v1/order/${route.params.slug}`, { method: 'post', body: { contact: PersonalState.value.data, address: AddrState.value.data, cart: cart.$current_cart } })
     router.push({ name: 'loja-slug-checkout-id', params: { id: data.id } });
     cart.clean_cart();
+    cart.isVisible = false;
   } catch (e) { console.error(e) }
 }
 </script>

@@ -41,7 +41,7 @@ export const useBusiness = () => {
 
     const $close = () => registerFieldVisible.value = false
     const $open = () => {
-      if (!session.plan || (scopedBusinesses.value?.length ?? 0) > getPlan(session.plan).business_amount) return router.push({ name: 'dashboard-upgrade' });
+      //if (!session.plan || (scopedBusinesses.value?.length ?? 0) > getPlan(session.plan).business_amount) return router.push({ name: 'dashboard-upgrade' });
       registerFieldVisible.value = true
     }
     const creatingError = ref(false);
@@ -57,7 +57,8 @@ export const useBusiness = () => {
           method: 'POST',
           body: {
             ...fields.value
-          }
+          },
+          headers: useRequestHeaders(['cookie'])
         })
         if (!response) {
           creatingError.value = true;

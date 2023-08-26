@@ -34,7 +34,7 @@ const props = defineProps<{
     price: number;
     images: {
       id: string;
-      secure_url: string;
+      Key: string;
     }[]
   } | null
 }>()

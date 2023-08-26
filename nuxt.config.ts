@@ -13,7 +13,8 @@ export default defineNuxtConfig({
   ],
   image: {
     domains: [
-      'res.cloudinary.com'
+      'res.cloudinary.com',
+      `${process.env.S3_BUCKET_NAME}.s3.${process.env.S3_DEFAULT_REGION}.amazonaws.com/`
     ]
   },
   app: {
@@ -58,7 +59,8 @@ export default defineNuxtConfig({
     initialPlanActiveMonths: 1,
     public: {
       URL: process.env.ORIGIN ?? 'http://localhost:3000/',
-      APP_NAME: 'Nuxa'
+      APP_NAME: 'Nuxa',
+      cdnBaseUrl: `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.S3_DEFAULT_REGION}.amazonaws.com/`,
     },
   },
   experimental: {

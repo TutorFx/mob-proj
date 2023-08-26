@@ -1,4 +1,4 @@
-import { deleteCloudinaryImage } from "@/server/utils"
+import { deleteCloudinaryImage, deleteFromS3 } from "@/server/utils"
 import { Prisma, PrismaClient, Image } from '@prisma/client';
 import { ZodError, z } from 'zod';
 import { fromZodError } from 'zod-validation-error';
@@ -51,8 +51,7 @@ export default defineEventHandler(async (event) => {
           }
         },
         Business: true,
-        original_filename: true,
-        public_id: true
+        Key: true,
       }
     })
 
@@ -79,7 +78,7 @@ export default defineEventHandler(async (event) => {
       )
     }
 
-    await deleteCloudinaryImage(image.public_id)
+    await deleteFromS3(image.Key)
 
     await prisma.image.delete({
       where: {

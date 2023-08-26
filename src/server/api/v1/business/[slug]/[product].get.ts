@@ -30,8 +30,8 @@ export default defineEventHandler(async (event) => {
         images: {
           select: {
             id: true,
-            secure_url: true
-          }
+            Key: true,
+          },
         }
       },
     })
