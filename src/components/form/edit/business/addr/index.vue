@@ -40,7 +40,7 @@ const addr_default = {
 }
 
 const editing = ref(false);
-const editingState = ref({...(state.value.Address ?? addr_default)})
+const editingState = ref({ ...(state.value.Address ?? addr_default) })
 const updating = ref(false);
 
 const onEdit = () => {
@@ -61,7 +61,7 @@ const onApply = async () => {
   }).finally(() => updating.value = false)
 }
 const onCancel = () => {
-  editingState.value = {...(state.value.Address ?? addr_default)};
+  editingState.value = { ...(state.value.Address ?? addr_default) };
   editing.value = false;
 }
 

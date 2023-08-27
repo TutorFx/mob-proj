@@ -90,8 +90,8 @@ model Product {
   updatedAt      DateTime         @updatedAt
   name           String           @unique
   description    String
-  price          Int
-  Business       Business         @relation(fields: [businessId], references: [id])
+  price          Float
+  Business       Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
   businessId     String
   User           User             @relation(fields: [userId], references: [id])
   userId         String
@@ -109,16 +109,16 @@ model Image {
   bytes Int?
   Key   String
 
-  Product    Product?  @relation(fields: [productId], references: [id])
+  Product    Product?  @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId  String?
-  Business   Business? @relation(fields: [businessId], references: [id])
+  Business   Business? @relation(fields: [businessId], references: [id], onDelete: Cascade)
   businessId String?   @unique
 
   @@map("image")
 }
 
 model ProductOnOrder {
-  product  Product @relation(fields: [id], references: [id])
+  product  Product @relation(fields: [id], references: [id], onDelete: Cascade)
   id       String // relation scalar field (used in the `@relation` attribute above)
   order    Order   @relation(fields: [orderId], references: [id])
   orderId  String // relation scalar field (used in the `@relation` attribute above)

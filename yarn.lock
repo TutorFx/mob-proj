@@ -9118,6 +9118,11 @@ uuid@^9.0.0:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-9.0.0.tgz#592f550650024a38ceb0c562f2f6aa435761efb5"
   integrity sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==
 
+v-money3@^3.24.0:
+  version "3.24.0"
+  resolved "https://registry.yarnpkg.com/v-money3/-/v-money3-3.24.0.tgz#6af1d455863d978bfb97df4cd6ea6f604d51c0bb"
+  integrity sha512-ZPlmmH+EV6BmdnQF9/GIhbRf1C9smElrSsq847jlHonsqYxEq+GsAc705Rn+iL59XLgZFC+OUSI+qr0aT3gjuw==
+
 validate-npm-package-license@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/validate-npm-package-license/-/validate-npm-package-license-3.0.4.tgz#fc91f6b9c7ba15c857f4cb2c5defeec39d4f410a"
