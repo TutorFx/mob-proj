@@ -2,17 +2,17 @@
   <label class="mb-3">
     <div class="label-text mb-3">Nome</div>
     <input type="text" v-model="modelValue.name" placeholder="Ex: Bancada de Mármore"
-      class="input input-bordered w-full" />
+    class="input input-bordered w-full" />
   </label>
   <label class="mb-3">
     <div class="label-text mb-3">Descrição</div>
     <textarea v-model="modelValue.description" class="textarea textarea-bordered w-full"
-      placeholder="Ex: Adquira já uma bela bancada de mármore para sua casa"></textarea>
+    placeholder="Ex: Adquira já uma bela bancada de mármore para sua casa"></textarea>
   </label>
   <label class="mb-3">
     <div class="label-text mb-3">Preço</div>
-    <input v-model.number="modelValue.price" type="text" placeholder="Ex: R$ 8000,00"
-      class="input input-bordered w-full" />
+    <Money3Component v-model.number="modelValue.price" decimal="," thousands="." type="text" placeholder="Ex: R$ 8000,00"
+    class="input input-bordered w-full" />
   </label>
   <label class="mb-3">
     <div class="label-text mb-3">Fotos</div>
@@ -21,6 +21,11 @@
 </template>
 
 <script lang="ts" setup>
+import { IProductForm } from "~/types"
+import { Money3Component } from 'v-money3'
+
 defineProps<{ modelValue: IProductForm }>()
 defineEmits(['update:modelValue'])
+
+
 </script>

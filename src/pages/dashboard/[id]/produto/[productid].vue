@@ -19,12 +19,18 @@
           </div>
         </div>
 
-        <button v-if="!isSending" @click="edit()" class="btn btn-block btn-primary gap-3">
-          Editar Produto
-          <Icon size="24" name="ic:baseline-arrow-right-alt" />
-        </button>
-        <div v-else class="btn btn-block btn-primary">
-          <ui-spinner />
+        <div class="grid gap-3">
+          <button v-if="!isSending" @click="edit()" class="btn btn-block btn-primary gap-3">
+            Editar Produto
+            <Icon size="24" name="ic:baseline-arrow-right-alt" />
+          </button>
+          <div v-else class="btn btn-block btn-primary">
+            <ui-spinner />
+          </div>
+          <button v-if="!isSending" @click="deletePost()" class="btn btn-block btn-error gap-3">
+            Apagar Produto
+            <Icon size="24" name="mdi:trash-outline" />
+          </button>
         </div>
       </div>
     </div>
@@ -75,5 +81,17 @@ const deleteImage = async (id: string) => {
     await refreshNuxtData('product-get');
     refresh();
   })
+}
+const deletePost = async () => {
+  try {
+    await $fetch(`/api/v1/private/product/${route.params.productid}`, {
+      method: "DELETE",
+      body: {
+        businessId: route.params.id,
+      }
+    })
+    useRouter().push({ name: 'dashboard-id-produto', params: { id: route.params.id}  })
+    refresh();
+  } catch (e) {}
 }
 </script>
