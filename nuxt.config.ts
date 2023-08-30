@@ -9,7 +9,9 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@pinia-plugin-persistedstate/nuxt',
     '@nuxt/image-edge',
-    '@vueuse/motion/nuxt'
+    '@vueuse/motion/nuxt',
+    'nuxt-simple-sitemap',
+    'nuxt-simple-robots'
   ],
   image: {
     domains: [
