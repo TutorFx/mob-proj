@@ -8,7 +8,8 @@
             :value="order.id" v-model="state">
         </label>
         <div class="grid gap-2">
-          <nuxt-link class="grid md:grid-cols-[1fr_max-content] gap-2" :to="{ name: 'dashboard-id-fechamento-idcheckout', params: { id: order.Business.id, idcheckout: order.id } }">
+          <nuxt-link class="grid md:grid-cols-[1fr_max-content] gap-2"
+            :to="{ name: 'dashboard-id-fechamento-idcheckout', params: { id: order.Business.id, idcheckout: order.id } }">
             <div class="grid grid-flow-col gap-1 items-center justify-start">
               <div class="font-bold truncate">
                 Pedido
@@ -48,7 +49,7 @@
             </div>
           </div>
           <div>
-            <dashboard-order-selectstatus v-model="status" />
+            <dashboard-order-selectstatus v-model="status" :data="statuses" />
           </div>
           <div class="grid gap-3 overflow-hidden" v-if="order?.ProductOnOrder.length > 0">
             <dashboard-order-product class="grid grid-cols-[max-content_1fr] gap-3" :item="order?.ProductOnOrder[0]" />
@@ -70,11 +71,13 @@
 </template>
 
 <script setup lang="ts">
+import { IObjectStatus } from "~/types";
 import { TOrder } from "~/types/order";
 
 const isVisible = ref(false)
 
 const props = defineProps<{
+  statuses: IObjectStatus,
   order: TOrder,
   modelValue: string[]
 }>()
@@ -95,15 +98,13 @@ const state = computed({
 const status = ref(props.order.status)
 
 watch(status, async (newVal, oldVal) => {
-  await $fetch(`/api/v1/private/business/${useRoute().params.id}/UpdateOrderBulkStatus`, { 
+  await $fetch(`/api/v1/private/business/${useRoute().params.id}/UpdateOrderBulkStatus`, {
     method: 'POST',
     body: {
-      idlist: [ props.order.id ], 
+      idlist: [props.order.id],
       status: newVal
     }
   })
   await refreshNuxtData('checkouts')
 })
-
-
 </script>
