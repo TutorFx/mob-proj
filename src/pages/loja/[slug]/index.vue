@@ -33,8 +33,8 @@
               {{ useMoney(product.price) }}
             </span>
           </div>
-          <button class="btn btn-md btn-circle btn-ghost group-hover:bg-base-200 hover:bg-base-300">
-            <Icon name="mdi:plus" size="24px" />
+          <button class="btn btn-sm gap-3 rounded-full btn-ghost group-hover:bg-base-200 hover:bg-base-300">
+            Comprar <Icon name="mdi:plus" size="12" />
           </button>
         </div>
         <div class="h-1 w-full bg-base-200"></div>

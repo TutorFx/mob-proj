@@ -27,6 +27,9 @@ export default defineNuxtConfig({
       meta: [
         { name: 'description', content: 'Lorem ipsun!.' }
       ],
+      htmlAttrs: {
+        lang: 'pt-BR'
+      }
     }
   },
   css: ['@/main.scss'],
