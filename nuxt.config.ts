@@ -9,7 +9,9 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@pinia-plugin-persistedstate/nuxt',
     '@nuxt/image-edge',
-    '@vueuse/motion/nuxt'
+    '@vueuse/motion/nuxt',
+    'nuxt-simple-sitemap',
+    'nuxt-simple-robots'
   ],
   image: {
     domains: [
@@ -25,6 +27,9 @@ export default defineNuxtConfig({
       meta: [
         { name: 'description', content: 'Lorem ipsun!.' }
       ],
+      htmlAttrs: {
+        lang: 'pt-BR'
+      }
     }
   },
   css: ['@/main.scss'],

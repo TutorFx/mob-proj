@@ -15,9 +15,10 @@
 </template>
 
 <script setup lang="ts">
-const data = await $fetch('/api/v1/order/status')
+import { IObjectStatus } from '~/types';
 
 const props = defineProps<{
+  data: IObjectStatus,
   modelValue?: string | string[] | null
 }>()
 

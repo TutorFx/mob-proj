@@ -31,7 +31,11 @@ export default defineEventHandler(async (event) => {
         }],
       },
       include: {
-        contact: true,
+        contact: {
+          select: {
+            nome: true
+          }
+        },
         address: true,
         ProductOnOrder: {
           include: {

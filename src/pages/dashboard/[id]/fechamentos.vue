@@ -4,7 +4,7 @@
       <div class="relative">
         <div class="absolute inset-0"></div>
         <div class="p-3 md:p-6 py-2 md:py-3 relative overflow-auto max-sm:pb-3">
-          <dashboard-order-statuses v-model="status" class="" />
+          <dashboard-order-statuses v-if="statuses" v-model="status" :data="statuses" />
         </div>
       </div>
     </div>
@@ -29,8 +29,8 @@
       </div>
     </div>
     <div class="bg-base-200">
-      <div v-motion-slide-bottom class="p-3 md:p-6 grid xl:grid-cols-2 2xl:grid-cols-3 gap-3">
-        <dashboard-order v-for="(order, i) in orders" :order="order" v-model="selected" :key="i" />
+      <div class="p-3 md:p-6 grid xl:grid-cols-2 2xl:grid-cols-3 gap-3" v-if="statuses">
+        <dashboard-order v-for="(order, i) in orders" :order="order" v-model="selected" :statuses="statuses" :key="i" />
       </div>
     </div>
   </div>
@@ -40,6 +40,7 @@
 import { useRouteQuery } from '@vueuse/router'
 import { useFocus, onKeyStroke  } from '@vueuse/core'
 import { TOrder } from '~/types/order'
+const {data: statuses} = useFetch('/api/v1/order/status')
 
 const status = useRouteQuery('status')
 const search = useRouteQuery('search')

@@ -1,5 +1,8 @@
 import { RouteLocationRaw } from "vue-router";
 
+type IObjectStatus = {
+  [key: string]: string;
+}
 interface ILoginParams {
   nome: string;
   sobrenome: string;
@@ -79,4 +82,4 @@ type ValidateResponse = { user: Session, token: string }
 type TItem = { id: string, quantity: number }
 type TCart = { [key: string]: Array<TItem> }
 
-declare global { ILoginParams, IItem, IAddress };
+declare global { ILoginParams, IItem, IAddress, IObjectStatus };
