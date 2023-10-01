@@ -4,7 +4,7 @@
       <div class="relative">
         <div class="absolute inset-0"></div>
         <div class="p-3 md:p-6 py-2 md:py-3 relative overflow-auto max-sm:pb-3">
-          <dashboard-order-statuses v-if="statuses" v-model="status" :data="statuses" />
+          <DashboardOrderStatuses v-if="statuses" v-model="status" :data="statuses" />
         </div>
       </div>
     </div>
@@ -30,9 +30,7 @@
       </div>
     </div>
     <div class="bg-base-200">
-      <div class="p-3 md:p-6 grid xl:grid-cols-2 2xl:grid-cols-3 gap-3" v-if="statuses">
-        <dashboard-order v-for="(order, i) in orders" :order="order" v-model="selected" :statuses="statuses" :key="i" />
-      </div>
+      <CheckoutAdminList :statusList="statuses" v-model="selected" />
     </div>
   </div>
 </template>
@@ -40,7 +38,6 @@
 <script setup lang="ts">
 import { useRouteQuery } from '@vueuse/router'
 import { useFocus, onKeyStroke } from '@vueuse/core'
-import { TOrder } from '~/types/order'
 
 const status = useRouteQuery<string | undefined>('status')
 const search = useRouteQuery<string | undefined>('search')
@@ -59,20 +56,14 @@ onKeyStroke('k', (e) => {
 onKeyStroke('Enter', (e) => {
   e.preventDefault()
   search.value = searchInput.value
-  refresh()
+  refreshNuxtData('checkouts')
 })
 
 const selected = ref([])
 
-const [{ data: statuses, pending: statusPending }, { data: orders, refresh, pending }] = await Promise.all([
-  useFetch('/api/v1/order/status'),
-  useAsyncData('checkouts', () => 
-    $fetch<TOrder[]>(`/api/v1/private/checkouts/${useRoute().params.id}`, 
-    { headers: useRequestHeaders(), query: { status: status.value, search: search.value } })
-  )
-])
+const { data: statuses } = useAsyncData('status', () => $fetch('/api/v1/order/status'));
 
 watch(status, async () => {
-  await refresh()
+  refreshNuxtData('checkouts')
 })
 </script>

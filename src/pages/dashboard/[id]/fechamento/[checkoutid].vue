@@ -1,6 +1,5 @@
 <template>
   <div>
-    <NuxtLoadingIndicator color="false" class="bg-primary" />
     <div class="grid md:grid-cols-2 gap-6 p-6 min-h-full">
       <div>
         <div class="grid gap-3 py-6">
@@ -131,7 +130,7 @@ import { useClipboard } from '@vueuse/core'
 import { TOrder } from '~/types/order';
 
 const route = useRoute()
-const data = await $fetch<TOrder>(`/api/v1/private/checkouts/${route.params.id}/${route.params.idcheckout}`, { headers: useRequestHeaders(['cookie']) })
+const data = await $fetch<TOrder>(`/api/v1/private/checkouts/${route.params.id}/${route.params.checkoutid}`, { headers: useRequestHeaders(['cookie']) })
 
 if (!data) throw createError({
   statusCode: 404,
