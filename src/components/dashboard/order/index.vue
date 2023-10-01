@@ -9,7 +9,7 @@
         </label>
         <div class="grid gap-2">
           <nuxt-link class="grid md:grid-cols-[1fr_max-content] gap-2"
-            :to="{ name: 'dashboard-id-fechamento-idcheckout', params: { id: order.Business.id, idcheckout: order.id } }">
+            :to="{ name: 'dashboard-id-fechamento-checkoutid', params: { id: order.Business.id, checkoutid: order.id } }">
             <div class="grid grid-flow-col gap-1 items-center justify-start">
               <div class="font-bold truncate">
                 Pedido

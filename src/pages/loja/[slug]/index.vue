@@ -9,7 +9,7 @@
         :to="{ name: 'loja-slug-product', params: { slug: route.params.slug, product: product?.slug } }"
         class="rounded-lg overflow-hidden bg-base shadow-3xl shadow-neutral/10 border border-base-300 group grid relative">
         <div>
-          <div class="img-container pt-3 aspect-video overflow-hidden flex items-center justify-center">
+          <div class="img-container p-3 aspect-video overflow-hidden grid items-center justify-center">
             <nuxt-img
               class="object-cover group-hover:scale-110 min-w-full min-h-full aspect-auto transition-all ease-in-out duration-1000 bg-cover bg-center rounded-lg group-hover:rounded-none"
               v-if="product.images.at(0)?.Key"

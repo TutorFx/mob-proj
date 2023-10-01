@@ -4,7 +4,7 @@
       <div class="relative">
         <div class="absolute inset-0"></div>
         <div class="p-3 md:p-6 py-2 md:py-3 relative overflow-auto max-sm:pb-3">
-          <dashboard-order-statuses v-if="statuses" v-model="status" :data="statuses" />
+          <DashboardOrderStatuses v-if="statuses" v-model="status" :data="statuses" />
         </div>
       </div>
     </div>
@@ -19,7 +19,8 @@
               <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                 stroke-linejoin="round"></circle>
             </svg>
-            <input type="search" v-model="searchInput" ref="input" class="bg-transparent h-6 ring-0 border-0 text-primary border-none w-full focus:ring-0">
+            <input type="search" v-model="searchInput" ref="input"
+              class="bg-transparent h-6 ring-0 border-0 text-primary border-none w-full focus:ring-0">
             <div class="ml-auto md:grid grid-flow-col text-xs font-semibold w-16 hidden" v-if="!focused">
               <kbd class="kbd kbd-sm">Ctrl</kbd>
               <kbd class="kbd kbd-sm">K</kbd>
@@ -29,21 +30,17 @@
       </div>
     </div>
     <div class="bg-base-200">
-      <div class="p-3 md:p-6 grid xl:grid-cols-2 2xl:grid-cols-3 gap-3" v-if="statuses">
-        <dashboard-order v-for="(order, i) in orders" :order="order" v-model="selected" :statuses="statuses" :key="i" />
-      </div>
+      <CheckoutAdminList :statusList="statuses" v-model="selected" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useRouteQuery } from '@vueuse/router'
-import { useFocus, onKeyStroke  } from '@vueuse/core'
-import { TOrder } from '~/types/order'
-const {data: statuses} = useFetch('/api/v1/order/status')
+import { useFocus, onKeyStroke } from '@vueuse/core'
 
-const status = useRouteQuery('status')
-const search = useRouteQuery('search')
+const status = useRouteQuery<string | undefined>('status')
+const search = useRouteQuery<string | undefined>('search')
 
 const input = ref()
 const searchInput = ref(search.value)
@@ -51,7 +48,7 @@ const { focused } = useFocus(input, { initialValue: true })
 
 onKeyStroke('k', (e) => {
   e.preventDefault()
-  if (e.ctrlKey){
+  if (e.ctrlKey) {
     focused.value = true
   }
 })
@@ -59,12 +56,14 @@ onKeyStroke('k', (e) => {
 onKeyStroke('Enter', (e) => {
   e.preventDefault()
   search.value = searchInput.value
-  refresh()
+  refreshNuxtData('checkouts')
 })
 
 const selected = ref([])
 
-const { data: orders, refresh } = useAsyncData('checkouts', () => $fetch<TOrder[]>(`/api/v1/private/checkouts/${useRoute().params.id}`, { headers: useRequestHeaders(), query: { status: status.value, search: search.value } }), {
-  watch: [status]
+const { data: statuses } = useAsyncData('status', () => $fetch('/api/v1/order/status'));
+
+watch(status, async () => {
+  refreshNuxtData('checkouts')
 })
 </script>

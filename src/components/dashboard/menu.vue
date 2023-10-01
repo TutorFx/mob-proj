@@ -7,7 +7,7 @@
     <div class="grid grid-flow-col gap-3">
       <slot />
       <div class="tooltip tooltip-left" data-tip="Visualizar loja" v-if="selected?.slug">
-        <nuxt-link :to="{ name: 'loja-slug', params: { slug: selected?.slug } }" class="btn btn-circle btn-ghost">
+        <nuxt-link :to="{ name: 'loja-slug', params: { slug: selected?.slug } }" target="_blank" class="btn btn-circle btn-ghost">
           <Icon name="ic:outline-remove-red-eye" size="22" />
         </nuxt-link>
       </div>

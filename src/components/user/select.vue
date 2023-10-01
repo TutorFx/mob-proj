@@ -131,6 +131,7 @@ const selectedUser = computed({
     const id = user?.id
     if (id) {
       router.push({ name: 'dashboard-id', params: { id: user.id } });
+      console.log(id)
     } else {
       router.push({ name: 'dashboard' });
     }

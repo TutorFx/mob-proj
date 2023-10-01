@@ -12,7 +12,7 @@
 import { IEditBusiness } from "~/types/edit";
 
 const route = useRoute()
-const { data: business, refresh: namingRefresh } = await useAsyncData<IEditBusiness>(() => $fetch<IEditBusiness>(`/api/v1/private/business/${route.params.id}`, { headers: useRequestHeaders() }))
+const { data: business, refresh: namingRefresh } = await useAsyncData<IEditBusiness>(() => $fetch<IEditBusiness>(`/api/v1/private/business/${route.params.id}`, { headers: useRequestHeaders(['cookie']) }))
 if(business.value === null){
   throw createError({ statusCode: 500, statusMessage: 'Erro ao carregar empresa' })
 }

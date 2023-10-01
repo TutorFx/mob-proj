@@ -22,6 +22,6 @@
   {
     "icon": "mdi:basket-fill",
     "name": "Fechamentos",
-    "path": { "name": "dashboard-id-fechamentos" }
+    "path": { "name": "dashboard-id-fechamento" }
   }
 ]
