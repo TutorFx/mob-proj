@@ -67,9 +67,54 @@
             </ul>
           </div>
           <div class="border-b" />
-          <div class="grid grid-cols-[repeat(3, max-content)]">
+          <div v-if="completeAddr" class="grid grid-cols-3 gap-6 gap-y-3">
             <div>
-              {{ completeAddr }}
+              <div>
+                CEP
+              </div>
+              <div>
+                {{completeAddr.cep}}
+              </div>
+            </div>
+            <div>
+              <div>
+                Estado
+              </div>
+              <div>
+                {{completeAddr.estado}}
+              </div>
+            </div>
+            <div>
+              <div>
+                Cidade
+              </div>
+              <div>
+                {{completeAddr.cidade}}
+              </div>
+            </div>
+            <div>
+              <div>
+                Endereço
+              </div>
+              <div>
+                {{completeAddr.endereco}}
+              </div>
+            </div>
+            <div>
+              <div>
+                Bairro
+              </div>
+              <div>
+                {{completeAddr.bairro}}
+              </div>
+            </div>
+            <div>
+              <div>
+                Número
+              </div>
+              <div>
+                {{completeAddr.numero}}
+              </div>
             </div>
           </div>
           <div class="border-b" />
