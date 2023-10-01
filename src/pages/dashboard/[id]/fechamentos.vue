@@ -19,7 +19,8 @@
               <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                 stroke-linejoin="round"></circle>
             </svg>
-            <input type="search" v-model="searchInput" ref="input" class="bg-transparent h-6 ring-0 border-0 text-primary border-none w-full focus:ring-0">
+            <input type="search" v-model="searchInput" ref="input"
+              class="bg-transparent h-6 ring-0 border-0 text-primary border-none w-full focus:ring-0">
             <div class="ml-auto md:grid grid-flow-col text-xs font-semibold w-16 hidden" v-if="!focused">
               <kbd class="kbd kbd-sm">Ctrl</kbd>
               <kbd class="kbd kbd-sm">K</kbd>
@@ -38,12 +39,11 @@
 
 <script setup lang="ts">
 import { useRouteQuery } from '@vueuse/router'
-import { useFocus, onKeyStroke  } from '@vueuse/core'
+import { useFocus, onKeyStroke } from '@vueuse/core'
 import { TOrder } from '~/types/order'
-const {data: statuses} = useFetch('/api/v1/order/status')
 
-const status = useRouteQuery('status')
-const search = useRouteQuery('search')
+const status = useRouteQuery<string | undefined>('status')
+const search = useRouteQuery<string | undefined>('search')
 
 const input = ref()
 const searchInput = ref(search.value)
@@ -51,7 +51,7 @@ const { focused } = useFocus(input, { initialValue: true })
 
 onKeyStroke('k', (e) => {
   e.preventDefault()
-  if (e.ctrlKey){
+  if (e.ctrlKey) {
     focused.value = true
   }
 })
@@ -64,7 +64,15 @@ onKeyStroke('Enter', (e) => {
 
 const selected = ref([])
 
-const { data: orders, refresh } = useAsyncData('checkouts', () => $fetch<TOrder[]>(`/api/v1/private/checkouts/${useRoute().params.id}`, { headers: useRequestHeaders(), query: { status: status.value, search: search.value } }), {
-  watch: [status]
+const [{ data: statuses, pending: statusPending }, { data: orders, refresh, pending }] = await Promise.all([
+  useFetch('/api/v1/order/status'),
+  useAsyncData('checkouts', () => 
+    $fetch<TOrder[]>(`/api/v1/private/checkouts/${useRoute().params.id}`, 
+    { headers: useRequestHeaders(), query: { status: status.value, search: search.value } })
+  )
+])
+
+watch(status, async () => {
+  await refresh()
 })
 </script>

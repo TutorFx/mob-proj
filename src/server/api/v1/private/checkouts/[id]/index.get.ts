@@ -30,21 +30,32 @@ export default defineEventHandler(async (event) => {
           id: query.search
         }],
       },
-      include: {
+      select: {
         contact: {
           select: {
             nome: true
           }
         },
-        address: true,
+        id: true,
+        status: true,
+        createdAt: true,
+        //address: true,
         ProductOnOrder: {
-          include: {
+          select: {
+            quantity: true,
             product: {
-              include: { images: { take: 1 } }
+              select: { 
+                price: true,
+                name: true,
+                images: { 
+                  take: 1, 
+                  select: { Key: true } 
+                } 
+              }
             }
           }
         },
-        Business: { include: { Image: true } },
+        Business: { select: { Image: { select: { Key: true } } } },
       },
       orderBy: { createdAt: 'desc' }
     })

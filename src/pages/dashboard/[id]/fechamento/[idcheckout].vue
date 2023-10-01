@@ -90,8 +90,8 @@
           <div class="relative p-6 pb-3 grid gap-3">
             <div class="grid grid-cols-[max-content_1fr] gap-3" v-for="(item, i) in data?.ProductOnOrder" :key="i">
               <div class="indicator">
-                <div class="h-16 w-16 flex rounded-lg overflow-hidden">
-                  <nuxt-img class="object-cover" :src="usePrefixImages(item.product?.images?.at(0)?.Key)" />
+                <div class="h-16 w-16 flex items-center justify-center rounded-lg overflow-hidden">
+                  <nuxt-img class="object-cover" width="64" height="64" fit="cover" :src="usePrefixImages(item.product?.images?.at(0)?.Key)" />
                 </div>
                 <span class="badge badge-primary indicator-item aspect-square">{{ item.quantity }}</span>
               </div>
@@ -131,7 +131,7 @@ import { useClipboard } from '@vueuse/core'
 import { TOrder } from '~/types/order';
 
 const route = useRoute()
-const data = await $fetch<TOrder>(`/api/v1/private/checkouts/${route.params.id}/${route.params.idcheckout}`, { headers: useRequestHeaders() })
+const data = await $fetch<TOrder>(`/api/v1/private/checkouts/${route.params.id}/${route.params.idcheckout}`, { headers: useRequestHeaders(['cookie']) })
 
 if (!data) throw createError({
   statusCode: 404,
