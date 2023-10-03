@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { useLocalStorage } from "@vueuse/core";
+import { TCart } from "~/types";
 
 export const useCart = defineStore('cart', () => {
   const default_key = () => {

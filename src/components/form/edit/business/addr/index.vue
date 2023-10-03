@@ -12,7 +12,11 @@
   </ui-card-edit>
 </template>
 <script lang="ts" setup>
+import { ZodError } from 'zod';
+import { FetchError } from 'ofetch';
 import { IEditBusiness } from '~/types/edit';
+
+const alert = new NuxaAlert()
 
 const props = defineProps<{
   modelValue: IEditBusiness,
@@ -47,18 +51,45 @@ const onEdit = () => {
   editing.value = true;
 }
 const onApply = async () => {
-  updating.value = true;
-  await $fetch(`/api/v1/private/business/${state.value.id}/edit/address`, {
-    method: 'PATCH',
-    body: editingState.value
-  }).then(async () => {
+  const triggerApply = async () => {
     try {
+      useSchemas.address.parse(editingState.value)
+      updating.value = true;
+      await $fetch(`/api/v1/private/business/${state.value.id}/edit/address`, {
+        method: 'PATCH',
+        body: editingState.value
+      })
       editing.value = false;
       await props.refresh()
+      alert.success({
+        title: 'Sucesso!',
+        body: 'Dados atualizados com sucesso',
+        cancel: 'continuar',
+      });
     } catch (e) {
-
+      if (e instanceof ZodError) return alert.warning({
+        title: 'Dados inválidos',
+        body: `Por favor, preencha os campos requisitados corretamente e tente novamente`,
+        cancel: 'Voltar',
+      });
+      if (e instanceof FetchError) return alert.warning({
+        title: 'Erro ao enviar dados',
+        body: 'Tente novamente mais tarde',
+        cancel: 'Voltar',
+        accept: 'Tentar novamente'
+      }, triggerApply);
+    } finally {
+      updating.value = false
     }
-  }).finally(() => updating.value = false)
+  }
+  alert.danger({
+    title: 'Atenção!',
+    body: 'Você está prestes a alterar informações de endereço, você confirma?',
+    cancel: 'Voltar à segurança',
+    accept: 'Continuar'
+  }, async () => {
+    triggerApply()
+  })
 }
 const onCancel = () => {
   editingState.value = { ...(state.value.Address ?? addr_default) };

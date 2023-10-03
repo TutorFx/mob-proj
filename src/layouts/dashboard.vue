@@ -1,6 +1,7 @@
 <template>
   <div class="dashboard grid grid-rows-[max-content_1fr]">
     <NuxtLoadingIndicator color="false" class="bg-primary" />
+    <Modal />
     <dashboard-menu class="border-b">
       <div @click="menu = !menu" class="btn btn-circle btn-ghost md:hidden">
         <Icon name="ic:menu" size="22" />

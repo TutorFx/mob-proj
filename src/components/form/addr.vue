@@ -63,9 +63,11 @@ watch(() => state.value.cep,
     Object.assign(state.value, {
       estado: estado.value?.Id ?? 0,
     })
-    if (!municipio.value) return;
-    Object.assign(state.value, {
-      cidade: municipio.value?.Id ?? 0,
+    nextTick(() => {
+      if (!municipio.value) return;
+      Object.assign(state.value, {
+        cidade: municipio.value?.Id ?? 0,
+      })
     })
   },
   { deep: true }
