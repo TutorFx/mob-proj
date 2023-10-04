@@ -3,7 +3,7 @@
     <div class="text-xl mb-4">Novo produto</div>
     <div>
       <div class="form-control w-full max-w-xs">
-        <form-product v-model="state" />
+        <form-product ref="formEl" v-model="state" />
         <button v-if="!isCreating" @click="post" class="btn btn-block btn-primary gap-3">
           Postar Produto
           <Icon size="24" name="ic:baseline-arrow-right-alt" />
@@ -17,7 +17,12 @@
 </template>
 
 <script setup lang="ts">
+import { ZodError } from 'zod';
+import { FetchError } from 'ofetch';
+import type { Product } from '@prisma/client';
+
 const router = useRouter();
+const alert = new NuxaAlert()
 
 const state = ref({
   name: '',
@@ -26,6 +31,7 @@ const state = ref({
   files: [] as Array<File>
 })
 
+const formEl = ref<any>(null)
 const isCreating = ref(false);
 
 const formdata = computed(() => {
@@ -41,13 +47,38 @@ const formdata = computed(() => {
 })
 
 const post = async () => {
-  isCreating.value = true;
-  await $fetch(`/api/v1/private/product`, {
-    method: "PUT",
-    body: formdata.value,
-  }).then(async (e) => {
-    await router.push({ path: `${e?.id}` });
-    await refreshNuxtData('product-get');
-  }).finally(() => isCreating.value = false)
+  const triggerPost = async () => {
+    try {
+      formEl.value.touch()
+      useSchemas.createProductSchema.parse({ ...state.value, businessId: useRoute().params.id.toString() })
+      isCreating.value = true;
+      const response = await $fetch<Product>(`/api/v1/private/product`, {
+        method: "PUT",
+        body: formdata.value,
+      })
+      alert.success({
+        title: 'Sucesso!',
+        body: `Produto <code>${state.value.name}</code> criado com sucesso`,
+        cancel: 'continuar',
+      });
+      await router.push({ path: `${response?.id}` });
+      await refreshNuxtData('product-get');
+    } catch (e) {
+      if (e instanceof ZodError) return alert.warning({
+        title: 'Dados inválidos',
+        body: `Por favor, preencha os campos requisitados corretamente e tente novamente`,
+        cancel: 'Voltar',
+      });
+      if (e instanceof FetchError) return alert.warning({
+        title: 'Erro ao enviar dados',
+        body: 'Tente novamente mais tarde',
+        cancel: 'Voltar',
+        accept: 'Tentar novamente'
+      }, triggerPost);
+    } finally {
+      isCreating.value = false
+    }
+  }
+  triggerPost()
 }
 </script>

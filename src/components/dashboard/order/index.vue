@@ -54,7 +54,7 @@
           <div class="grid gap-3 overflow-hidden" v-if="order?.ProductOnOrder.length > 0">
             <dashboard-order-product class="grid grid-cols-[max-content_1fr] gap-3" :item="order?.ProductOnOrder[0]" />
             <div class="grid gap-3" v-if="order?.ProductOnOrder.length > 1 && isVisible">
-              <dashboard-order-product class="grid grid-cols-[max-content_1fr] gap-3" v-motion-slide-bottom
+              <dashboard-order-product class="grid grid-cols-[max-content_1fr] gap-3"
                 v-for="(item, i) in order?.ProductOnOrder.slice(1)" :item="item" :key="i" />
             </div>
             <div v-if="order?.ProductOnOrder.length > 1">

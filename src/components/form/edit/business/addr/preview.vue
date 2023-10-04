@@ -65,8 +65,11 @@ const state = computed({
   }
 })
 const place = ref()
-if (state.value?.stateData?.Nome && state.value?.cityData?.nome){
-  place.value = await $fetch('/api/v1/address/', { query: { cityId: state.value.Address.cidade, stateId: state.value.Address.estado } })
-}
+
+watchEffect(async () => {
+  if (state.value.Address.cidade && state.value.Address.estado){
+    place.value = await $fetch('/api/v1/address/', { query: { cityId: state.value.Address.cidade, stateId: state.value.Address.estado } })
+  }
+})
 
 </script>

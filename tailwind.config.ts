@@ -7,7 +7,9 @@ module.exports = {
     preference: 'light', // default theme
     dataValue: 'theme', // activate data-theme in <html> tag
   },
-  content: [],
+  content: [
+    './src/**/*.{vue,js,ts,jsx,tsx}',
+  ],
   theme: {
     extend: {
       colors: {

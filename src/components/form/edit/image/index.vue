@@ -8,7 +8,8 @@
             <ui-spinner />
           </div>
           <div v-else class="inset-0 absolute place-content-center hidden group-hover:grid text-base-100">
-            <Icon @click="onDelete" v-if="state.Image" size="32" name="mdi:trash-outline" class="group-hover:cursor-pointer" />
+            <Icon @click="onDelete" v-if="state.Image" size="32" name="mdi:trash-outline"
+              class="group-hover:cursor-pointer" />
             <label v-else for="profile-img">
               <Icon size="32" name="mdi:file-document-edit-outline" class="group-hover:cursor-pointer" />
             </label>
@@ -29,7 +30,10 @@
 </template>
 
 <script setup lang="ts">
+import { FetchError } from 'ofetch'
 import { IEditBusiness } from "~/types/edit";
+const alert = new NuxaAlert()
+
 const props = defineProps<{
   modelValue: IEditBusiness,
   refresh: Function
@@ -48,30 +52,67 @@ const filepicker = ref<HTMLInputElement>()
 const isUploading = ref<boolean>(false)
 const isDeleting = ref<boolean>(false)
 const onDelete = async () => {
-  try {
-    isDeleting.value = true;
-    await $fetch(`/api/v1/private/image/${state.value.Image.id}`, { method: 'DELETE'});
-    await props.refresh();
-  } catch (e) {} finally {
-    isDeleting.value = false;
-  }
+  alert.danger({
+    title: 'Atenção!',
+    body:
+      /* html */`Você está prestes a
+      remover a foto de perfil
+      de seu empreendimento. Você tem certeza?`,
+    cancel: 'Cancelar',
+    accept: 'Aceitar',
+  }, async () => {
+    const triggerDelete = async () => {
+      try {
+        isDeleting.value = true;
+        await $fetch(`/api/v1/private/image/${state.value.Image.id}`, { method: 'DELETE' });
+        await props.refresh();
+      } catch (e) {
+        if (e instanceof FetchError) return alert.warning({
+          title: `Erro!`,
+          body: `Não foi possível remover imagem, tente novamente mais tarde`,
+          cancel: 'Voltar',
+          accept: 'Tentar Novamente'
+        }, triggerDelete)
+      } finally {
+        isDeleting.value = false;
+      }
+    }
+    triggerDelete()
+  })
 }
 const onSelect = async () => {
   try {
     const body = new FormData()
     Array.prototype.forEach.call((filepicker.value as HTMLInputElement).files, function (file) {
       if (!(file instanceof File))
-        return console.error("Not a valid File");
+        return alert.danger({
+          title: 'Erro',
+          body: `Não é uma imagem válida`,
+          cancel: 'Voltar',
+        })
       if (!file.type.startsWith("image/"))
-        return console.error("The selected file is not an image!");
+        return alert.danger({
+          title: 'Erro',
+          body: `Não é uma imagem válida`,
+          cancel: 'Voltar',
+        })
       if (file.size > 5242880)
-        return console.error("The dropped file is larger than 5MB!");
+        return alert.danger({
+          title: 'Erro',
+          body: `Sua imagem é muito grande, tente selecionar uma imagem com menos de 5MB!`,
+          cancel: 'Voltar',
+        })
       body.append('file', file);
     });
     try {
       isUploading.value = true;
       await $fetch(`/api/v1/private/business/${state.value.id}/edit/image`, { body, method: 'PUT' });
       await props.refresh();
+      return alert.success({
+        title: 'Sucesso!',
+        body: `A imagem de perfil foi atualizada com êxito`,
+        cancel: 'Voltar',
+      })
     } catch (e) {
       console.error(e)
     } finally { isUploading.value = false; }
@@ -79,5 +120,4 @@ const onSelect = async () => {
     console.error("Selection stopped by user.");
   }
 };
-
 </script>

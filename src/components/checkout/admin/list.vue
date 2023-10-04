@@ -13,12 +13,11 @@
 </template>
 
 <script lang="ts" setup>
-import { useRouteQuery } from '@vueuse/router';
 import { IObjectStatus } from '~/types';
 import { TOrder } from '~/types/order'
 
-const status = useRouteQuery<string | undefined>('status')
-const search = useRouteQuery<string | undefined>('search')
+const route = useRoute()
+const router = useRouter()
 
 const props = defineProps<{ statusList: IObjectStatus, modelValue: string[] }>()
 const emits = defineEmits<{
@@ -32,6 +31,25 @@ const state = computed({
     set(value) {
         emits('update:modelValue', value)
     }
+})
+
+const status = computed({
+  get() {
+    return route.query.status
+  },
+  set(val) {
+    router.push({ query: { status: val } })
+  }
+})
+
+const search = computed({
+  get() {
+    return route.query.search
+  },
+  set(val) {
+    if (val === '') return router.push({ query: { search: undefined } })
+    router.push({ query: { search: val } })
+  }
 })
 
 const { data: orders, refresh, pending, error } = useAsyncData('checkouts', () => $fetch<TOrder[]>(`/api/v1/private/checkouts/${useRoute().params.id}`,

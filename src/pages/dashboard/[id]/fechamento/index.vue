@@ -30,17 +30,35 @@
       </div>
     </div>
     <div class="bg-base-200">
-      <CheckoutAdminList :statusList="statuses" v-model="selected" />
+      <CheckoutAdminList v-if="statuses" :statusList="statuses" v-model="selected" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useRouteQuery } from '@vueuse/router'
 import { useFocus, onKeyStroke } from '@vueuse/core'
 
-const status = useRouteQuery<string | undefined>('status')
-const search = useRouteQuery<string | undefined>('search')
+const route = useRoute()
+const router = useRouter()
+
+const status = computed({
+  get() {
+    return route.query.status as string
+  },
+  set(val) {
+    router.push({ query: { status: val } })
+  }
+})
+
+const search = computed({
+  get() {
+    return route.query.search as string 
+  },
+  set(val) {
+    if (val === '') return router.push({ query: { search: undefined } })
+    router.push({ query: { search: val } })
+  }
+})
 
 const input = ref()
 const searchInput = ref(search.value)
