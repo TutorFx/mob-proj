@@ -38,11 +38,13 @@ watch(() => state.value.complemento, (newVal) => {
   input.value = newVal
 }, { deep: true })
 
-const { data: viacep, error: viacepError }: AsyncData<IViacep, Error | null> = useAsyncData('cep', () => $fetch<IViacep>(`https://viacep.com.br/ws/${state.value.cep}/json/`), { immediate: false });
-const { data: estados } = await useAsyncData('state', () => $fetch('/api/v1/address/state'));
-const { data: cidades } = await useAsyncData('city', () => $fetch(`/api/v1/address/city/${state.value.estado}`), { immediate: false });
+const [{ data: viacep, error: viacepError }, { data: estados }, { data: cidades }] = await Promise.all([
+  useAsyncData('cep', () => $fetch<IViacep>(`https://viacep.com.br/ws/${state.value.cep}/json/`), { immediate: false }),
+  useAsyncData('state', () => $fetch('/api/v1/address/state')),
+  useAsyncData('city', () => $fetch(`/api/v1/address/city/${state.value.estado}`), { immediate: false })
+])
 
-if(state.value.estado){
+if (state.value.estado) {
   await refreshNuxtData('city');
 }
 
@@ -51,6 +53,7 @@ watch(() => state.value.cep,
     if (state.value.cep?.length !== 9) return;
     await refreshNuxtData('cep');
     if (viacepError.value) return;
+    if (!viacep.value) return;
     const { logradouro, complemento, bairro, uf, ibge, /* gia, ddd, siafi, localidade */ } = viacep.value;
     const { data: estado } = await useFetch(`/api/v1/address/state/getid/${uf}`)
     const { data: municipio } = await useFetch(`/api/v1/address/city/getid/${ibge}`)
@@ -63,9 +66,11 @@ watch(() => state.value.cep,
     Object.assign(state.value, {
       estado: estado.value?.Id ?? 0,
     })
-    if (!municipio.value) return;
-    Object.assign(state.value, {
-      cidade: municipio.value?.Id ?? 0,
+    nextTick(() => {
+      if (!municipio.value) return;
+      Object.assign(state.value, {
+        cidade: municipio.value?.Id ?? 0,
+      })
     })
   },
   { deep: true }

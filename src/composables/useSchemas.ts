@@ -33,15 +33,15 @@ export const useSchemas = {
     businessId: z.string().refine(useRules.uuid)
   }),
   createProductSchema: z.object({
-    name: z.string().min(1),
-    description: z.string().min(1),
-    price: z.number().nonnegative(),
+    name: z.string().nonempty('Campo obrigatório'),
+    description: z.string().nonempty('Campo obrigatório'),
+    price: z.number().nonnegative('O número deve ser positivo'),
     businessId: z.string().refine(useRules.uuid)
   }),
   editProductSchema: z.object({
-    name: z.string().min(1).optional(),
-    description: z.string().min(1).optional(),
-    price: z.number().nonnegative().optional(),
+    name: z.string().nonempty('Campo obrigatório'),
+    description: z.string().nonempty('Campo obrigatório'),
+    price: z.number().nonnegative('O número deve ser positivo'),
     businessId: z.string().refine(useRules.uuid)
   }),
   getProductSchema: z.object({

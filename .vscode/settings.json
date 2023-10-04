@@ -1,0 +1,27 @@
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "editor.qhtmlckSuggestions": {
+    "strings": true
+  },
+  "markdown-image.base.fileFormat": "jpg",
+  "markdown-image.local.path": "/src/public/assets/blog",
+  "markdown-image.local.referencePath": "/assets/blog/",
+  "markdown-image.base.fileNameFormat": "${hash}-nuxa",
+  "tailwindCSS.experimental.classRegex": [
+    ["html:\\s*{([^)]*)\\s*}", "[\"'`]([^\"'`]*).*?[\"'`]"],
+    ["/\\*html\\*/\\s*{([^;]*)}", ":\\s*[\"'`]([^\"'`]*).*?[\"'`]"]
+  ],
+  "tailwindCSS.classAttributes": ["class", "className", "ngClass", "html"],
+  "editor.codeActionsOnSave": {
+    // For ESLint
+    "source.fixAll.eslint": true,
+    // For TSLint
+    "source.fixAll.tslint": true,
+    // For Stylelint
+    "source.fixAll.stylelint": true
+  },
+  "eslint.validate": ["javascript", "typescript", "vue", "html", "json"]
+}

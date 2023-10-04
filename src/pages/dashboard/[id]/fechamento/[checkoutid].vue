@@ -121,6 +121,7 @@
           <div>
             <nuxt-link v-if="data?.Business?.whatsapp"
               :href="`https://wa.me/${useMaskRemover(data?.Business?.whatsapp)}/?text=${formatted_message}`"
+              target="_blank"
               class="btn btn-primary btn-sm gap-3">
               <Icon name="logos:whatsapp-icon" />
               Conversar com o cliente
@@ -176,6 +177,7 @@ import { TOrder } from '~/types/order';
 
 const route = useRoute()
 const data = await $fetch<TOrder>(`/api/v1/private/checkouts/${route.params.id}/${route.params.checkoutid}`, { headers: useRequestHeaders(['cookie']) })
+const user = useAuthentication()
 
 if (!data) throw createError({
   statusCode: 404,
@@ -186,9 +188,10 @@ const completeAddr = data.address ? new AddressFormatter(data.address) : null
 await completeAddr?.fetch()
 
 const formatted_message = computed(() => {
-  const greating = encodeURIComponent(`Olá, ${useGreeting()}.`).replace(/'/g, "%27").replace(/"/g, "%22");
-  const message = encodeURIComponent(`Eu fiz o pedido #${data?.id} em ${data?.Business.name} e gostaria de dar continuidade no meu atendimento por aqui.`).replace(/'/g, "%27").replace(/"/g, "%22");
-  return [greating, message].join('%0a')
+  const greating = encodeURIComponent(`Olá, ${useGreeting()} ${data.contact?.nome.toLocaleUpperCase()}.`).replace(/'/g, "%27").replace(/"/g, "%22");
+  const message = encodeURIComponent(`Obrigado por escolher ${data?.Business.name}.`).replace(/'/g, "%27").replace(/"/g, "%22");
+  const order = encodeURIComponent(`Seu número de pedido é #${data?.id}`).replace(/'/g, "%27").replace(/"/g, "%22");
+  return [greating, message, order].join('%0a')
 })
 
 const source = ref(data?.id ?? '')

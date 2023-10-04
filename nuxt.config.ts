@@ -7,7 +7,6 @@ export default defineNuxtConfig({
     'nuxt-headlessui',
     'nuxt-icon',
     '@pinia/nuxt',
-    '@pinia-plugin-persistedstate/nuxt',
     '@nuxt/image-edge',
     'nuxt-simple-sitemap',
     'nuxt-simple-robots'
