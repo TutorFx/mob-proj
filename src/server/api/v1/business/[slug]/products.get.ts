@@ -1,4 +1,5 @@
 import { Prisma, PrismaClient } from '@prisma/client';
+import sanitizeHtml from 'sanitize-html';
 const prisma = new PrismaClient()
 
 export default defineEventHandler(async (event) => {
@@ -28,7 +29,8 @@ export default defineEventHandler(async (event) => {
       }
     }))?.Products.map((e) => ({
       ...e,
-      slug: encodeURIComponent(e.name)
+      slug: encodeURIComponent(e.name),
+      description: sanitizeHtml(e.description)
     }))
 
   } catch (error) {
