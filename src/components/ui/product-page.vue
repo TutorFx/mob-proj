@@ -7,7 +7,7 @@
       <div class="grid gap-3 md:gap-6">
         <ui-breadcrumbs> {{ productdata?.name }} </ui-breadcrumbs>
         <h2 class="text-4xl font-bold grid grid-flow-col justify-start gap-6 items-center header"><span>{{ productdata?.name }}</span> <client-only><span @click="startShare" v-if="isSupported" class="btn btn-ghost btn-sm btn-circle"><Icon name="mdi:share-variant" size="24" /></span></client-only></h2>
-        <h4 class="text-2xl font-medium text-neutral subheader">{{ productdata?.description }}</h4>
+        <h4 class="text-2xl font-medium text-neutral subheader" v-html="productdata?.description"></h4>
         <h5 class="text-2xl font-medium pricing">{{ useMoney(productdata?.price ?? 0) }} {{ quantity > 1 ? `(${useMoney((productdata?.price ?? 0) * quantity)})`:undefined }}</h5>
         <div class="grid grid-flow-row lg:grid-flow-col justify-start gap-3 md:gap-6">
           <ui-quantity v-model="quantity" class="order-last md:order-first" />

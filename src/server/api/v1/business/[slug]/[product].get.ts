@@ -2,6 +2,7 @@ import { Prisma, PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient()
 import { ZodError, z } from 'zod';
 import { fromZodError } from 'zod-validation-error';
+import sanitizeHtml from 'sanitize-html';
 
 export default defineEventHandler(async (event) => {
   try {
@@ -15,7 +16,7 @@ export default defineEventHandler(async (event) => {
     slugSchema.parse(slug)
     console.log(decodeURI(decodeURIComponent(product)), slug)
 
-    return await prisma.product.findFirst({
+    const response = await prisma.product.findFirst({
       where: {
         name: decodeURI(decodeURIComponent(product)),
         Business: {
@@ -35,7 +36,10 @@ export default defineEventHandler(async (event) => {
         }
       },
     })
-
+    if (!response) return sendError(event, createError({ statusCode: 404, statusMessage: 'Produto nao encontrado' }));
+    return {
+      ...response, description: sanitizeHtml(response.description)
+    }
   } catch (error) {
     if (error instanceof ZodError)
       return sendError(
