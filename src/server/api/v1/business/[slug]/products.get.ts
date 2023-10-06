@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
     }))?.Products.map((e) => ({
       ...e,
       slug: encodeURIComponent(e.name),
-      description: sanitizeHtml(e.description)
+      description: sanitizeHtml(e.description).replace(/<[^>]+>/g, '')
     }))
 
   } catch (error) {
