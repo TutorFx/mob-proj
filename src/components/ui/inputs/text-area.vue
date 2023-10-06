@@ -26,7 +26,7 @@ const editor = useEditor({
     content: state.value,
     editorProps: {
         attributes: {
-            class: 'w-full prose my-6 mx-auto focus:outline-none',
+            class: 'w-full prose mx-auto focus:outline-none',
         },
     },
     onUpdate: () => {
