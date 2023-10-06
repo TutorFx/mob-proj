@@ -7,8 +7,8 @@
   </label>
   <label class="mb-3">
     <div class="label-text mb-3">Descrição</div>
-    <textarea v-model="modelValue.description" class="textarea textarea-bordered w-full"
-    placeholder="Ex: Adquira já uma bela bancada de mármore para sua casa"></textarea>
+    <ui-inputs-text-area v-model="modelValue.description" class="textarea textarea-bordered w-full"
+    placeholder="Ex: Adquira já uma bela bancada de mármore para sua casa"></ui-inputs-text-area>
     <div class="text-error">{{ getErrors('description') }}</div>
   </label>
   <label class="mb-3">
