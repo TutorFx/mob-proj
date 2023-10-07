@@ -2,6 +2,7 @@ import { Prisma, PrismaClient } from '@prisma/client';
 import { ZodError, z } from 'zod';
 import { fromZodError } from 'zod-validation-error';
 import { useSchemas } from '~/composables/useSchemas';
+import sanitizeHtml from 'sanitize-html';
 
 const prisma = new PrismaClient()
 const { getProductSchema } = useSchemas;
@@ -74,7 +75,11 @@ export default defineEventHandler(async (event) => {
       orderBy: { updatedAt: 'desc' }
     })
 
-    return product;
+    return product?.map((e) => ({
+      ...e,
+      slug: encodeURIComponent(e.name),
+      description: sanitizeHtml(e.description).replace(/<[^>]+>/g, '')
+    }));
 
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002')

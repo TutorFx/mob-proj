@@ -1,5 +1,7 @@
 <template>
-    <EditorContent :editor="editor" />
+    <div>
+        <EditorContent :editor="editor" />
+    </div>
 </template>
 
 <script setup lang="ts">
