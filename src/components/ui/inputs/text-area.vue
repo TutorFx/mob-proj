@@ -30,10 +30,18 @@ const editor = useEditor({
         },
     },
     onUpdate: () => {
-        state.value = editor.value?.getHTML()
+        const html = editor.value?.getHTML()
+        if (!html) return state.value = '';
+        state.value = html
     },
     extensions: [
         StarterKit,
     ],
 })
+
+//watchEffect(() => editor.value?.commands.setContent(state.value))
+watch(state, () => {
+    editor.value?.commands.setContent(state.value)
+})
+
 </script>

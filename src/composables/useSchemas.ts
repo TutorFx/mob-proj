@@ -68,4 +68,9 @@ export const useSchemas = {
     numero: z.number().nullable(),
     complemento: z.string().nullable(),
   }),
+  gptDescription: z.object({
+    name: z.string().nonempty('Campo obrigatório'),
+    price: z.number().nonnegative('O número deve ser positivo'),
+    description: z.string().optional(),
+  })
 }
