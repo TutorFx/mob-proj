@@ -3,6 +3,7 @@ import { sendError } from "h3";
 import { z, ZodError } from 'zod';
 import { useSchemas } from "~/composables/useSchemas"
 import { fromZodError } from 'zod-validation-error';
+import bcrypt from "bcryptjs";
 const { registerSchema } = useSchemas;
 
 
@@ -23,11 +24,12 @@ export default defineEventHandler(async (event) => {
     return 'Unknown Error'
   }
   try {
+    const hash = await bcrypt.hash(body.password, 10)
     await prisma.user.create({
       data: {
         email: body.email,
         cpf: body.cpf,
-        password: body.password,
+        password: hash,
       }
     })
     return { message: 'Created' }

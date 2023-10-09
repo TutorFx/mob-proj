@@ -3,6 +3,7 @@ import { H3Event } from 'h3'
 import { validateToken, generateToken } from './token';
 import { useSchemas } from '@/composables/useSchemas'
 import Stripe from 'stripe';
+import { TokenData, Session } from '~/types';
 const config = useRuntimeConfig();
 const stripe = new Stripe(config.stripeSecretKey, { apiVersion: '2022-11-15' });
 
