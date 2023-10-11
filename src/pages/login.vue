@@ -5,7 +5,8 @@
         <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-primary">Login</h2>
         <p class="mt-2 text-center text-sm text-gray-600">
           ou
-          <nuxt-link :to="{name: 'register', query: $route.query}" class="font-medium text-primary hover:text-secondary">Cadastre-se</nuxt-link>
+          <nuxt-link :to="{ name: 'register', query: $route.query }"
+            class="font-medium text-primary hover:text-secondary">Cadastre-se</nuxt-link>
         </p>
       </div>
       <form class="mt-8 space-y-6" action="#" method="POST">
@@ -34,7 +35,8 @@
           </div>
 
           <div class="text-sm">
-            <a href="#" class="font-medium text-primary hover:text-secondary">Esqueceu a senha?</a>
+            <nuxt-link :to="{ name: 'recovery' }" class="font-medium text-primary hover:text-secondary">Esqueceu a
+              senha?</nuxt-link>
           </div>
         </div>
 

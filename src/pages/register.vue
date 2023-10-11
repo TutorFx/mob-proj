@@ -40,7 +40,8 @@
           </div>
 
           <div class="text-sm">
-            <a href="#" class="font-medium text-primary hover:text-secondary">Esqueceu a senha?</a>
+            <nuxt-link :to="{ name: 'recovery' }" class="font-medium text-primary hover:text-secondary">Esqueceu a
+              senha?</nuxt-link>
           </div>
         </div>
 
