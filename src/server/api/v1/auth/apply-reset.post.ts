@@ -1,6 +1,6 @@
 import { generateToken } from "../../../utils/token";
 import bcrypt from "bcryptjs";
-import { PrismaClient, Prisma } from "@prisma/client";
+import { PrismaClient, Prisma, TokenStatus } from "@prisma/client";
 import { useSchemas } from "~/composables/useSchemas";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
@@ -9,44 +9,44 @@ import { Authentication } from "~/server/utils/auth";
 const { public: global } = useRuntimeConfig();
 
 export default defineEventHandler(async (event) => {
-  const body = await readBody(event);
-  const { credential } = body;
+  const body = await readBody<{ password: string; token: string }>(event);
+  const { password, token } = body;
   try {
     const prisma = new PrismaClient();
-    const user = await prisma.user.findFirst({
+
+    const resetToken = await prisma.resetToken.update({
       where: {
-        OR: [{ email: credential }, { cpf: credential }],
+        id: token,
+      },
+      select: {
+        User: { select: { id: true } },
+      },
+      data: {
+        status: TokenStatus.USED,
       },
     });
 
-    if (!user)
+    if (!resetToken)
       return sendError(
         event,
         createError({
-          statusCode: 404,
-          statusMessage: "User not found",
+          statusCode: 400,
+          statusMessage: "Invalid Token",
         })
       );
 
-    const token = await prisma.resetToken.create({
+    const user = await prisma.user.update({
+      where: {
+        id: resetToken.User.id,
+      },
       data: {
-        userId: user.id,
+        password: bcrypt.hashSync(password, 10),
       },
     });
-
-    const service = new MailServices.Recovery({
-      to: user.email,
-      from: "no-reply@nuxa.io",
-      subject: "Recuperação de senha",
-      template: templates.recovery,
-      context: {
-        token: `${global.URL}recovery/${token.id}`,
-      },
-    });
-
-    service.sendMail();
-
-    return { status: 200, message: "Redefine token sent" };
+    const auth = new Authentication(user);
+    auth.createCookie(event);
+    return { status: 200, message: "Authenticated" };
+    
   } catch (error) {
     if (error instanceof ZodError)
       return sendError(

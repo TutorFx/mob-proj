@@ -3,8 +3,9 @@ import { useTimestamp } from "@vueuse/core";
 import { useCookies } from "@vueuse/integrations/useCookies";
 import moment from "moment";
 import { defineStore } from "pinia";
-import { z } from "zod";
-import {validateToken} from "@/types";
+import { ZodError, z } from "zod";
+import { validateToken } from "@/types";
+import { FetchError } from "ofetch";
 
 type Login = z.infer<typeof useSchemas.loginSchema>;
 
@@ -60,36 +61,120 @@ export class CreateAuthentication {
   static message: string;
   login(state: Login) {
     try {
-      useSchemas.loginSchema.parse(state)
-      $fetch('/api/v1/auth/login', {
-        method: 'POST',
-        body: state
+      useSchemas.loginSchema.parse(state);
+      $fetch("/api/v1/auth/login", {
+        method: "POST",
+        body: state,
       }).then(() => {
-        const route = useRoute()
-        const store = useAuthentication()
+        const route = useRoute();
+        const store = useAuthentication();
         const { callback } = route.query;
-        if (!callback) return useRouter().push('/dashboard');
-        if (store.isAuthenticated && !(callback instanceof Array)) return useRouter().push(decodeURI(callback));
-        else watch(() => store.isAuthenticated, (newVal, oldVal) => {
-          if (!(newVal && !oldVal)) return;
-          if (!(callback instanceof Array)) return useRouter().push(decodeURI(callback));
-        })
-      })
-    } catch (err) { }
+        if (!callback) return useRouter().push("/dashboard");
+        if (store.isAuthenticated && !(callback instanceof Array))
+          return useRouter().push(decodeURI(callback));
+        else
+          watch(
+            () => store.isAuthenticated,
+            (newVal, oldVal) => {
+              if (!(newVal && !oldVal)) return;
+              if (!(callback instanceof Array))
+                return useRouter().push(decodeURI(callback));
+            }
+          );
+      });
+    } catch (err) {}
   }
 }
 
 export class CreateRecovery {
-  static status: number;
-  static message: string;
-  async login(credential: string) {
+  state = ref({
+    credential: "",
+  });
+  get = () => {
+    return this.state.value;
+  };
+  async generate() {
     try {
+      const alert = new NuxaAlert();
       await $fetch("/api/v1/auth/request-reset", {
         method: "POST",
-        body: { credential },
-      })
-    } catch (err) {
+        body: { ...this.get() },
+      });
+      return alert.success({
+        title: "Sucesso",
+        body: "Enviamos um email para redefinir sua senha",
+        cancel: "Voltar",
+      });
+    } catch (error) {
+      const alert = new NuxaAlert();
+      if (error instanceof FetchError) {
+        if (error.status === 404)
+          return alert.warning({
+            title: "Usuário inválido",
+            body: "Usuário não encontrado",
+            cancel: "Voltar",
+          });
 
+        return alert.warning({
+          title: "Erro inesperado",
+          body: "Ocorreu um erro ao processar seu pedido, tente novamente mais tarde.",
+          cancel: "Voltar",
+        });
+      }
+    }
+  }
+}
+
+export class UseRecovery {
+  state = ref({
+    password: "",
+    passwordConfirmation: "",
+  });
+  get = () => {
+    return this.state.value;
+  };
+  async reset(token: string | string[]) {
+    try {
+      useSchemas.passwordReset.parse(this.get());
+      const router = useRouter();
+      await $fetch("/api/v1/auth/apply-reset", {
+        method: "POST",
+        body: {
+          password: this.state.value.password,
+          token,
+        },
+      });
+      await router.push("/dashboard");
+    } catch (error) {
+      const alert = new NuxaAlert();
+      if (error instanceof ZodError) {
+        return alert.warning({
+          title: "Senha inválida",
+          body: /* html */ `
+          <div>
+            Tente novamente, utilizando senhas que atendem aos seguintes critérios:
+            <div class="prose">
+              <div>
+                <ol class="w-auto mx-auto grid">
+                  <li>Pelo menos 8 caracteres</li>
+                  <li>Pelo menos 1 letra maiúscula</li>
+                  <li>Pelo menos 1 número</li>
+                  <li>As senhas devem conferir</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          `,
+          cancel: "Voltar",
+        });
+      }
+      if (error instanceof FetchError) {
+        return alert.warning({
+          title: "Erro ao enviar dados",
+          body: "Tente novamente mais tarde",
+          cancel: "Voltar",
+        });
+      }
     }
   }
 }
