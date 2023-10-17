@@ -66,6 +66,9 @@ model Business {
   Owner       User          @relation(fields: [OwnerId], references: [id])
   OwnerId     String
 
+  visible Boolean @default(true)
+  banned  Boolean @default(false)
+
   whatsapp String?
   email    String?
 

@@ -53,27 +53,21 @@ type TokenData = {
   isCostumer: boolean;
 }
 
-type validateToken = {
+type IValidateToken = {
   id: string;
   nome: string | null;
   email: string;
   plan: string;
+  role: string;
   iat: number;
   exp: number;
   isCostumer: boolean;
 }
 
 type Session = {
-  user: { nome: string | null; email: string; plan: string; isCostumer: boolean;}
+  user: { nome: string | null; email: string; plan: string; isCostumer: boolean; role: string; }
   id: string;
 }
-
-type MenuItem = {
-  title: string,
-  to: RouteLocationRaw,
-}
-
-type MenuItems = MenuItem[]
 
 type ValidateResponse = { user: Session, token: string }
 

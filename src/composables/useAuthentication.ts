@@ -6,6 +6,7 @@ import { useCookies } from '@vueuse/integrations/useCookies';
 import { z } from "zod";
 import moment from 'moment';
 import { VerifyAuthentication } from "@/server/utils/auth"
+import { IValidateToken } from "@/types";
 
 type Login = z.infer<typeof useSchemas.loginSchema>;
 
@@ -20,7 +21,7 @@ export const useAuthentication = defineStore("authentication", () => {
 
   const tokenData = computed(() => {
     try {
-      return JSON.parse(atob(token.value?.split('.')[1])) as validateToken
+      return JSON.parse(atob(token.value?.split('.')[1])) as IValidateToken
     } catch (e) {
       return false
     }
@@ -28,9 +29,9 @@ export const useAuthentication = defineStore("authentication", () => {
 
   const session = computed(() => {
     try {
-      return JSON.parse(atob(token.value?.split('.')[1])) as validateToken
+      return JSON.parse(atob(token.value?.split('.')[1])) as IValidateToken
     } catch (e) {
-      return { id: null, nome: null, email: null, plan: null, iat: null, exp: null }
+      return { id: null, nome: null, email: null, plan: null, iat: null, exp: null, role: null }
     }
   })
 
