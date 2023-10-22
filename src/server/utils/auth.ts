@@ -3,7 +3,7 @@ import { H3Event } from 'h3'
 import { validateToken, generateToken } from './token';
 import { useSchemas } from '@/composables/useSchemas'
 import Stripe from 'stripe';
-import { TokenData, Session } from '~/types';
+import { TokenData, Session, IValidateToken } from '~/types';
 const config = useRuntimeConfig();
 const stripe = new Stripe(config.stripeSecretKey, { apiVersion: '2022-11-15' });
 
@@ -19,8 +19,9 @@ export class Authentication {
       nome: user.nome,
       email: user.email,
       plan: user.plan,
+      role: user.role,
       isCostumer: Boolean(user.stripe_costumer_id)
-    } as validateToken;
+    };
     Authentication.user = data;
     Authentication.token = generateToken(data);
   }
@@ -31,7 +32,7 @@ export class Authentication {
 
 export class VerifyAuthentication {
   static token: string;
-  static user: validateToken;
+  static user: IValidateToken;
   constructor(event: H3Event) {
     const token = getCookie(event, 'token');
     if (!token) throw new Error('Invalid_Token', { cause: 'You got an invalid token' })
@@ -44,9 +45,9 @@ export class VerifyAuthentication {
   getUser() { return VerifyAuthentication.user };
   getToken() { return VerifyAuthentication.token };
   getSession() {
-    const { id, email, nome, plan, isCostumer } = VerifyAuthentication.user
+    const { id, email, nome, plan, role, isCostumer } = VerifyAuthentication.user
     return {
-      user: { email, nome, plan, isCostumer },
+      user: { email, nome, plan, role, isCostumer },
       id
     } as Session
   }

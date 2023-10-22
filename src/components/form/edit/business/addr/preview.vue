@@ -67,7 +67,7 @@ const state = computed({
 const place = ref()
 
 watchEffect(async () => {
-  if (state.value.Address.cidade && state.value.Address.estado){
+  if (state.value.Address?.cidade && state.value.Address?.estado){
     place.value = await $fetch('/api/v1/address/', { query: { cityId: state.value.Address.cidade, stateId: state.value.Address.estado } })
   }
 })
