@@ -78,7 +78,7 @@ export default defineNuxtConfig({
       SMTP_USER: process.env.BREVO_SMTP_USER,
     },
     public: {
-      URL: process.env.ORIGIN ?? 'http://localhost:3000/',
+      URL: process.env.NUXT_PUBLIC_SITE_URL ?? 'http://localhost:3000/',
       APP_NAME: 'Nuxa',
       cdnBaseUrl: `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.S3_DEFAULT_REGION}.amazonaws.com/`,
     },

@@ -75,6 +75,7 @@ class Recovery extends MailService {
 }
 
 export const MailServices = {
+  Default: MailService,
   Recovery,
 };
 
