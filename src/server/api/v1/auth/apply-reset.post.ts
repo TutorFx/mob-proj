@@ -1,47 +1,52 @@
 import { generateToken } from "../../../utils/token";
 import bcrypt from "bcryptjs";
-import { PrismaClient, Prisma } from "@prisma/client";
+import { PrismaClient, Prisma, TokenStatus } from "@prisma/client";
 import { useSchemas } from "~/composables/useSchemas";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
 import { Authentication } from "~/server/utils/auth";
 
+const { public: global } = useRuntimeConfig();
+
 export default defineEventHandler(async (event) => {
-  const body = await readBody(event);
-  const { username, password } = body;
+  const body = await readBody<{ password: string; token: string }>(event);
+  const { password, token } = body;
   try {
     const prisma = new PrismaClient();
-    const user = await prisma.user.findFirst({
+
+    const resetToken = await prisma.resetToken.update({
       where: {
-        OR: [{ email: username }, { cpf: username }],
+        id: token,
+      },
+      select: {
+        User: { select: { id: true } },
+      },
+      data: {
+        status: TokenStatus.USED,
       },
     });
 
-    if (!user)
+    if (!resetToken)
       return sendError(
         event,
         createError({
           statusCode: 400,
-          statusMessage: "User not found",
+          statusMessage: "Invalid Token",
         })
       );
 
-    if (!(await bcrypt.compare(password, user.password))) {
-      console.error(
-        "Warning: Malicious login attempt registered, bad credentials provided"
-      );
-      return sendError(
-        event,
-        createError({
-          statusCode: 403,
-          statusMessage: "Not Authenticated",
-        })
-      );
-    }
-
+    const user = await prisma.user.update({
+      where: {
+        id: resetToken.User.id,
+      },
+      data: {
+        password: bcrypt.hashSync(password, 10),
+      },
+    });
     const auth = new Authentication(user);
     auth.createCookie(event);
     return { status: 200, message: "Authenticated" };
+    
   } catch (error) {
     if (error instanceof ZodError)
       return sendError(

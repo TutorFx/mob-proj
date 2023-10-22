@@ -6,14 +6,16 @@ import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
 import { Authentication } from "~/server/utils/auth";
 
+const { public: global } = useRuntimeConfig();
+
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const { username, password } = body;
+  const { credential } = body;
   try {
     const prisma = new PrismaClient();
     const user = await prisma.user.findFirst({
       where: {
-        OR: [{ email: username }, { cpf: username }],
+        OR: [{ email: credential }, { cpf: credential }],
       },
     });
 
@@ -21,27 +23,30 @@ export default defineEventHandler(async (event) => {
       return sendError(
         event,
         createError({
-          statusCode: 400,
+          statusCode: 404,
           statusMessage: "User not found",
         })
       );
 
-    if (!(await bcrypt.compare(password, user.password))) {
-      console.error(
-        "Warning: Malicious login attempt registered, bad credentials provided"
-      );
-      return sendError(
-        event,
-        createError({
-          statusCode: 403,
-          statusMessage: "Not Authenticated",
-        })
-      );
-    }
+    const token = await prisma.resetToken.create({
+      data: {
+        userId: user.id,
+      },
+    });
 
-    const auth = new Authentication(user);
-    auth.createCookie(event);
-    return { status: 200, message: "Authenticated" };
+    const service = new MailServices.Recovery({
+      to: user.email,
+      from: "no-reply@nuxa.io",
+      subject: "Recuperação de senha",
+      template: templates.recovery,
+      context: {
+        token: `${global.URL}recovery/${token.id}`,
+      },
+    });
+
+    service.sendMail();
+
+    return { status: 200, message: "Redefine token sent" };
   } catch (error) {
     if (error instanceof ZodError)
       return sendError(

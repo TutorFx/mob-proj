@@ -1,5 +1,3 @@
-import { RouteLocationRaw } from "vue-router";
-
 type IObjectStatus = {
   [key: string]: string;
 }
@@ -80,6 +78,6 @@ type MenuItems = MenuItem[]
 type ValidateResponse = { user: Session, token: string }
 
 type TItem = { id: string, quantity: number }
-type TCart = { [key: string]: Array<TItem> }
+export type TCart = { [key: string]: Array<TItem> }
 
 declare global { ILoginParams, IItem, IAddress, IObjectStatus };

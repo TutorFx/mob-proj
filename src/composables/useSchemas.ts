@@ -68,4 +68,20 @@ export const useSchemas = {
     numero: z.number().nullable(),
     complemento: z.string().nullable(),
   }),
+  gptDescription: z.object({
+    name: z.string().nonempty('Campo obrigatório'),
+    price: z.number().nonnegative('O número deve ser positivo'),
+    description: z.string().optional(),
+  }),
+  passwordReset: z.object({
+    password: z.string().nonempty('Campo obrigatório'),
+    passwordConfirmation: z.string().nonempty('Campo obrigatório'),
+  }).superRefine(({ passwordConfirmation, password }, ctx) => {
+    if (passwordConfirmation !== password) {
+      ctx.addIssue({
+        code: "custom",
+        message: "As senhas não conferem"
+      });
+    }
+  })
 }
