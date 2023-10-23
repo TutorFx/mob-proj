@@ -58,11 +58,20 @@
                 </ListboxOption>
                 <button @click.prevent="businessStore.$open()"
                   class="group px-3 py-2 w-full flex items-center gap-2 truncate text-nuxa hover:bg-nuxa hover:text-white rounded-lg cursor-pointer">
-                  <Icon name="mdi:plus-circle-outline" size="20" />
+                  <Icon name="ic:outline-add-business" size="20" />
                   <div>
                     adicionar empresa
                   </div>
                 </button>
+                <nuxt-link
+                  v-if="auth.session.role === 'ADMIN'"
+                  :to="{ name: 'dashboard-admin' }"
+                  class="group px-3 py-2 w-full flex items-center gap-2 truncate text-nuxa hover:bg-nuxa hover:text-white rounded-lg cursor-pointer">
+                  <Icon name="mdi:shield-outline" size="20" />
+                  <div>
+                    administrativo
+                  </div>
+                </nuxt-link>
               </div>
             </ListboxOptions>
 

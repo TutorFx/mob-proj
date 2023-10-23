@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { ValidateResponse } from "~/types";
 
 export const generateToken = (params = {}) : string => {
   return jwt.sign(params, process.env.PRIVATE_KEY ?? 'test-key', {

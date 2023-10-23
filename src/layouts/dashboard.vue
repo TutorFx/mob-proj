@@ -9,12 +9,23 @@
     </dashboard-menu>
     <div class="bg-base-100 grid md:grid-cols-[max-content_1fr]">
       <div class="relative hidden md:block">
-        <ui-side-menu-business v-if="$route.params.id" class="md:border-r border-base-300 min-h-full" />
+        <ui-side-menu v-if="$route.name?.toString().startsWith('dashboard-id')" :data="useMenu('StoreDashboard')"
+          class="md:border-r border-base-300 min-h-full" />
+        <ui-side-menu v-if="$route.name?.toString().startsWith('dashboard-admin')" :data="useMenu('AdminDashboard')"
+          class="md:border-r border-base-300 min-h-full" />
       </div>
-      <router-view v-if="!menu" />
-      <div v-else>
-        <ui-side-menu-business-mobile v-if="$route.params.id" />
+      <div v-if="menu" class="fixed inset-0 bg-base-100">
+        <dashboard-menu class="border-b">
+          <div @click="menu = !menu" class="btn btn-circle btn-ghost md:hidden">
+            <Icon name="ic:menu" size="22" />
+          </div>
+        </dashboard-menu>
+        <ui-side-menu-mobile v-if="$route.name?.toString().startsWith('dashboard-id')"
+          :data="useMenu('StoreDashboard')" />
+        <ui-side-menu-mobile v-if="$route.name?.toString().startsWith('dashboard-admin')"
+          :data="useMenu('AdminDashboard')" />
       </div>
+      <NuxtPage />
     </div>
   </div>
 </template>
