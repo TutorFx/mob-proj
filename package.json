@@ -9,6 +9,8 @@
     "postinstall": "nuxt prepare",
     "migrate": "prisma migrate dev --name init",
     "migrate:prd": "yarn dotenv -e .env.prd prisma migrate dev --name prd",
+    "studio": "yarn prisma studio",
+    "studio:prd": "yarn dotenv -e .env.prd yarn prisma studio",
     "stripe:dev": ".stripe/stripe.exe listen --forward-to localhost:3000/api/v1/webhooks",
     "stripe:trigger": ".stripe/stripe.exe trigger customer.subscription.updated",
     "pull": "npx prisma db pull"
