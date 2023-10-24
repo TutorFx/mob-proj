@@ -1,12 +1,13 @@
 import { useSchemas } from "@/composables/useSchemas";
 import { useTimestamp } from "@vueuse/core";
 import jwt from 'jsonwebtoken';
-import { useSchemas } from '@/composables/useSchemas';
 import { useCookies } from '@vueuse/integrations/useCookies';
-import { z } from "zod";
+import { ZodError, z } from "zod";
 import moment from 'moment';
 import { VerifyAuthentication } from "@/server/utils/auth"
+import { FetchError } from "ofetch";
 import { IValidateToken } from "@/types";
+import { defineStore } from "pinia";
 type Login = z.infer<typeof useSchemas.loginSchema>;
 
 export const useAuthentication = defineStore("authentication", () => {
