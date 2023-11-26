@@ -1,7 +1,8 @@
-import { deleteCloudinaryImage, deleteFromS3 } from "@/server/utils"
-import { Prisma, PrismaClient, Image } from '@prisma/client';
-import { ZodError, z } from 'zod';
+import { Prisma, PrismaClient } from '@prisma/client';
+import type { z } from 'zod';
+import { ZodError } from 'zod';
 import { fromZodError } from 'zod-validation-error';
+import { deleteFromS3 } from "@/server/utils"
 import { useSchemas } from '~/composables/useSchemas';
 
 const prisma = new PrismaClient()

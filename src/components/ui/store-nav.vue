@@ -1,7 +1,7 @@
 <template>
   <ui-nav>
     <template #default>
-      <nuxt-link :to="{ name: 'loja-slug', params: { slug } }" class="btn btn-ghost normal-case font-black text-xl">{{
+      <nuxt-link :to="{ name: 'loja-slug', params: { slug } }" class="btn btn-ghost text-xl font-black normal-case">{{
         data?.name }}</nuxt-link>
     </template>
     <template #end>

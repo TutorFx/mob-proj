@@ -1,11 +1,12 @@
-import { getServerSession } from '@/server/utils/auth';
+import fs from 'node:fs';
 import type { H3Event } from 'h3';
-import { DeleteApiResponse, UploadApiResponse, v2 as _cloudinary } from 'cloudinary';
+import type { DeleteApiResponse, UploadApiResponse} from 'cloudinary';
+import { v2 as _cloudinary } from 'cloudinary';
 import { DeleteObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { v4 as uuidv4 } from 'uuid';
-import fs from 'fs';
+import { getServerSession } from '@/server/utils/auth';
 
-export const middleware = async (event: H3Event, callback: Function) => {
+export const middleware = (event: H3Event, callback: Function) => {
   const session = getServerSession(event);
   if (!session) sendError(
     event,
@@ -36,9 +37,9 @@ const s3 = new S3Client({
   },
 });
 
-export const uploadToCloudinary = (image_path: string): Promise<UploadApiResponse> => {
+export const uploadToCloudinary = (imagePath: string): Promise<UploadApiResponse> => {
   return new Promise((resolve, reject) => {
-    cloudinary().uploader.upload(image_path, (error, data) => {
+    cloudinary().uploader.upload(imagePath, (error, data) => {
       if (error) {
         reject(error)
       }
@@ -47,9 +48,9 @@ export const uploadToCloudinary = (image_path: string): Promise<UploadApiRespons
   })
 }
 
-export const deleteCloudinaryImage = (image_id: string): Promise<DeleteApiResponse> => {
+export const deleteCloudinaryImage = (imageId: string): Promise<DeleteApiResponse> => {
   return new Promise((resolve, reject) => {
-    cloudinary().uploader.destroy(image_id, (error, data) => {
+    cloudinary().uploader.destroy(imageId, (error, data) => {
       if (error) {
         reject(error)
       }

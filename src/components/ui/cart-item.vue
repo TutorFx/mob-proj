@@ -1,13 +1,14 @@
 <template>
-  <div ref="container" class="overflow-hidden relative">
-    <div class="absolute inset-0 flex items-center gap-3 p-3 bg-error/10 rounded-lg">
-      <Icon name="mdi:cart-remove" class="text-error my-auto" size="30"  />
-      <h3 class="text-error font-black">Remover</h3>
+  <div ref="container" class="relative overflow-hidden">
+    <div class="absolute inset-0 flex items-center gap-3 rounded-lg bg-error/10 p-3">
+      <Icon name="mdi:cart-remove" class="my-auto text-error" size="30"  />
+      <h3 class="font-black text-error">Remover</h3>
     </div>
-    <div ref="target" :class="{ animated: !isSwiping }" :style="{ left, opacity }"
-      class="overlay rounded-lg bg-base-100 relative grid grid-cols-[max-content_1fr_max-content] items-center gap-3 justify-start">
-      <div class="w-16 h-16 row-span-2 rounded-lg overflow-hidden">
-        <nuxt-img class="object-cover min-h-full min-w-full" v-if="item.images?.at(0)?.Key" :src="usePrefixImages(item.images?.at(0)?.Key)"></nuxt-img>
+    <div
+ref="target" :class="{ animated: !isSwiping }" :style="{ left, opacity }"
+      class="overlay relative grid grid-cols-[max-content_1fr_max-content] items-center justify-start gap-3 rounded-lg bg-base-100">
+      <div class="row-span-2 h-16 w-16 overflow-hidden rounded-lg">
+        <nuxt-img v-if="item.images?.at(0)?.Key" class="min-h-full min-w-full object-cover" :src="usePrefixImages(item.images?.at(0)?.Key)"></nuxt-img>
       </div>
       <div class="truncate">{{ item.name }}</div>
       <div>{{ useMoney(item.price || 0) }}</div>
@@ -30,7 +31,7 @@
 <script setup lang="ts">
 import { useSwipe } from '@vueuse/core';
 import type { UseSwipeDirection } from '@vueuse/core'
-import { IItem } from '~/types/cart';
+import type { IItem } from '~/types/cart';
 
 const props = defineProps<{ item: IItem }>()
 const cart = useCart()

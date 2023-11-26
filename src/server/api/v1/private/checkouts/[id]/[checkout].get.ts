@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client';
 import { useSchemas } from '@/composables/useSchemas';
-import { z } from 'zod'
 const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {

@@ -1,18 +1,18 @@
 <template>
-  <div class="max-w-md w-full p-3">
-    <div class="bg-base-100 rounded-lg grid gap-4 py-2 px-1 border-error border-t-4">
-      <div class="text-lg text-bold py-3 px-5 text-center grid justify-center gap-2 text-error">
+  <div class="w-full max-w-md p-3">
+    <div class="grid gap-4 rounded-lg border-t-4 border-error bg-base-100 px-1 py-2">
+      <div class="text-bold grid justify-center gap-2 px-5 py-3 text-center text-lg text-error">
         <Icon name="FormDanger" size="124" class="mx-auto" />
         <div class="text-xl">
           {{ instance.title }}
         </div>
       </div>
-      <div class="py-3 px-5 text-stone-600 text-center max-w-xs mx-auto" v-html="instance.body" />
-      <div class="grid grid-flow-col p-3 gap-3">
-        <button @click="cancel()" class="py-3 px-5 hover:bg-base-200 transition-all rounded-md" :class="{ 'bg-error text-base-100 hover:text-black': !instance?.callback }">
+      <div class="mx-auto max-w-xs px-5 py-3 text-center text-stone-600" v-html="instance.body" />
+      <div class="grid grid-flow-col gap-3 p-3">
+        <button class="rounded-md px-5 py-3 transition-all hover:bg-base-200" :class="{ 'bg-error text-base-100 hover:text-black': !instance?.callback }" @click="cancel()">
           {{ instance.cancel }}
         </button>
-        <button v-if="instance?.callback" @click="accept()" class="py-3 px-5 bg-error text-base-100 rounded-md">
+        <button v-if="instance?.callback" class="rounded-md bg-error px-5 py-3 text-base-100" @click="accept()">
           {{ instance.accept }}
         </button>
       </div>

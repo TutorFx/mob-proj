@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="grid p-3 sticky top-0 z-40 gap-3">
-      <div class="tooltip tooltip-right" :data-tip="item.title" v-for="(item, i) in data" :key="i">
-        <nuxt-link :to="item.to" class="p-3 rounded-xl block">
+    <div class="sticky top-0 z-40 grid gap-3 p-3">
+      <div v-for="(item, i) in data" :key="i" class="tooltip tooltip-right" :data-tip="item.title">
+        <nuxt-link :to="item.to" class="block rounded-xl p-3">
           <Icon v-if="item.icon" :name="item.icon" size="24" />
         </nuxt-link>
       </div>

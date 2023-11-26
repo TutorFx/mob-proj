@@ -1,20 +1,20 @@
 <template>
-  <div class="container fill-screen grid gap-6 grid-rows-[max-content_1fr] items-start">
+  <div class="fill-screen container grid grid-rows-[max-content_1fr] items-start gap-6">
     <ui-nav class="grid grid-cols-[max-content_1fr] gap-3">
       <template #default>
-        <nuxt-link :to="{ name: 'loja-slug' }" class="btn btn-ghost normal-case font-black text-xl">{{ data?.name
+        <nuxt-link :to="{ name: 'loja-slug' }" class="btn btn-ghost text-xl font-black normal-case">{{ data?.name
         }}</nuxt-link>
       </template>
       <template #end>
-        <div class="max-w-lg w-full hidden md:block ml-auto">
-          <ui-stepper :steps="StepperData" v-model="Step" />
+        <div class="ml-auto hidden w-full max-w-lg md:block">
+          <ui-stepper v-model="Step" :steps="StepperData" />
         </div>
       </template>
     </ui-nav>
     <div v-if="!auth.isAuthenticated && !isAnonymous" class="grid min-h-full pb-6">
-      <div class="text-center grid items-center bg-primary/5 rounded-xl">
-        <div class="max-w-md mx-auto px-6">
-          <h2 class="text-xl font-semibold mb-3">
+      <div class="grid items-center rounded-xl bg-primary/5 text-center">
+        <div class="mx-auto max-w-md px-6">
+          <h2 class="mb-3 text-xl font-semibold">
             De que forma deseja seguir?
           </h2>
           <h4 class="text-md mb-6">
@@ -22,13 +22,13 @@
             prêmios que podem ser trocados por produtos.
           </h4>
           <div class="grid grid-flow-col gap-3">
-            <div @click="selectAnon()" class="btn btn-sm btn-primary rounded-full">
+            <div class="btn btn-primary btn-sm rounded-full" @click="selectAnon()">
               Anônima
             </div>
-            <div @click="selectRewards()" class="btn btn-sm btn-primary rounded-full gap-3">
+            <div class="btn btn-primary btn-sm gap-3 rounded-full" @click="selectRewards()">
               <div>
                 Resgatar prêmios (<span
-                  class="break-keep whitespace-nowrap bg-clip-text bg-gradient-to-r from-yellow-500 to-orange-400 text-transparent font-bold">
+                  class="whitespace-nowrap break-keep bg-gradient-to-r from-yellow-500 to-orange-400 bg-clip-text font-bold text-transparent">
                   {{ cart.$get?.info.pricesum }}
                   <Icon name="Coin" size="12" />
                 </span>)
@@ -38,33 +38,38 @@
         </div>
       </div>
     </div>
-    <div v-else
-      class="grid min-h-full gap-6 items-start md:grid-rows-1 grid-rows-[1fr_max-content] grid-cols-1 md:grid-cols-[1fr_max-content]">
+    <div
+v-else
+      class="grid min-h-full grid-cols-1 grid-rows-[1fr_max-content] items-start gap-6 md:grid-cols-[1fr_max-content] md:grid-rows-1">
       <div class="grid gap-6">
         <div class="block md:hidden">
-          <ui-stepper :steps="StepperData" v-model="Step" />
+          <ui-stepper v-model="Step" :steps="StepperData" />
         </div>
-        <component :is="Steps[Step].value.component" v-model="Steps[Step].value.data"
+        <component
+:is="Steps[Step].value.component" v-model="Steps[Step].value.data"
           v-model:valid="Steps[Step].value.valid"></component>
       </div>
-      <div class="p-6 max-w-sm border border-base-200 rounded-lg grid grid-rows-[max-content_1fr] gap-6 items-start">
-        <div class="grid gap-3 sm:order-first order-last">
-          <ui-cart-item v-for="(item) in cart.$get?.items" class="lg:max-w-sm" :item="item" :key="item.id" />
+      <div class="grid max-w-sm grid-rows-[max-content_1fr] items-start gap-6 rounded-lg border border-base-200 p-6">
+        <div class="order-last grid gap-3 sm:order-first">
+          <ui-cart-item v-for="(item) in cart.$get?.items" :key="item.id" class="lg:max-w-sm" :item="item" />
         </div>
         <div class="border-b" />
-        <div class="grid gap-4 order-first sm:order-last">
+        <div class="order-first grid gap-4 sm:order-last">
           <div class="grid grid-flow-col justify-between">
             <div>Valor final</div>
             <span>{{ useMoney(cart.$get?.info.pricesum || 0) }} + entrega</span>
           </div>
-          <div class="grid gap-3 grid-flow-col">
-            <div @click="backstep()" v-if="Step > 0" :disabled="!backstatus ? true : undefined"
-              class="btn btn-primary btn-block">Voltar</div>
+          <div class="grid grid-flow-col gap-3">
+            <div
+v-if="Step > 0" :disabled="!backstatus ? true : undefined" class="btn btn-primary btn-block"
+              @click="backstep()">Voltar</div>
             <nuxt-link v-else :to="{ name: 'loja-slug' }" class="btn btn-primary btn-block">Adicionar produtos</nuxt-link>
-            <div @click="finalizar()" v-if="Step + 1 === Steps.length" :disabled="!allsteps ? true : undefined"
-              class="btn btn-primary btn-block">Finalizar</div>
-            <div @click="nextstep()" v-else :disabled="!nextstatus || !current.valid ? true : undefined"
-              class="btn btn-primary btn-block">Continuar</div>
+            <div
+v-if="Step + 1 === Steps.length" :disabled="!allsteps ? true : undefined" class="btn btn-primary btn-block"
+              @click="finalizar()">Finalizar</div>
+            <div
+v-else :disabled="!nextstatus || !current.valid ? true : undefined" class="btn btn-primary btn-block"
+              @click="nextstep()">Continuar</div>
           </div>
         </div>
       </div>
@@ -73,9 +78,9 @@
 </template>
 
 <script setup lang="ts">
-import { TAddress } from '~/types/addr';
-import { Tcontact } from '~/types/user';
 import { useGeolocation } from '@vueuse/core'
+import type { TAddress } from '~/types/addr';
+import type { Tcontact } from '~/types/user';
 
 const auth = useAuthentication()
 
@@ -87,7 +92,7 @@ const selectAnon = () => {
   resume()
 }
 const selectRewards = async () => {
-  //await signIn(undefined, { callbackUrl: route.fullPath })
+  // await signIn(undefined, { callbackUrl: route.fullPath })
   router.push({
     path: '/login', query: {
       callback: route.fullPath
@@ -125,7 +130,7 @@ const PersonalState = ref<{ name: string, data: Tcontact, valid: boolean, compon
     name: 'Dados de contato',
     data: personal_default,
     valid: false,
-    //@ts-expect-error
+    // @ts-expect-error
     component: markRaw(personal_component)
   }
 )
@@ -135,7 +140,7 @@ const AddrState = ref<{ name: string, data: TAddress, valid: boolean, component:
     name: 'Endereço',
     data: addr_default,
     valid: false,
-    //@ts-expect-error
+    // @ts-expect-error
     component: markRaw(addr_component)
   }
 )

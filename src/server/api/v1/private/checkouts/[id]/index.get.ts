@@ -1,24 +1,22 @@
 import { PrismaClient } from '@prisma/client';
+import type { z } from 'zod';
 import { useSchemas } from '@/composables/useSchemas';
-import { z } from 'zod'
 const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
   const id = event.context.params?.id;
   const { uuid } = useSchemas
-  const query = getQuery(event)
+  type IGetCheckout = z.infer<typeof useSchemas.getCheckout>;
+  const query = getQuery<IGetCheckout>(event)
   try {
-    z.string().optional().parse(query.status)
-    z.string().optional().parse(query.search)
+    useSchemas.getCheckout.parse(query)
     uuid.parse(id);
     const orders = await prisma.order.findMany({
       where: {
         businessId: id,
-        // @ts-expect-error
-        status: query?.status,
+        status: query.status,
         OR: [{
           contact: {
-            // @ts-expect-error
             nome: {
               contains: query.search,
               mode: 'insensitive',
@@ -26,7 +24,6 @@ export default defineEventHandler(async (event) => {
           }
         },
         {
-          // @ts-expect-error
           id: query.search
         }],
       },
@@ -39,7 +36,7 @@ export default defineEventHandler(async (event) => {
         id: true,
         status: true,
         createdAt: true,
-        //address: true,
+        // address: true,
         ProductOnOrder: {
           select: {
             quantity: true,

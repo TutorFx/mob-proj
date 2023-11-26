@@ -1,8 +1,8 @@
-import { Prisma, PrismaClient, Product, Image } from '@prisma/client';
+import { Image, Prisma, PrismaClient, Product } from '@prisma/client';
 import { ZodError } from 'zod';
 import { fromZodError } from 'zod-validation-error';
 import { useSchemas } from '~/composables/useSchemas';
-import { IProductCart } from '~/types/cart';
+import type { IProductCart } from '~/types/cart';
 
 
 const prisma = new PrismaClient()
@@ -10,7 +10,7 @@ const { cart } = useSchemas;
 export default defineEventHandler(async (event) => {
 
   try {
-    // @ts-ignore
+    // @ts-expect-error
     const { slug } = event.context.params;
     const body = await readBody(event);
 

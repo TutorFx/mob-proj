@@ -1,7 +1,7 @@
-import nodemailer, { createTransport, SendMailOptions } from "nodemailer";
-import path from "path";
+/* eslint-disable @typescript-eslint/no-unsafe-declaration-merging */
+import path from "node:path";
+import { createTransport } from "nodemailer";
 import hbs from "nodemailer-express-handlebars";
-import { string } from "zod";
 
 const config = useRuntimeConfig();
 
@@ -49,7 +49,9 @@ interface MailServiceContent extends Email {
   transport: typeof transport;
 }
 
+
 interface MailService extends MailServiceContent {}
+
 class MailService {
   constructor(email: Email) {
     this.transport = transport;
@@ -59,6 +61,7 @@ class MailService {
     this.template = email.template;
     this.context = email.context;
   }
+
   async sendMail() {
     return await transport.sendMail(this);
   }

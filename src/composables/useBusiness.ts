@@ -1,6 +1,6 @@
 import { acceptHMRUpdate, defineStore } from "pinia";
-import { Business } from '@prisma/client';
-import { z } from 'zod';
+import type { Business } from '@prisma/client';
+import type { z } from 'zod';
 import { FetchError } from 'ofetch'
 import { getPlan } from '~/server/utils/plan'
 
@@ -41,7 +41,7 @@ export const useBusiness = () => {
 
     const $close = () => registerFieldVisible.value = false
     const $open = () => {
-      //if (!session.plan || (scopedBusinesses.value?.length ?? 0) > getPlan(session.plan).business_amount) return router.push({ name: 'dashboard-upgrade' });
+      // if (!session.plan || (scopedBusinesses.value?.length ?? 0) > getPlan(session.plan).business_amount) return router.push({ name: 'dashboard-upgrade' });
       registerFieldVisible.value = true
     }
     const creatingError = ref(false);

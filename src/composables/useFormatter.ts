@@ -1,4 +1,4 @@
-import { Address } from "@prisma/client";
+import type { Address } from "@prisma/client";
 
 export class AddressFormatter {
   cep: string;

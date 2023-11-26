@@ -1,5 +1,5 @@
 import { VerifyAuthentication } from '@/server/utils/auth'
-export default defineEventHandler(async (event) => {
+export default defineEventHandler((event) => {
   try {
     const auth = new VerifyAuthentication(event);
     return auth.getSession()

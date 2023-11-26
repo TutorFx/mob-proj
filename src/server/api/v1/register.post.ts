@@ -1,9 +1,9 @@
-import { PrismaClient, Prisma } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import { sendError } from "h3";
-import { z, ZodError } from 'zod';
-import { useSchemas } from "~/composables/useSchemas"
+import { ZodError } from 'zod';
 import { fromZodError } from 'zod-validation-error';
 import bcrypt from "bcryptjs";
+import { useSchemas } from "~/composables/useSchemas"
 const { registerSchema } = useSchemas;
 
 

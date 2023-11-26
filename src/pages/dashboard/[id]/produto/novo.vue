@@ -1,14 +1,14 @@
 <template>
   <div>
-    <div class="text-xl mb-4">Novo produto</div>
+    <div class="mb-4 text-xl">Novo produto</div>
     <div>
       <div class="form-control w-full max-w-xs">
         <form-product ref="formEl" v-model="state" />
-        <button v-if="!isCreating" @click="post" class="btn btn-block btn-primary gap-3">
+        <button v-if="!isCreating" class="btn btn-primary btn-block gap-3" @click="post">
           Postar Produto
           <Icon size="24" name="ic:baseline-arrow-right-alt" />
         </button>
-        <div v-else class="btn btn-block btn-primary">
+        <div v-else class="btn btn-primary btn-block">
           <ui-spinner />
         </div>
       </div>

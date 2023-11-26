@@ -1,15 +1,15 @@
 
 <template>
   <div class="grid grid-cols-[max-content_1fr] gap-3">
-    <div class="h-16 w-16 flex items-center justify-center rounded-lg overflow-hidden bg-gray-100">
-      <nuxt-img width="64" height="64" fit="cover" v-if="item.product?.images?.at(0)?.Key" class="object-cover" :src="usePrefixImages(item.product?.images?.at(0)?.Key)" />
+    <div class="flex h-16 w-16 items-center justify-center overflow-hidden rounded-lg bg-gray-100">
+      <nuxt-img v-if="item.product?.images?.at(0)?.Key" width="64" height="64" fit="cover" class="object-cover" :src="usePrefixImages(item.product?.images?.at(0)?.Key)" />
     </div>
-    <div class="grid grid-flow-col justify-between items-center gap-3">
+    <div class="grid grid-flow-col items-center justify-between gap-3">
       <div class="grid">
-        <div class="text-md font-bold truncate">
+        <div class="text-md truncate font-bold">
           {{ item.product.name }}
         </div>
-        <div class="text-md font-thin truncate">
+        <div class="text-md truncate font-thin">
           Quantidade: {{ item.quantity }}
         </div>
       </div>
@@ -18,6 +18,6 @@
 </template>
 
 <script setup lang="ts">
-import { TOrderProduct } from "~/types/order";
+import type { TOrderProduct } from "~/types/order";
 defineProps<{ item: TOrderProduct }>()
 </script>

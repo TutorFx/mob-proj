@@ -1,9 +1,10 @@
-import { uploadToCloudinary, uploadToS3 } from "@/server/utils"
-import { Prisma, PrismaClient, Image } from '@prisma/client';
-import { ZodError, z } from 'zod';
+import { Prisma, PrismaClient } from '@prisma/client';
+import type { z } from 'zod';
+import { ZodError } from 'zod';
 import { fromZodError } from 'zod-validation-error';
-import { useSchemas } from '~/composables/useSchemas';
 import formidable from 'formidable';
+import { useSchemas } from '~/composables/useSchemas';
+import { uploadToS3 } from "@/server/utils"
 
 const prisma = new PrismaClient()
 const { createProductSchema } = useSchemas;
@@ -12,7 +13,7 @@ type IProductSchema = z.infer<typeof createProductSchema>;
 export default defineEventHandler(async (event) => {
   const session = await event.context.session;
   const form = formidable({});
-  const response = await new Promise((resolve, reject) => {
+  const response: { fields: any, files: formidable.Files } = await new Promise((resolve, reject) => {
     form.parse(event.node.req, (err, fields, files) => {
       if (err) {
         reject(err);
@@ -20,8 +21,8 @@ export default defineEventHandler(async (event) => {
       resolve({ fields, files });
     });
   });
-  // @ts-ignore
-  const { fields, files }: { fields: any, files: formidable.PersistentFile[] } = response
+
+  const { fields, files }: { fields: any, files: formidable.Files } = response;
   const body: IProductSchema = JSON.parse(fields.fields);
 
   try {
@@ -90,15 +91,14 @@ export default defineEventHandler(async (event) => {
 
     await Promise.all(Object.keys(files).map(async (key: any) => {
       try {
-        const file = files[key]
-        const { $metadata, ETag, Key } = await uploadToS3(file)
-        const { requestId, extendedRequestId } = $metadata;
+        const file = files[key] as formidable.File
+        const { ETag, Key } = await uploadToS3(file)
         if (!Key || !ETag) return;
-        //const { bytes, secure_url, original_filename, public_id, etag } = await uploadToCloudinary(file.filepath)
+        // const { bytes, secure_url, original_filename, public_id, etag } = await uploadToCloudinary(file.filepath)
         await prisma.image.create({
           data: {
             Key,
-            bytes: file.bytes,
+            bytes: file.size,
             productId: product.id,
           }
         })

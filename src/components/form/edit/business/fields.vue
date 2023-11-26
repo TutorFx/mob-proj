@@ -1,17 +1,17 @@
 <template>
-  <div class="grid gap-6 justify-start grid-cols-1 md:grid-cols-2 max-w-3xl">
+  <div class="grid max-w-3xl grid-cols-1 justify-start gap-6 md:grid-cols-2">
     <div class="grid gap-3">
       <div class="text-neutral">Nome do seu negócio</div>
-      <input type="text" v-model="state.name" ref="name" class="input input-bordered w-full">
+      <input ref="name" v-model="state.name" type="text" class="input input-bordered w-full">
       <ul>
-        <li class="text-error text-xs">{{ getErrors('name') }}</li>
+        <li class="text-xs text-error">{{ getErrors('name') }}</li>
       </ul>
     </div>
     <div class="grid gap-3">
       <div class="text-neutral">Descrição</div>
-      <input type="text" v-model="state.description" class="input input-bordered w-full">
+      <input v-model="state.description" type="text" class="input input-bordered w-full">
       <ul>
-        <li class="text-error text-xs">{{ getErrors('description') }}</li>
+        <li class="text-xs text-error">{{ getErrors('description') }}</li>
       </ul>
     </div>
     <label class="text-neutral">
@@ -19,22 +19,23 @@
         Link da empresa
       </div>
       <div class="grid grid-flow-col rounded-lg border border-base-300">
-        <div class="bg-base items-center border-r border-base-300 px-4 text-xs rounded-l-lg grid">
+        <div class="bg-base grid items-center rounded-l-lg border-r border-base-300 px-4 text-xs">
           <div class="truncate">
             {{ url }}loja/
           </div>
         </div>
-        <input v-model="state.slug" type="text" class="input bg-base w-full rounded-r-lg text-sm"
+        <input
+v-model="state.slug" type="text" class="bg-base input w-full rounded-r-lg text-sm"
           placeholder="minha-empresa">
       </div>
       <ul>
-        <li class="text-error text-xs">{{ getErrors('slug') }}</li>
+        <li class="text-xs text-error">{{ getErrors('slug') }}</li>
       </ul>
     </label>
   </div>
 </template>
 <script lang="ts" setup>
-import { IEditBusiness } from '~/types/edit';
+import type { IEditBusiness } from '~/types/edit';
 const config = useRuntimeConfig()
 const url = config.public.URL;
 
@@ -46,7 +47,7 @@ const result = computed(() => useSchemas.createBusinessSchema.safeParse(state.va
 const errors = computed(() => result.value.success ? {} : result.value.error.format());
 
 const getErrors = (field: string) => {
-  //@ts-ignore
+  // @ts-expect-error
   return errors.value?.[field]?._errors?.at(0)
 }
 

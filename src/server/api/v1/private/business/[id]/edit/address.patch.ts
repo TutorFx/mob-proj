@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { ZodError } from 'zod';
 import { fromZodError } from 'zod-validation-error';
 import { useSchemas } from "~/composables/useSchemas"
-import { TAddress } from '~/types/addr';
+import type { TAddress } from '~/types/addr';
 
 const prisma = new PrismaClient();
 

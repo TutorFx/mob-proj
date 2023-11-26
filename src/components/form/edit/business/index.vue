@@ -4,9 +4,9 @@
     <form-edit-business-fields v-else v-model="editingState" />
     <template #action>
       <form-edit-btn v-if="!editing" @click.prevent="onEdit" />
-      <div class="grid gap-3 grid-flow-col" v-else>
+      <div v-else class="grid grid-flow-col gap-3">
         <form-edit-btn-cancel @click.prevent="onCancel" />
-        <form-edit-btn-apply @click.prevent="onApply" :updating="updating" />
+        <form-edit-btn-apply :updating="updating" @click.prevent="onApply" />
       </div>
     </template>
   </ui-card-edit>
@@ -14,7 +14,7 @@
 <script lang="ts" setup>
 import { FetchError } from 'ofetch';
 import { ZodError } from 'zod';
-import { IEditBusiness } from '~/types/edit';
+import type { IEditBusiness } from '~/types/edit';
 const alert = new NuxaAlert()
 
 const props = defineProps<{

@@ -3,11 +3,12 @@
       <div class="card-body p-6">
         <div class="grid grid-cols-[max-content_1fr] gap-2 lg:gap-6">
           <label class="block">
-            <div type="checkbox"
-              class="checkbox checkbox-primary border-base-content border-dashed hover:border-base-content checked:border-primary" />
+            <div
+type="checkbox"
+              class="checkbox checkbox-primary border-dashed border-base-content checked:border-primary hover:border-base-content" />
           </label>
           <div class="grid gap-4">
-            <div class="flex gap-2 items-center">
+            <div class="flex items-center gap-2">
                 <span class="isloading h-6 w-24 rounded-md" />
                 <span class="isloading h-6 w-16 rounded-md" />
                 <span class="isloading h-6 w-20 rounded-md" />

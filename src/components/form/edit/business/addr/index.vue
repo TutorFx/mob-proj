@@ -1,12 +1,12 @@
 <template>
   <ui-card-edit title="Endereço">
-    <form-edit-business-addr-preview class="max-w-3xl" v-if="!editing" v-model="state" />
-    <form-addr class="max-w-3xl" v-else v-model="editingState" :valid="valid" />
+    <form-edit-business-addr-preview v-if="!editing" v-model="state" class="max-w-3xl" />
+    <form-addr v-else v-model="editingState" class="max-w-3xl" :valid="valid" />
     <template #action>
       <form-edit-btn v-if="!editing" @click.prevent="onEdit" />
-      <div class="grid gap-3 grid-flow-col" v-else>
+      <div v-else class="grid grid-flow-col gap-3">
         <form-edit-btn-cancel @click.prevent="onCancel" />
-        <form-edit-btn-apply @click.prevent="onApply" :updating="updating" />
+        <form-edit-btn-apply :updating="updating" @click.prevent="onApply" />
       </div>
     </template>
   </ui-card-edit>
@@ -14,7 +14,7 @@
 <script lang="ts" setup>
 import { ZodError } from 'zod';
 import { FetchError } from 'ofetch';
-import { IEditBusiness } from '~/types/edit';
+import type { IEditBusiness } from '~/types/edit';
 
 const alert = new NuxaAlert()
 

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { z } from 'zod';
+import type { z } from 'zod';
 
 export const useTransactions = defineStore('transactions', () => {
 

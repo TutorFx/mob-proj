@@ -1,13 +1,13 @@
-import { PrismaClient, Prisma } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import { sendError } from "h3";
-import { z, ZodError } from 'zod';
-import { useSchemas } from "~/composables/useSchemas"
+import { ZodError, z } from 'zod';
 import { fromZodError } from 'zod-validation-error';
-import { IContact, ICart, IAddress } from '~/types/cart';
+import { useSchemas } from "~/composables/useSchemas"
+import type { IAddress, ICart, IContact } from '~/types/cart';
 import { getServerSession } from '@/server/utils/auth';
 const { contact, address, cart } = useSchemas;
 
-//TODO: Validate if the product is from this business
+// TODO: Validate if the product is from this business
 
 export default defineEventHandler(async (event) => {
   const prisma = new PrismaClient();

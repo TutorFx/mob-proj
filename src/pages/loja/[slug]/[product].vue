@@ -1,7 +1,7 @@
 <template>
   <div>
     <NuxtLoadingIndicator color="false" class="bg-primary" />
-    <div class="container grid fill-screen grid-rows-[max-content_1fr]">
+    <div class="fill-screen container grid grid-rows-[max-content_1fr]">
       <ui-store-nav :data="data" />
       <ui-product-page :business-name="data?.name" :productdata="productdata" />
     </div>
@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { IItem } from "~/types/cart";
+import type { IItem } from "~/types/cart";
 
 const route = useRoute();
 

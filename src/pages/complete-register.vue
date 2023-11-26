@@ -6,24 +6,27 @@
       </div>
       <form class="mt-8 space-y-6" action="#" method="POST">
         <input type="hidden" name="remember" value="true">
-        <div class="-space-y-px rounded-md shadow-sm">
+        <div class="shadow-sm -space-y-px rounded-md">
           <div>
             <label for="complete-name">Qual é seu nome pessoal?</label>
-            <input id="complete-name" name="name" type="text" autocomplete="name" required v-model="userdata.name"
-              class="px-3 relative block w-full rounded-md border-0 py-1.5 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
+            <input
+id="complete-name" v-model="userdata.name" name="name" type="text" autocomplete="name" required
+              class="relative block w-full rounded-md border-0 px-3 py-1.5 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
               placeholder="Ex: João Alberto">
           </div>
           <div>
             <label for="birthday">Quando é seu aniversário?</label>
-            <input id="birthday" name="birthday" type="date" autocomplete="birthday" required v-model="userdata.birthday"
-              class="px-3 relative block w-full rounded-md border-0 py-1.5 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
+            <input
+id="birthday" v-model="userdata.birthday" name="birthday" type="date" autocomplete="birthday" required
+              class="relative block w-full rounded-md border-0 px-3 py-1.5 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
               placeholder="">
           </div>
         </div>
 
         <div>
-          <button @click.prevent="finalizeRegister()"
-            class="group relative flex w-full justify-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+          <button
+class="group relative flex w-full justify-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white focus-visible:outline hover:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            @click.prevent="finalizeRegister()">
             Continuar
           </button>
         </div>
@@ -51,7 +54,7 @@ async function finalizeRegister() {
     },
     onResponse({ request, response, options }) {
       // Process the response data
-      //if (response.status == 200)
+      // if (response.status == 200)
     },
     onResponseError({ request, response, options }) {
       // Handle the response errors

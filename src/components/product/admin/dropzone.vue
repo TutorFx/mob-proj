@@ -1,18 +1,20 @@
 <template>
   <div>
     <div @drop.prevent="drop" @change="selectedFile">
-      <div @dragenter.prevent="toggleActive" @dragleave.prevent="toggleActive" @dragover.prevent
-        @drop.prevent="toggleActive" :class="{ 'active-dropzone': active }" class="dropzone">
+      <div
+:class="{ 'active-dropzone': active }" class="dropzone" @dragenter.prevent="toggleActive"
+        @dragleave.prevent="toggleActive" @dragover.prevent @drop.prevent="toggleActive">
         <span>Arraste</span>
         <span>ou</span>
-        <label for="file" class="rounded-md btn btn-primary btn-sm">Selecione seu Arquivo</label>
-        <input type="file" id="file" :multiple="true" ref="dropRef" class="modelValue" />
+        <label for="file" class="btn btn-primary btn-sm rounded-md">Selecione seu Arquivo</label>
+        <input id="file" ref="dropRef" type="file" :multiple="true" class="modelValue" />
       </div>
     </div>
-    <div v-if="modelValue?.length > 0" ref="parent" @click.prevent class="grid gap-4 grid-cols-3 mt-4">
-      <div class="rounded-lg relative" style="aspect-ratio: 1" v-for="(image, i) in modelValue" :key="i">
-        <img v-if="image" class="object-cover rounded-lg w-full h-full" :alt="`uploaded-image-${i}`" :src="url.createObjectURL(image)" />
-        <Icon name="mdi:delete" class="absolute right-0 top-0 h-6 w-6 bg-white rounded-full m-2 p-1"
+    <div v-if="modelValue?.length > 0" ref="parent" class="mt-4 grid grid-cols-3 gap-4" @click.prevent>
+      <div v-for="(image, i) in modelValue" :key="i" class="relative rounded-lg" style="aspect-ratio: 1">
+        <img v-if="image" class="h-full w-full rounded-lg object-cover" :alt="`uploaded-image-${i}`" :src="url.createObjectURL(image)" />
+        <Icon
+name="mdi:delete" class="absolute right-0 top-0 m-2 h-6 w-6 rounded-full bg-white p-1"
           @click="modelValue?.splice(i, 1)" />
       </div>
     </div>

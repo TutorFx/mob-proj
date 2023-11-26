@@ -1,5 +1,5 @@
 <template>
-  <footer class="mx-auto mt-32 w-full max-w-container px-4 sm:px-6 lg:px-8">
+  <footer class="max-w-container mx-auto mt-32 w-full px-4 sm:px-6 lg:px-8">
     <div class="border-t border-slate-900/5 py-10">
       <div class="text-center">
         <Icon name="Logotype" width="120" height="30" class="mx-auto" />

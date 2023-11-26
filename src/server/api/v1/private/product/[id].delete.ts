@@ -1,5 +1,6 @@
 import { Prisma, PrismaClient } from '@prisma/client';
-import { ZodError, z } from 'zod';
+import type { z } from 'zod';
+import { ZodError } from 'zod';
 import { fromZodError } from 'zod-validation-error';
 import { useSchemas } from '~/composables/useSchemas';
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="text-xl mb-4">Editar Produto</div>
+    <div class="mb-4 text-xl">Editar Produto</div>
     <div>
       <div class="form-control w-full max-w-sm">
         <form-product ref="formEl" v-model="state" />
@@ -10,24 +10,25 @@
             <Icon name="mdi:cloud" class="text-base-300" size="50px" />
           </div>
 
-          <div class="grid gap-4 grid-cols-3 mt-4 mb-4">
-            <div class="rounded-lg relative" v-for="(image, i) in product?.images" :key="i">
-              <img :src="usePrefixImages(image.Key)" class="object-cover rounded-lg w-full h-full aspect-square">
-              <Icon @click="deleteImage(image.id)" name="mdi:delete"
-                class="absolute right-0 top-0 h-6 w-6 bg-white rounded-full m-2 p-1" />
+          <div class="my-4 grid grid-cols-3 gap-4">
+            <div v-for="(image, i) in product?.images" :key="i" class="relative rounded-lg">
+              <img :src="usePrefixImages(image.Key)" class="aspect-square h-full w-full rounded-lg object-cover">
+              <Icon
+name="mdi:delete" class="absolute right-0 top-0 m-2 h-6 w-6 rounded-full bg-white p-1"
+                @click="deleteImage(image.id)" />
             </div>
           </div>
         </div>
 
         <div class="grid gap-3">
-          <button v-if="!isSending" @click="edit()" class="btn btn-block btn-primary gap-3">
+          <button v-if="!isSending" class="btn btn-primary btn-block gap-3" @click="edit()">
             Editar Produto
             <Icon size="24" name="ic:baseline-arrow-right-alt" />
           </button>
-          <div v-else class="btn btn-block btn-primary">
+          <div v-else class="btn btn-primary btn-block">
             <ui-spinner />
           </div>
-          <button v-if="!isSending" @click="deletePost()" class="btn btn-block btn-error gap-3">
+          <button v-if="!isSending" class="btn btn-error btn-block gap-3" @click="deletePost()">
             Apagar Produto
             <Icon size="24" name="mdi:trash-outline" />
           </button>

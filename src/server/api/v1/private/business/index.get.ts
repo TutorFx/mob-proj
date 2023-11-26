@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
       }
     })
 
-    if (getBusiness.length == 0) return sendError(
+    if (getBusiness.length === 0) return sendError(
       event,
       createError({
         statusCode: 404,

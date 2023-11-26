@@ -7,6 +7,6 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const session = await event.context.session;
   return ":)"
-  //const url = 'https://www.google.com'
-  //await sendRedirect(event, url)
+  // const url = 'https://www.google.com'
+  // await sendRedirect(event, url)
 })

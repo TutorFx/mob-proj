@@ -3,18 +3,20 @@
     <div class="card-body p-6">
       <div class="grid grid-cols-[max-content_1fr] gap-2 lg:gap-6">
         <label class="block">
-          <input type="checkbox"
-            class="checkbox checkbox-primary border-base-content border-dashed hover:border-base-content checked:border-primary"
-            :value="order.id" v-model="state">
+          <input
+v-model="state"
+            type="checkbox"
+            class="checkbox checkbox-primary border-dashed border-base-content checked:border-primary hover:border-base-content" :value="order.id">
         </label>
         <div class="grid gap-2">
-          <nuxt-link class="grid md:grid-cols-[1fr_max-content] gap-2"
+          <nuxt-link
+class="grid gap-2 md:grid-cols-[1fr_max-content]"
             :to="{ name: 'dashboard-id-fechamento-checkoutid', params: { id: order.Business.id, checkoutid: order.id } }">
-            <div class="grid grid-flow-col gap-1 items-center justify-start">
-              <div class="font-bold truncate">
+            <div class="grid grid-flow-col items-center justify-start gap-1">
+              <div class="truncate font-bold">
                 Pedido
               </div>
-              <div class="truncate bg-base-200 px-2 rounded w-24" :title="order.id">
+              <div class="w-24 truncate rounded bg-base-200 px-2" :title="order.id">
                 <span class="text-base-content/30">#</span>{{ order.id }}
               </div>
               <dashboard-order-status :name="order.status" />
@@ -43,7 +45,7 @@
                 day: 'numeric',
               }).replaceAll(',', '') : '' }}
             </span>
-            <div class="border-r border-base-content/30 h-4"></div>
+            <div class="h-4 border-r border-base-content/30"></div>
             <div>
               {{ order?.contact?.nome }}
             </div>
@@ -51,11 +53,12 @@
           <div>
             <dashboard-order-selectstatus v-model="status" :data="statuses" />
           </div>
-          <div class="grid gap-3 overflow-hidden" v-if="order?.ProductOnOrder.length > 0">
+          <div v-if="order?.ProductOnOrder.length > 0" class="grid gap-3 overflow-hidden">
             <dashboard-order-product class="grid grid-cols-[max-content_1fr] gap-3" :item="order?.ProductOnOrder[0]" />
-            <div class="grid gap-3" v-if="order?.ProductOnOrder.length > 1 && isVisible">
-              <dashboard-order-product class="grid grid-cols-[max-content_1fr] gap-3"
-                v-for="(item, i) in order?.ProductOnOrder.slice(1)" :item="item" :key="i" />
+            <div v-if="order?.ProductOnOrder.length > 1 && isVisible" class="grid gap-3">
+              <dashboard-order-product
+v-for="(item, i) in order?.ProductOnOrder.slice(1)"
+                :key="i" class="grid grid-cols-[max-content_1fr] gap-3" :item="item" />
             </div>
             <div v-if="order?.ProductOnOrder.length > 1">
               <button class="btn btn-ghost btn-xs" @click="isVisible = !isVisible">Mais {{ order?.ProductOnOrder.length -
@@ -71,8 +74,8 @@
 </template>
 
 <script setup lang="ts">
-import { IObjectStatus } from "~/types";
-import { TOrder } from "~/types/order";
+import type { IObjectStatus } from "~/types";
+import type { TOrder } from "~/types/order";
 
 const isVisible = ref(false)
 

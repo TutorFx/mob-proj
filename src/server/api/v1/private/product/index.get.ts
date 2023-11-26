@@ -1,8 +1,9 @@
 import { Prisma, PrismaClient } from '@prisma/client';
-import { ZodError, z } from 'zod';
+import type { z } from 'zod';
+import { ZodError } from 'zod';
 import { fromZodError } from 'zod-validation-error';
-import { useSchemas } from '~/composables/useSchemas';
 import sanitizeHtml from 'sanitize-html';
+import { useSchemas } from '~/composables/useSchemas';
 
 const prisma = new PrismaClient()
 const { getProductSchema } = useSchemas;
@@ -38,7 +39,7 @@ export default defineEventHandler(async (event) => {
     })
   );
   try {
-    const { businessId, search, page } = query;
+    const { businessId } = query;
 
     const business = await prisma.business.findUnique({
       where: { id: businessId },

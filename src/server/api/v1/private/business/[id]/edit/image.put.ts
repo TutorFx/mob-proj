@@ -1,8 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import { ZodError } from 'zod';
 import { fromZodError } from 'zod-validation-error';
-import { useSchemas } from "~/composables/useSchemas"
 import formidable from 'formidable';
+import { useSchemas } from "~/composables/useSchemas"
 
 const prisma = new PrismaClient();
 
@@ -22,8 +22,7 @@ export default defineEventHandler(async (event) => {
   });
 
   try {
-    // @ts-ignore
-    const { files } : { files: any } = response
+    const { files } : { files: any } = response as { files: any };
     uuid.parse(id);
     uuid.parse(session.id);
 
@@ -54,8 +53,8 @@ export default defineEventHandler(async (event) => {
 
     await Promise.all(Object.keys(files).map(async (key: any) => {
       const file = files[key]
-      const { $metadata, ETag, Key } = await uploadToS3(file)
-      //const { bytes, secure_url, original_filename, public_id, etag } = await uploadToCloudinary(file.filepath)
+      const { Key } = await uploadToS3(file)
+      // const { bytes, secure_url, original_filename, public_id, etag } = await uploadToCloudinary(file.filepath)
       await prisma.image.create({
         data: {
           Key,

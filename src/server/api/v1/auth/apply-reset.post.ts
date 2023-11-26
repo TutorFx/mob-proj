@@ -1,9 +1,9 @@
-import { generateToken } from "../../../utils/token";
 import bcrypt from "bcryptjs";
-import { PrismaClient, Prisma, TokenStatus } from "@prisma/client";
-import { useSchemas } from "~/composables/useSchemas";
+import { Prisma, PrismaClient, TokenStatus } from "@prisma/client";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
+import { generateToken } from "../../../utils/token";
+import { useSchemas } from "~/composables/useSchemas";
 import { Authentication } from "~/server/utils/auth";
 
 const { public: global } = useRuntimeConfig();

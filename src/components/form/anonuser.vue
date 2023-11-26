@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Tcontact } from '~/types/user';
+import type { Tcontact } from '~/types/user';
 
 const props = withDefaults(defineProps<{
   modelValue: Tcontact,
@@ -37,7 +37,7 @@ watchEffect(() => valid.value = result.value.success);
 const isDirty = ref(true)
 
 const getErrors = (field: string) => {
-  //@ts-ignore
+  // @ts-expect-error
   return isDirty.value ? errors.value?.[field]?._errors?.at(0) : undefined
 }
 
@@ -50,25 +50,27 @@ defineExpose({
 </script>
 
 <template>
-  <div class="grid gap-3 grid-cols-1 lg:grid-cols-3">
+  <div class="grid grid-cols-1 gap-3 lg:grid-cols-3">
     <div class="form-control">
       <label class="label">
         <span class="label-text">Nome</span>
       </label>
-      <input type="text" placeholder="Preencha seu nome" name="nome" id="nome" v-model="state.nome"
+      <input
+id="nome" v-model="state.nome" type="text" placeholder="Preencha seu nome" name="nome"
         class="input input-bordered w-full">
       <ul>
-        <li class="text-error text-xs">{{ getErrors('nome') }}</li>
+        <li class="text-xs text-error">{{ getErrors('nome') }}</li>
       </ul>
     </div>
     <div class="form-control">
       <label class="label">
         <span class="label-text">Celular</span>
       </label>
-      <input type="text" v-maska data-maska="['(##) ####-####', '(##) # ####-####']" placeholder="Preencha seu celular" name="celular" id="celular" v-model="state.celular"
+      <input
+id="celular" v-model="state.celular" v-maska type="text" data-maska="['(##) ####-####', '(##) # ####-####']" placeholder="Preencha seu celular" name="celular"
         class="input input-bordered w-full">
       <ul>
-        <li class="text-error text-xs">{{ getErrors('celular') }}</li>
+        <li class="text-xs text-error">{{ getErrors('celular') }}</li>
       </ul>
     </div>
   </div>

@@ -1,14 +1,16 @@
-import { getServerSession } from '@/server/utils/auth';
-import { Prisma, PrismaClient, User } from '@prisma/client';
-import { ZodError, z } from 'zod';
+import type { User } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
+import type { z } from 'zod';
+import { ZodError } from 'zod';
 import { fromZodError } from 'zod-validation-error';
+import { getServerSession } from '@/server/utils/auth';
 import { useSchemas } from "~/composables/useSchemas"
 const prisma = new PrismaClient()
 const { createMoneyDepositSchema } = useSchemas;
 type TransactionRequest = z.infer<typeof createMoneyDepositSchema>;
 
 export default defineEventHandler(async (event) => {
-  const body: TransactionRequest = await readBody(event);
+  const body = await readBody<TransactionRequest>(event);
   const session = getServerSession(event)
   try {
     createMoneyDepositSchema.parse(body)
@@ -31,7 +33,6 @@ export default defineEventHandler(async (event) => {
     })
   );
   try {
-    // @ts-expect-error
     const { businessId, userMail, amount } = body;
 
     const user : User = await event.context.user();

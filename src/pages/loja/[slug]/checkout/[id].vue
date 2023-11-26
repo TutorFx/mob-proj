@@ -1,10 +1,10 @@
 <template>
-  <div class="grid gap-3 min-h-[100svh] grid-rows-[max-content_1fr]">
+  <div class="grid min-h-[100svh] grid-rows-[max-content_1fr] gap-3">
     <NuxtLoadingIndicator color="false" class="bg-primary" />
     <div class="container">
       <ui-store-nav :data="data?.Business" />
     </div>
-    <div class="container grid md:grid-cols-2 gap-6 pb-6">
+    <div class="container grid gap-6 pb-6 md:grid-cols-2">
       <div>
         <div class="grid gap-3 py-6">
           <div class="text-3xl">
@@ -14,7 +14,7 @@
             Seu pedido já está em { etapa }, {{ data?.Business.name }} entrará em contato com você via Whatsapp para confirmar seu pedido.
           </div>
           <div class="border-b" />
-          <div class="grid xl:grid-cols-4 gap-6">
+          <div class="grid gap-6 xl:grid-cols-4">
             <ul>
               <li class="text-neutral">
                 Data do Pedido
@@ -31,7 +31,7 @@
                     minute: '2-digit'
                   }) : '' }}
                   <template #fallback>
-                    <div class="w-full h-4 mt-2 rounded-md isloading" />
+                    <div class="isloading mt-2 h-4 w-full rounded-md" />
                   </template>
                 </client-only>
               </li>
@@ -45,7 +45,7 @@
                   {{ data?.id }}
                 </div>
                 <div>
-                  <button @click.prevent="copy()" class="btn btn-xs btn-ghost">Copiar</button>
+                  <button class="btn btn-ghost btn-xs" @click.prevent="copy()">Copiar</button>
                 </div>
               </li>
             </ul>
@@ -75,22 +75,22 @@
           </div>
         </div>
       </div>
-      <div class="grid gap-3 grid-rows-[1fr_max-content] bg-base-200 rounded-md">
-        <div class="overflow-y-auto max-h-64 md:max-h-none">
-          <div class="relative p-6 pb-3 grid gap-3">
-            <div class="grid grid-cols-[max-content_1fr] gap-3" v-for="(item, i) in data?.ProductOnOrder" :key="i">
+      <div class="grid grid-rows-[1fr_max-content] gap-3 rounded-md bg-base-200">
+        <div class="max-h-64 overflow-y-auto md:max-h-none">
+          <div class="relative grid gap-3 p-6 pb-3">
+            <div v-for="(item, i) in data?.ProductOnOrder" :key="i" class="grid grid-cols-[max-content_1fr] gap-3">
               <div class="indicator">
-                <div class="h-16 w-16 flex rounded-lg overflow-hidden">
-                  <nuxt-img class="object-cover" v-if="item.product?.images?.at(0)?.Key" :src="usePrefixImages(item.product?.images?.at(0)?.Key)" />
+                <div class="flex h-16 w-16 overflow-hidden rounded-lg">
+                  <nuxt-img v-if="item.product?.images?.at(0)?.Key" class="object-cover" :src="usePrefixImages(item.product?.images?.at(0)?.Key)" />
                 </div>
-                <span class="badge badge-primary indicator-item aspect-square">{{ item.quantity }}</span>
+                <span class="badge indicator-item badge-primary aspect-square">{{ item.quantity }}</span>
               </div>
-              <div class="grid grid-flow-col justify-between items-center gap-3">
+              <div class="grid grid-flow-col items-center justify-between gap-3">
                 <div class="grid">
-                  <div class="text-xl font-bold truncate">
+                  <div class="truncate text-xl font-bold">
                     {{ item.product.name }}
                   </div>
-                  <div class="text-md font-thin truncate">
+                  <div class="text-md truncate font-thin">
                     {{ item.product.description }}
                   </div>
                 </div>

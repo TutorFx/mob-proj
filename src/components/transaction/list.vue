@@ -2,7 +2,7 @@
   <div v-if="transactions.pendingList">
     <ui-spinner></ui-spinner>
   </div>
-  <div class="w-full" v-else v-for="(transaction, i) in transactions.list" :key="i">
+  <div v-for="(transaction, i) in transactions.list" v-else :key="i" class="w-full">
     <div class="grid w-full grid-flow-col justify-start gap-3">
       <div class="truncate">{{ transaction.origin.email }}</div>
       <div>

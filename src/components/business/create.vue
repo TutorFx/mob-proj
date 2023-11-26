@@ -1,43 +1,47 @@
 <template>
   <Teleport to="body">
-    <Transition enter-active-class="animate__animated animate__fadeIn"
+    <Transition
+enter-active-class="animate__animated animate__fadeIn"
       leave-active-class="animate__animated animate__fadeOut">
-      <div class="fixed inset-0 z-10 bg-base-300/25 flex" v-if="businessStore.registerFieldVisible" />
+      <div v-if="businessStore.registerFieldVisible" class="fixed inset-0 z-10 flex bg-base-300/25" />
     </Transition>
-    <Transition enter-active-class="animate__animated animate__fadeInUp"
+    <Transition
+enter-active-class="animate__animated animate__fadeInUp"
       leave-active-class="animate__animated animate__fadeOutDown">
-      <div class="fixed inset-0 z-20 flex" v-if="businessStore.registerFieldVisible">
-        <div class="m-auto border rounded-xl w-4xl overflow-hidden border-base-300">
-          <div class="p-6 bg-base text-3xl backdrop-blur bg-base-100/75">
+      <div v-if="businessStore.registerFieldVisible" class="fixed inset-0 z-20 flex">
+        <div class="w-4xl m-auto overflow-hidden rounded-xl border border-base-300">
+          <div class="bg-base bg-base-100/75 p-6 text-3xl backdrop-blur">
             Criar Empresa
           </div>
-          <div class="p-6 bg-base-200 border-y border-base-300 grid gap-4">
+          <div class="grid gap-4 border-y border-base-300 bg-base-200 p-6">
             <label class="text-zinc-400">
               <div class="mb-3">
                 Nome da empresa
               </div>
-              <input v-model="businessStore.fields.name" type="text" class="border border-base-300 rounded w-full">
+              <input v-model="businessStore.fields.name" type="text" class="w-full rounded border border-base-300">
             </label>
             <label class="text-zinc-400">
               <div class="mb-3">
                 Link da empresa
               </div>
               <div class="grid grid-flow-col rounded border border-base-300">
-                <div class="bg-base flex items-center border-r border-base-300 justify-center px-4 text-xs truncate rounded-l">
+                <div class="bg-base flex items-center justify-center truncate rounded-l border-r border-base-300 px-4 text-xs">
                   {{ url }}loja/
                 </div>
-                <input v-model="businessStore.fields.slug" type="text" class="bg-base border-0 w-full rounded-r text-sm" placeholder="minha-empresa">
+                <input v-model="businessStore.fields.slug" type="text" class="bg-base w-full rounded-r border-0 text-sm" placeholder="minha-empresa">
               </div>
             </label>
           </div>
-          <div class="p-6 bg-base flex justify-between backdrop-blur bg-base-100/75">
-            <button @click.prevent="businessStore.$close()"
-              class="btn btn-ghost">
+          <div class="bg-base flex justify-between bg-base-100/75 p-6 backdrop-blur">
+            <button
+class="btn btn-ghost"
+              @click.prevent="businessStore.$close()">
               Cancelar
             </button>
-            <button @click.prevent="businessStore.$createBusiness()"
-              class="btn btn-primary relative overflow-hidden">
-              <div v-if="businessStore.isCreating" class="absolute inset-0 flex items-center justify-center bg-primary text-base-100 cursor-wait">
+            <button
+class="btn btn-primary relative overflow-hidden"
+              @click.prevent="businessStore.$createBusiness()">
+              <div v-if="businessStore.isCreating" class="absolute inset-0 flex cursor-wait items-center justify-center bg-primary text-base-100">
                 <ui-spinner />
               </div>
               <div>Continuar</div>

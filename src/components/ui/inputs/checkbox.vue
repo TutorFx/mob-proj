@@ -1,6 +1,6 @@
 <template>
-	<label class="grid grid-flow-col justify-start gap-4 items-center">
-    <input type="checkbox" class="checkbox" v-model="modelValue" />
+	<label class="grid grid-flow-col items-center justify-start gap-4">
+    <input v-model="modelValue" type="checkbox" class="checkbox" />
     <slot />
 	</label>
 </template>

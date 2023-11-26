@@ -8,7 +8,7 @@ export const useMaskRemover = (phone: string): string => {
 	return phone?.replace(/[^\d]*/gi,'');
 };
 export const useGreeting = (): string => {
-  let h = +(new Date().toLocaleTimeString('pt-BR', {hour: 'numeric', hour12: false})); // formato 24 horas (0-23)
+  const h = +(new Date().toLocaleTimeString('pt-BR', {hour: 'numeric', hour12: false})); // formato 24 horas (0-23)
   if (h >= 0 && h <= 5) { // entre meia noite (0h) e 5 da madrugada
     return 'Boa madrugada';
   } else if (h >= 6 && h < 12) { // entre 6 e 11 da manhã

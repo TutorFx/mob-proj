@@ -1,7 +1,7 @@
 import OpenAI from 'openai';
-import { OpenAIStream, StreamingTextResponse } from 'ai';
 
-import { ZodError, z } from 'zod';
+import type { z } from 'zod';
+import { ZodError } from 'zod';
 import { fromZodError } from 'zod-validation-error';
 import { useSchemas } from '~/composables/useSchemas';
 
@@ -49,7 +49,7 @@ export default defineEventHandler(async (event) => {
       },
       body: JSON.stringify({
         model: 'text-davinci-003',
-        prompt: prompt,
+        prompt,
         temperature: 0.9,
         max_tokens: 512,
         top_p: 1.0,
@@ -60,7 +60,7 @@ export default defineEventHandler(async (event) => {
 
   } catch (error) {
     if (error instanceof OpenAI.APIError) {
-      const { name, status, headers, message } = error;
+      const { name, message } = error;
       return sendError(
         event,
         createError({
@@ -77,7 +77,5 @@ export default defineEventHandler(async (event) => {
           statusMessage: `${fromZodError(error)}`,
         })
       );
-  } finally {
-
   }
 })

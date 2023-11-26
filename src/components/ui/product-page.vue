@@ -1,15 +1,15 @@
 <template>
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 grid-rows-[max-content_1fr] lg:grid-rows-[1fr] items-start lg:items-center mb-6 lg:mb-0 overflow-hidden">
+  <div class="mb-6 grid grid-cols-1 grid-rows-[max-content_1fr] items-start gap-6 overflow-hidden lg:mb-0 lg:grid-cols-2 lg:grid-rows-[1fr] lg:items-center">
     <div>
       <ui-images :images="productdata?.images" />
     </div>
-    <div class="grid items-start lg:items-center min-h-full">
+    <div class="grid min-h-full items-start lg:items-center">
       <div class="grid gap-3 md:gap-6">
         <ui-breadcrumbs> {{ productdata?.name }} </ui-breadcrumbs>
-        <h2 class="text-4xl font-bold grid grid-flow-col justify-start gap-6 items-center header"><span>{{ productdata?.name }}</span> <client-only><span @click="startShare" v-if="isSupported" class="btn btn-ghost btn-sm btn-circle"><Icon name="mdi:share-variant" size="24" /></span></client-only></h2>
-        <h4 class="text-2xl font-medium text-neutral subheader prose" v-html="productdata?.description"></h4>
-        <h5 class="text-2xl font-medium pricing">{{ useMoney(productdata?.price ?? 0) }} {{ quantity > 1 ? `(${useMoney((productdata?.price ?? 0) * quantity)})`:undefined }}</h5>
-        <div class="grid grid-flow-row lg:grid-flow-col justify-start gap-3 md:gap-6">
+        <h2 class="header grid grid-flow-col items-center justify-start gap-6 text-4xl font-bold"><span>{{ productdata?.name }}</span> <client-only><span v-if="isSupported" class="btn btn-circle btn-ghost btn-sm" @click="startShare"><Icon name="mdi:share-variant" size="24" /></span></client-only></h2>
+        <h4 class="subheader prose text-2xl font-medium text-neutral" v-html="productdata?.description"></h4>
+        <h5 class="pricing text-2xl font-medium">{{ useMoney(productdata?.price ?? 0) }} {{ quantity > 1 ? `(${useMoney((productdata?.price ?? 0) * quantity)})`:undefined }}</h5>
+        <div class="grid grid-flow-row justify-start gap-3 md:gap-6 lg:grid-flow-col">
           <ui-quantity v-model="quantity" class="order-last md:order-first" />
           <button class="btn btn-primary gap-6" @click.prevent="productdata?.id ? cart.add_product(productdata?.id, quantity) : null">
             <Icon name="mdi:cart-plus" size="18" /> Adicionar ao carrinho

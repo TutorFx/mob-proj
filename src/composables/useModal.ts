@@ -1,5 +1,5 @@
-import { Style } from "#build/components";
 import { defineStore } from "pinia";
+import type { Style } from "#build/components";
 
 type Style = 'danger' | 'success' | 'warning'
 
@@ -60,18 +60,21 @@ export class NuxaAlert {
   constructor(){
     this.modal = useModal()
   }
+
   danger(Modal: ModalData, callback?: Function) {
     this.modal.create({
       ...Modal,
       style: 'danger'
     }, callback)
   }
+
   warning(Modal: ModalData, callback?: Function) {
     this.modal.create({
       ...Modal,
       style: 'warning'
     }, callback)
   }
+
   success(Modal: ModalData, callback?: Function) {
     this.modal.create({
       ...Modal,

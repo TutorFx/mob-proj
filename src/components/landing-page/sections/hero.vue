@@ -1,7 +1,8 @@
 <template>
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-16 pt-20 text-center lg:pt-32">
-    <h1 class="mx-auto max-w-4xl font-display font-medium tracking-tight text-slate-900 text-3xl sm:text-7xl">
-      Crie seu site mas de uma&nbsp;<span class="relative whitespace-nowrap text-blue-600"><svg aria-hidden="true"
+  <div class="mx-auto max-w-7xl px-4 pb-16 pt-20 text-center sm:px-6 lg:px-8 lg:pt-32">
+    <h1 class="font-display mx-auto max-w-4xl text-3xl font-medium tracking-tight text-slate-900 sm:text-7xl">
+      Crie seu site mas de uma&nbsp;<span class="relative whitespace-nowrap text-blue-600"><svg
+aria-hidden="true"
           viewBox="0 0 418 42" class="absolute left-0 top-2/3 h-[0.58em] w-full fill-blue-300/70"
           preserveAspectRatio="none">
           <path
@@ -12,17 +13,18 @@
       seus sonhos começa aqui com o nuxa, um novo serviço de SAAS e-commerce que busca tornar a realidade da loja digital
       acessível para todos, independentemente de sua origem.</p>
     <div class="mt-10 flex justify-center gap-x-6"><a
-        class="group inline-flex items-center justify-center rounded-full py-2 px-4 text-sm font-semibold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 bg-slate-900 text-white hover:bg-slate-700 hover:text-slate-100 active:bg-slate-800 active:text-slate-300 focus-visible:outline-slate-900"
+        class="group inline-flex items-center justify-center rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-700 hover:text-slate-100 focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 active:bg-slate-800 active:text-slate-300"
         href="/register">Ganhe acesso gratuito</a><a
-        class="group inline-flex ring-1 items-center justify-center rounded-full py-2 px-4 text-sm focus:outline-none ring-slate-200 text-slate-700 hover:text-slate-900 hover:ring-slate-300 active:bg-slate-100 active:text-slate-600 focus-visible:outline-blue-600 focus-visible:ring-slate-300"
-        href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><svg aria-hidden="true"
+        class="group inline-flex items-center justify-center rounded-full px-4 py-2 text-sm text-slate-700 ring-1 ring-slate-200 hover:text-slate-900 hover:ring-slate-300 focus:outline-none focus-visible:outline-blue-600 focus-visible:ring-slate-300 active:bg-slate-100 active:text-slate-600"
+        href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><svg
+aria-hidden="true"
           class="h-3 w-3 flex-none fill-blue-600 group-active:fill-current">
           <path
             d="m9.997 6.91-7.583 3.447A1 1 0 0 1 1 9.447V2.553a1 1 0 0 1 1.414-.91L9.997 5.09c.782.355.782 1.465 0 1.82Z">
           </path>
         </svg><span class="ml-3">Assista um vídeo</span></a></div>
     <div class="mt-36 lg:mt-44">
-      <p class="font-display text-base text-slate-700 max-w-2xl mx-auto">Queremos que qualquer pessoa, de qualquer
+      <p class="font-display mx-auto max-w-2xl text-base text-slate-700">Queremos que qualquer pessoa, de qualquer
         lugar, possa fazer parte do mundo digital.<br>Por isso, criamos o <Icon name="Typoblack" class="w-10" /> para ser uma plataforma de comércio eletrônico
         intuitiva e fácil de usar que não exige experiência técnica prévia.</p>
       <p class="mx-auto mt-6 tracking-tight text-slate-700"></p>

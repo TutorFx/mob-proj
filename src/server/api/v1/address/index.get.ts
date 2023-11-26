@@ -1,7 +1,7 @@
-import * as estados from '@/server/utils/json/estados.json';
-import * as municipios from '@/server/utils/json/municipios.json';
 import { ZodError, z } from 'zod';
 import { fromZodError } from 'zod-validation-error';
+import * as estados from '@/server/utils/json/estados.json';
+import * as municipios from '@/server/utils/json/municipios.json';
 const schema = z.object({
   cityId: z.string(),
   stateId: z.string(),

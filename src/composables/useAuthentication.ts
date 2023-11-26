@@ -1,13 +1,14 @@
-import { useSchemas } from "@/composables/useSchemas";
 import { useTimestamp } from "@vueuse/core";
 import jwt from 'jsonwebtoken';
 import { useCookies } from '@vueuse/integrations/useCookies';
-import { ZodError, z } from "zod";
+import type { z } from "zod";
+import { ZodError } from "zod";
 import moment from 'moment';
-import { VerifyAuthentication } from "@/server/utils/auth"
 import { FetchError } from "ofetch";
-import { IValidateToken } from "@/types";
 import { defineStore } from "pinia";
+import { VerifyAuthentication } from "@/server/utils/auth"
+import type { IValidateToken } from "@/types";
+import { useSchemas } from "@/composables/useSchemas";
 type Login = z.infer<typeof useSchemas.loginSchema>;
 
 export const useAuthentication = defineStore("authentication", () => {
@@ -84,9 +85,11 @@ export class CreateRecovery {
   state = ref({
     credential: "",
   });
+
   get = () => {
     return this.state.value;
   };
+
   async generate() {
     try {
       const alert = new NuxaAlert();
@@ -124,9 +127,11 @@ export class UseRecovery {
     password: "",
     passwordConfirmation: "",
   });
+
   get = () => {
     return this.state.value;
   };
+
   async reset(token: string | string[]) {
     try {
       useSchemas.passwordReset.parse(this.get());

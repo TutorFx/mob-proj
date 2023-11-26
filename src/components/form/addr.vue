@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { TAddress } from '@/types/addr';
 import { AsyncData } from "#app";
 import { useTextareaAutosize } from '@vueuse/core';
-import { IViacep } from '~/types';
+import type { TAddress } from '@/types/addr';
+import type { IViacep } from '~/types';
 
 const { textarea, input } = useTextareaAutosize()
 
@@ -90,7 +90,7 @@ watchEffect(() => valid.value = result.value.success)
 const isDirty = ref(true)
 
 const getErrors = (field: string) => {
-  //@ts-ignore
+  // @ts-expect-error
   return isDirty.value ? errors.value?.[field]?._errors?.at(0) : undefined
 }
 
@@ -103,22 +103,24 @@ defineExpose({
 </script>
 
 <template>
-  <div class="grid gap-3 grid-cols-1 lg:grid-cols-3">
+  <div class="grid grid-cols-1 gap-3 lg:grid-cols-3">
     <div class="form-control">
       <label class="label">
         <span class="label-text">CEP</span>
       </label>
-      <input type="text" placeholder="00000-000" name="cep" id="cep" v-model="state.cep"
-        class="input input-bordered w-full" v-maska data-maska="#####-###">
+      <input
+id="cep" v-model="state.cep" v-maska type="text" placeholder="00000-000"
+        name="cep" class="input input-bordered w-full" data-maska="#####-###">
       <ul>
-        <li class="text-error text-xs">{{ getErrors('cep') }}</li>
+        <li class="text-xs text-error">{{ getErrors('cep') }}</li>
       </ul>
     </div>
     <div class="form-control">
       <label class="label">
         <span class="label-text">Estado</span>
       </label>
-      <select placeholder="Informe seu estado" name="estado" id="estado" v-model="state.estado"
+      <select
+id="estado" v-model="state.estado" placeholder="Informe seu estado" name="estado"
         class="input input-bordered w-full">
         <option :value="0" selected disabled>Selecione</option>
         <option v-for="(estado) in estados" :key="estado.CodigoUf" :value="estado.Id">
@@ -126,55 +128,60 @@ defineExpose({
         </option>
       </select>
       <ul>
-        <li class="text-error text-xs">{{ getErrors('estado') }}</li>
+        <li class="text-xs text-error">{{ getErrors('estado') }}</li>
       </ul>
     </div>
     <div class="form-control">
       <label class="label">
         <span class="label-text">Cidade</span>
       </label>
-      <select placeholder="Informe sua cidade" name="cidade" id="cidade" v-model="state.cidade"
+      <select
+id="cidade" v-model="state.cidade" placeholder="Informe sua cidade" name="cidade"
         class="input input-bordered w-full">
         <option :value="0" selected disabled>Selecione</option>
         <option v-for="(cidade) in cidades" :key="cidade.Codigo" :value="cidade.Id"> {{ cidade.Nome }}</option>
       </select>
       <ul>
-        <li class="text-error text-xs">{{ getErrors('cidade') }}</li>
+        <li class="text-xs text-error">{{ getErrors('cidade') }}</li>
       </ul>
     </div>
     <div class="form-control">
       <label class="label">
         <span class="label-text">Bairro</span>
       </label>
-      <input type="text" placeholder="Informe seu bairro" name="bairro" id="bairro" v-model="state.bairro"
+      <input
+id="bairro" v-model="state.bairro" type="text" placeholder="Informe seu bairro" name="bairro"
         class="input input-bordered w-full">
       <ul>
-        <li class="text-error text-xs">{{ getErrors('bairro') }}</li>
+        <li class="text-xs text-error">{{ getErrors('bairro') }}</li>
       </ul>
     </div>
     <div class="form-control">
       <label class="label">
         <span class="label-text">Endereço</span>
       </label>
-      <input type="text" placeholder="Informe seu endereço" name="endereco" id="endereco" v-model="state.endereco"
+      <input
+id="endereco" v-model="state.endereco" type="text" placeholder="Informe seu endereço" name="endereco"
         class="input input-bordered w-full">
       <ul>
-        <li class="text-error text-xs">{{ getErrors('endereco') }}</li>
+        <li class="text-xs text-error">{{ getErrors('endereco') }}</li>
       </ul>
     </div>
     <div class="form-control">
       <label class="label">
         <span class="label-text">Numero</span>
       </label>
-      <input type="number" placeholder="Informe seu número" name="numero" id="numero" v-model="state.numero"
+      <input
+id="numero" v-model="state.numero" type="number" placeholder="Informe seu número" name="numero"
         class="input input-bordered w-full">
     </div>
     <div class="form-control col-span-1 md:col-span-2">
       <label class="label">
         <span class="label-text">Complemento</span>
       </label>
-      <textarea type="text" ref="textarea" placeholder="Informe o complemento" name="complemento" id="complemento"
-        v-model="state.complemento" class="input input-bordered w-full overflow-y-hidden py-4" />
+      <textarea
+id="complemento" ref="textarea" v-model="state.complemento" type="text" placeholder="Informe o complemento"
+        name="complemento" class="input input-bordered w-full overflow-y-hidden py-4" />
     </div>
   </div>
 </template>

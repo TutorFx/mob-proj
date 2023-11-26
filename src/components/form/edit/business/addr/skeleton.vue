@@ -1,5 +1,5 @@
 <template>
-  <div class="grid gap-3 grid-cols-1 lg:grid-cols-3">
+  <div class="grid grid-cols-1 gap-3 lg:grid-cols-3">
     <div class="form-control">
       <label>
         <span class="label-text">CEP</span>
@@ -47,7 +47,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { IEditBusiness } from '~/types/edit';
+import type { IEditBusiness } from '~/types/edit';
 const config = useRuntimeConfig()
 const url = config.public.URL;
 

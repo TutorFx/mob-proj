@@ -1,4 +1,5 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import type { Prisma} from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 const BusinessWithImageQuery = {
   include: {
@@ -25,7 +26,7 @@ export const BusinessWithImage = async (): Promise<IBusinessWithImage[]> => {
   return await prisma.business.findMany(BusinessWithImageQuery);
 };
 
-export const ToggleBan = async (id: string, bool: boolean) => {
+export const ToggleBan = (id: string, bool: boolean) => {
   const prisma = new PrismaClient();
   return prisma.business.update({
     where: {

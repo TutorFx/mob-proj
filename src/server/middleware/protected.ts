@@ -1,12 +1,12 @@
-const api_path = "/api/v1";
-import { getServerSession } from "@/server/utils/auth";
 import type { H3Event } from "h3";
-import { PrismaClient, User } from "@prisma/client";
-import jwt from "jsonwebtoken";
+import type { User } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
+import { getServerSession } from "@/server/utils/auth";
+const apiPath = "/api/v1";
 const prisma = new PrismaClient();
 
-export default defineEventHandler(async (event) => {
-  const { url, method } = event.node.req;
+export default defineEventHandler((event) => {
+  const { url } = event.node.req;
   const session = getServerSession(event);
 
   const notAuth = (event: H3Event) =>
@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
 
   if (!url) return;
 
-  if (!url.startsWith(`${api_path}/private`)) return;
+  if (!url.startsWith(`${apiPath}/private`)) return;
 
   if (!session) return notAuth(event);
 
@@ -35,7 +35,7 @@ export default defineEventHandler(async (event) => {
       },
     });
 
-  if (!url.startsWith(`${api_path}/private/admin`)) return;
+  if (!url.startsWith(`${apiPath}/private/admin`)) return;
 
   if (session.user.role !== "ADMIN")
     return sendError(

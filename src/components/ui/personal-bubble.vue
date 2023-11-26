@@ -1,12 +1,13 @@
 <template>
-  <div class="dropdown dropdown-end">
-    <label tabindex="0" class="btn btn-ghost btn-md btn-circle avatar">
+  <div class="dropdown-end dropdown">
+    <label tabindex="0" class="avatar btn btn-circle btn-ghost btn-md">
       <div class="w-10 rounded-full">
         <user-avatar />
       </div>
     </label>
-    <ul tabindex="0"
-      class="menu menu-compact dropdown-content mt-3 p-2 shadow-2xl bg-base-100 rounded-box w-52 backdrop-blur-md bg-primary-content/60">
+    <ul
+tabindex="0"
+      class="shadow-2xl dropdown-content menu rounded-box menu-compact mt-3 w-52 bg-base-100 bg-primary-content/60 p-2 backdrop-blur-md">
       <li>
         <nuxt-link :to="{ name: 'dashboard' }">
           <Icon name="ic:outline-manage-accounts" />

@@ -5,6 +5,7 @@ export default defineNuxtConfig({
   modules: [
     '@nuxt/devtools',
     '@nuxtjs/tailwindcss',
+    '@nuxtjs/eslint-module',
     'nuxt-headlessui',
     'nuxt-icon',
     '@pinia/nuxt',
@@ -22,7 +23,7 @@ export default defineNuxtConfig({
   },
 
   app: {
-    //pageTransition: { name: 'page', mode: 'out-in' },
+    // pageTransition: { name: 'page', mode: 'out-in' },
     head: {
       title: 'Mob-Proj 0.1v',
       meta: [
@@ -62,6 +63,10 @@ export default defineNuxtConfig({
         propsDestructure: true
       }
     }
+  },
+
+  eslint: {
+    emitWarning: false
   },
 
   runtimeConfig: {

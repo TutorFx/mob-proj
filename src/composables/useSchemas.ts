@@ -1,3 +1,4 @@
+import { OrderStatus } from '@prisma/client';
 import { z } from 'zod';
 import { useRules } from '~/composables/useRules';
 
@@ -18,6 +19,7 @@ export const useSchemas = {
     exp: z.number(),
   }),
   createMoneyDepositSchema: z.object({
+    businessId: z.string().refine(useRules.uuid),
     userMail: z.string().email().min(5),
     amount: z.number(),
   }),
@@ -83,5 +85,9 @@ export const useSchemas = {
         message: "As senhas não conferem"
       });
     }
-  })
+  }),
+  getCheckout: z.object({
+    status: z.nativeEnum(OrderStatus).optional(),
+    search: z.string().optional(),
+  }),
 }

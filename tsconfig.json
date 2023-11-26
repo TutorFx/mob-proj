@@ -3,6 +3,9 @@
   "extends": "./.nuxt/tsconfig.json",
   "resolveJsonModule": true,
   "esModuleInterop": true,
+  "compilerOptions": {
+    "noStrictGenericChecks": true
+  },
   "include": [
     "env.d.ts",
     ".nuxt/nuxt.d.ts",

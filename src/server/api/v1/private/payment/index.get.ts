@@ -1,8 +1,8 @@
 import { PrismaClient } from '@prisma/client';
-import { ZodError, z } from 'zod';
+import type { z } from 'zod';
+import { ZodError } from 'zod';
 import { fromZodError } from 'zod-validation-error';
 import { useSchemas } from '~/composables/useSchemas';
-import { useRules } from '~/composables/useRules';
 
 const prisma = new PrismaClient()
 
@@ -13,8 +13,7 @@ export default defineEventHandler(async (event) => {
   const { getBusinessPaymentSchema } = useSchemas;
   type GetTransactionRequest = z.infer<typeof getBusinessPaymentSchema>;
   try {
-    //@ts-ignore
-    const query: GetTransactionRequest = getQuery(event);
+    const query: GetTransactionRequest = getQuery<GetTransactionRequest>(event);
     getBusinessPaymentSchema.parse(query)
 
     const user = await event.context.user();

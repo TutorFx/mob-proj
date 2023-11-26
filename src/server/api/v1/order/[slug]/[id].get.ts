@@ -3,7 +3,7 @@ import { sendError } from "h3";
 import { ZodError } from 'zod';
 import { fromZodError } from 'zod-validation-error';
 
-//TODO: Validate if the product is from this business
+// TODO: Validate if the product is from this business
 
 export default defineEventHandler(async (event) => {
   const prisma = new PrismaClient();

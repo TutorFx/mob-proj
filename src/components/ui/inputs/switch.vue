@@ -1,6 +1,6 @@
 <template>
 	<div>
-    <input type="checkbox" class="toggle" v-model="modelValue" />
+    <input v-model="modelValue" type="checkbox" class="toggle" />
 	</div>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
   <tr>
     <td class="border-b p-4 pl-8">
-      <div class="flex overflow-hidden justify-center items-center w-12 h-8">
+      <div class="flex h-8 w-12 items-center justify-center overflow-hidden">
         <nuxt-img height="32" width="48" :src="usePrefixImages(data.Image?.Key)" placeholder />
       </div>
     </td>

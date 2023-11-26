@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="grid md:grid-cols-2 gap-6 p-6 min-h-full">
+    <div class="grid min-h-full gap-6 p-6 md:grid-cols-2">
       <div>
         <div class="grid gap-3 py-6">
-          <div class="grid grid-flow-col gap-3 justify-start items-center">
+          <div class="grid grid-flow-col items-center justify-start gap-3">
             <div class="text-3xl">
               {{ data?.contact?.nome }}
             </div>
@@ -22,7 +22,7 @@
             O pedido foi entregue
           </div>
           <div class="border-b" />
-          <div class="grid xl:grid-cols-3 gap-6">
+          <div class="grid gap-6 xl:grid-cols-3">
             <ul>
               <li class="text-neutral">
                 Data do Pedido
@@ -39,7 +39,7 @@
                     minute: '2-digit'
                   }) : '' }}
                   <template #fallback>
-                    <div class="w-full h-4 mt-2 rounded-md isloading" />
+                    <div class="isloading mt-2 h-4 w-full rounded-md" />
                   </template>
                 </client-only>
               </li>
@@ -53,7 +53,7 @@
                   {{ data?.id }}
                 </div>
                 <div>
-                  <button @click.prevent="copy()" class="btn btn-xs btn-ghost">Copiar</button>
+                  <button class="btn btn-ghost btn-xs" @click.prevent="copy()">Copiar</button>
                 </div>
               </li>
             </ul>
@@ -119,7 +119,8 @@
           </div>
           <div class="border-b" />
           <div>
-            <nuxt-link v-if="data?.Business?.whatsapp"
+            <nuxt-link
+v-if="data?.Business?.whatsapp"
               :href="`https://wa.me/${useMaskRemover(data?.Business?.whatsapp)}/?text=${formatted_message}`"
               target="_blank"
               class="btn btn-primary btn-sm gap-3">
@@ -130,22 +131,22 @@
 
         </div>
       </div>
-      <div class="grid gap-3 grid-rows-[1fr_max-content] bg-base-200 rounded-md">
-        <div class="overflow-y-auto max-h-64 md:max-h-none">
-          <div class="relative p-6 pb-3 grid gap-3">
-            <div class="grid grid-cols-[max-content_1fr] gap-3" v-for="(item, i) in data?.ProductOnOrder" :key="i">
+      <div class="grid grid-rows-[1fr_max-content] gap-3 rounded-md bg-base-200">
+        <div class="max-h-64 overflow-y-auto md:max-h-none">
+          <div class="relative grid gap-3 p-6 pb-3">
+            <div v-for="(item, i) in data?.ProductOnOrder" :key="i" class="grid grid-cols-[max-content_1fr] gap-3">
               <div class="indicator">
-                <div class="h-16 w-16 flex items-center justify-center rounded-lg overflow-hidden">
+                <div class="flex h-16 w-16 items-center justify-center overflow-hidden rounded-lg">
                   <nuxt-img class="object-cover" width="64" height="64" fit="cover" :src="usePrefixImages(item.product?.images?.at(0)?.Key)" />
                 </div>
-                <span class="badge badge-primary indicator-item aspect-square">{{ item.quantity }}</span>
+                <span class="badge indicator-item badge-primary aspect-square">{{ item.quantity }}</span>
               </div>
-              <div class="grid grid-flow-col justify-between items-center gap-3">
+              <div class="grid grid-flow-col items-center justify-between gap-3">
                 <div class="grid">
-                  <div class="text-xl font-bold truncate">
+                  <div class="truncate text-xl font-bold">
                     {{ item.product.name }}
                   </div>
-                  <div class="text-md font-thin truncate">
+                  <div class="text-md truncate font-thin">
                     {{ item.product.description }}
                   </div>
                 </div>
@@ -173,7 +174,7 @@
 
 <script setup lang="ts">
 import { useClipboard } from '@vueuse/core'
-import { TOrder } from '~/types/order';
+import type { TOrder } from '~/types/order';
 
 const route = useRoute()
 const data = await $fetch<TOrder>(`/api/v1/private/checkouts/${route.params.id}/${route.params.checkoutid}`, { headers: useRequestHeaders(['cookie']) })

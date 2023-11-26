@@ -1,23 +1,24 @@
 
 <template>
-  <div class="card bg-base-100 border-base-200 border">
+  <div class="card border border-base-200 bg-base-100">
     <div class="card-body gap-y-6">
-      <div class="card-title justify-start flex-wrap gap-6">
-        <div @change="onSelect" class="group w-24 h-24 relative rounded-full overflow-hidden grid place-content-center">
-          <div v-if="isDeleting || isUploading" class="inset-0 absolute place-content-center grid text-base-100">
+      <div class="card-title flex-wrap justify-start gap-6">
+        <div class="group relative grid h-24 w-24 place-content-center overflow-hidden rounded-full" @change="onSelect">
+          <div v-if="isDeleting || isUploading" class="absolute inset-0 grid place-content-center text-base-100">
             <ui-spinner />
           </div>
-          <div v-else class="inset-0 absolute place-content-center hidden group-hover:grid text-base-100">
-            <Icon @click="onDelete" v-if="state.Image" size="32" name="mdi:trash-outline"
-              class="group-hover:cursor-pointer" />
+          <div v-else class="absolute inset-0 hidden place-content-center text-base-100 group-hover:grid">
+            <Icon
+v-if="state.Image" size="32" name="mdi:trash-outline" class="group-hover:cursor-pointer"
+              @click="onDelete" />
             <label v-else for="profile-img">
               <Icon size="32" name="mdi:file-document-edit-outline" class="group-hover:cursor-pointer" />
             </label>
           </div>
 
           <nuxt-img v-if="!state.Image" :src="`https://avatar.vercel.sh/${state.name}`" />
-          <nuxt-img v-else class="object-cover min-h-full min-w-full" :src="usePrefixImages(state.Image?.Key)" />
-          <input type="file" accept="image/png, image/jpeg" name="profile" id="profile-img" ref="filepicker" hidden>
+          <nuxt-img v-else class="min-h-full min-w-full object-cover" :src="usePrefixImages(state.Image?.Key)" />
+          <input id="profile-img" ref="filepicker" type="file" accept="image/png, image/jpeg" name="profile" hidden>
         </div>
         <div class="relative grow grid-flow-row">
           <div>{{ state.name }}</div>
@@ -31,7 +32,7 @@
 
 <script setup lang="ts">
 import { FetchError } from 'ofetch'
-import { IEditBusiness } from "~/types/edit";
+import type { IEditBusiness } from "~/types/edit";
 const alert = new NuxaAlert()
 
 const props = defineProps<{

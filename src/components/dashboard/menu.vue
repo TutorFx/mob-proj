@@ -1,12 +1,12 @@
 <template>
-  <div class="dashboard--menu flex justify-between items-center">
+  <div class="dashboard--menu flex items-center justify-between">
     <div class="flex items-center gap-3">
       <user-avatar />
       <user-select v-model="selected" />
     </div>
     <div class="grid grid-flow-col gap-3">
       <slot />
-      <div class="tooltip tooltip-left" data-tip="Visualizar loja" v-if="selected?.slug">
+      <div v-if="selected?.slug" class="tooltip tooltip-left" data-tip="Visualizar loja">
         <nuxt-link :to="{ name: 'loja-slug', params: { slug: selected?.slug } }" target="_blank" class="btn btn-circle btn-ghost">
           <Icon name="ic:outline-remove-red-eye" size="22" />
         </nuxt-link>
@@ -21,6 +21,6 @@
 </template>
 
 <script setup lang="ts">
-import { Business } from "@prisma/client"
+import type { Business } from "@prisma/client"
 const selected = ref<Business | undefined>()
 </script>

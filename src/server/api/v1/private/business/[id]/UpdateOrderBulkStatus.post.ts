@@ -1,4 +1,4 @@
-import { PrismaClient, OrderStatus } from '@prisma/client';
+import { OrderStatus, PrismaClient } from '@prisma/client';
 import { sendError } from "h3";
 import { ZodError, z } from 'zod';
 import { fromZodError } from 'zod-validation-error';
@@ -23,7 +23,6 @@ export default defineEventHandler(async (event) => {
     z.array(uuid).parse(idlist)
     z.string().parse(status)
     
-    // @ts-expect-error
     if (!OrderStatus[status]) return sendError(
       event,
       createError({
