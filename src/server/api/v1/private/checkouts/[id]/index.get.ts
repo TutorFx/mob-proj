@@ -1,16 +1,16 @@
-import { PrismaClient } from '@prisma/client';
-import type { z } from 'zod';
-import { useSchemas } from '@/composables/useSchemas';
-const prisma = new PrismaClient();
+import { PrismaClient } from '@prisma/client'
+import type { z } from 'zod'
+import { useSchemas } from '@/composables/useSchemas'
+const prisma = new PrismaClient()
 
 export default defineEventHandler(async (event) => {
-  const id = event.context.params?.id;
+  const id = event.context.params?.id
   const { uuid } = useSchemas
   type IGetCheckout = z.infer<typeof useSchemas.getCheckout>;
   const query = getQuery<IGetCheckout>(event)
   try {
     useSchemas.getCheckout.parse(query)
-    uuid.parse(id);
+    uuid.parse(id)
     const orders = await prisma.order.findMany({
       where: {
         businessId: id,
@@ -19,13 +19,13 @@ export default defineEventHandler(async (event) => {
           contact: {
             nome: {
               contains: query.search,
-              mode: 'insensitive',
+              mode: 'insensitive'
             }
           }
         },
         {
           id: query.search
-        }],
+        }]
       },
       select: {
         contact: {
@@ -41,24 +41,23 @@ export default defineEventHandler(async (event) => {
           select: {
             quantity: true,
             product: {
-              select: { 
+              select: {
                 price: true,
                 name: true,
-                images: { 
-                  take: 1, 
-                  select: { Key: true } 
-                } 
+                images: {
+                  take: 1,
+                  select: { Key: true }
+                }
               }
             }
           }
         },
-        Business: { select: { Image: { select: { Key: true } } } },
+        Business: { select: { Image: { select: { Key: true } } } }
       },
       orderBy: { createdAt: 'desc' }
     })
 
     return orders
-
   } catch (error) {
     console.log(error)
     return sendError(
@@ -67,6 +66,6 @@ export default defineEventHandler(async (event) => {
         statusCode: 404,
         statusMessage: 'Businesses not found'
       })
-    );
+    )
   }
 })

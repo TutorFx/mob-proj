@@ -47,25 +47,25 @@
   </div>
 </template>
 <script lang="ts" setup>
-import type { IEditBusiness } from '~/types/edit';
+import type { IEditBusiness } from '~/types/edit'
 const config = useRuntimeConfig()
-const url = config.public.URL;
+const url = config.public.URL
 
 const props = defineProps<{
   modelValue: IEditBusiness
-}>();
+}>()
 
 const emits = defineEmits<(e: 'update:modelValue', value: IEditBusiness) => void>()
 const state = computed({
-  get() {
+  get () {
     return props.modelValue
   },
-  set(value) {
+  set (value) {
     emits('update:modelValue', value)
   }
 })
 const place = ref()
-if (state.value?.stateData?.Nome && state.value?.cityData?.nome){
+if (state.value?.stateData?.Nome && state.value?.cityData?.nome) {
   place.value = await $fetch('/api/v1/address/', { query: { cityId: state.value.Address.cidade, stateId: state.value.Address.estado } })
 }
 

@@ -2,8 +2,10 @@
   <div class="fill-screen container grid grid-rows-[max-content_1fr] items-start gap-6">
     <ui-nav class="grid grid-cols-[max-content_1fr] gap-3">
       <template #default>
-        <nuxt-link :to="{ name: 'loja-slug' }" class="btn btn-ghost text-xl font-black normal-case">{{ data?.name
-        }}</nuxt-link>
+        <nuxt-link :to="{ name: 'loja-slug' }" class="btn btn-ghost text-xl font-black normal-case">
+          {{ data?.name
+          }}
+        </nuxt-link>
       </template>
       <template #end>
         <div class="ml-auto hidden w-full max-w-lg md:block">
@@ -28,7 +30,8 @@
             <div class="btn btn-primary btn-sm gap-3 rounded-full" @click="selectRewards()">
               <div>
                 Resgatar prêmios (<span
-                  class="whitespace-nowrap break-keep bg-gradient-to-r from-yellow-500 to-orange-400 bg-clip-text font-bold text-transparent">
+                  class="whitespace-nowrap break-keep bg-gradient-to-r from-yellow-500 to-orange-400 bg-clip-text font-bold text-transparent"
+                >
                   {{ cart.$get?.info.pricesum }}
                   <Icon name="Coin" size="12" />
                 </span>)
@@ -39,15 +42,18 @@
       </div>
     </div>
     <div
-v-else
-      class="grid min-h-full grid-cols-1 grid-rows-[1fr_max-content] items-start gap-6 md:grid-cols-[1fr_max-content] md:grid-rows-1">
+      v-else
+      class="grid min-h-full grid-cols-1 grid-rows-[1fr_max-content] items-start gap-6 md:grid-cols-[1fr_max-content] md:grid-rows-1"
+    >
       <div class="grid gap-6">
         <div class="block md:hidden">
           <ui-stepper v-model="Step" :steps="StepperData" />
         </div>
         <component
-:is="Steps[Step].value.component" v-model="Steps[Step].value.data"
-          v-model:valid="Steps[Step].value.valid"></component>
+          :is="Steps[Step].value.component"
+          v-model="Steps[Step].value.data"
+          v-model:valid="Steps[Step].value.valid"
+        />
       </div>
       <div class="grid max-w-sm grid-rows-[max-content_1fr] items-start gap-6 rounded-lg border border-base-200 p-6">
         <div class="order-last grid gap-3 sm:order-first">
@@ -61,15 +67,32 @@ v-else
           </div>
           <div class="grid grid-flow-col gap-3">
             <div
-v-if="Step > 0" :disabled="!backstatus ? true : undefined" class="btn btn-primary btn-block"
-              @click="backstep()">Voltar</div>
-            <nuxt-link v-else :to="{ name: 'loja-slug' }" class="btn btn-primary btn-block">Adicionar produtos</nuxt-link>
+              v-if="Step > 0"
+              :disabled="!backstatus ? true : undefined"
+              class="btn btn-primary btn-block"
+              @click="backstep()"
+            >
+              Voltar
+            </div>
+            <nuxt-link v-else :to="{ name: 'loja-slug' }" class="btn btn-primary btn-block">
+              Adicionar produtos
+            </nuxt-link>
             <div
-v-if="Step + 1 === Steps.length" :disabled="!allsteps ? true : undefined" class="btn btn-primary btn-block"
-              @click="finalizar()">Finalizar</div>
+              v-if="Step + 1 === Steps.length"
+              :disabled="!allsteps ? true : undefined"
+              class="btn btn-primary btn-block"
+              @click="finalizar()"
+            >
+              Finalizar
+            </div>
             <div
-v-else :disabled="!nextstatus || !current.valid ? true : undefined" class="btn btn-primary btn-block"
-              @click="nextstep()">Continuar</div>
+              v-else
+              :disabled="!nextstatus || !current.valid ? true : undefined"
+              class="btn btn-primary btn-block"
+              @click="nextstep()"
+            >
+              Continuar
+            </div>
           </div>
         </div>
       </div>
@@ -79,12 +102,12 @@ v-else :disabled="!nextstatus || !current.valid ? true : undefined" class="btn b
 
 <script setup lang="ts">
 import { useGeolocation } from '@vueuse/core'
-import type { TAddress } from '~/types/addr';
-import type { Tcontact } from '~/types/user';
+import type { TAddress } from '~/types/addr'
+import type { Tcontact } from '~/types/user'
 
 const auth = useAuthentication()
 
-const route = useRoute();
+const route = useRoute()
 const { coords, locatedAt, error, resume, pause } = useGeolocation({ immediate: false })
 
 const selectAnon = () => {
@@ -94,7 +117,8 @@ const selectAnon = () => {
 const selectRewards = async () => {
   // await signIn(undefined, { callbackUrl: route.fullPath })
   router.push({
-    path: '/login', query: {
+    path: '/login',
+    query: {
       callback: route.fullPath
     }
   })
@@ -116,14 +140,14 @@ const addr_default = {
   bairro: '',
   cidade: 0,
   estado: 0,
-  complemento: '',
+  complemento: ''
 }
 
-const router = useRouter();
-const cart = useCart();
+const router = useRouter()
+const cart = useCart()
 const isAnonymous = ref<boolean>(false)
 
-const { data } = await useAsyncData(() => $fetch(`/api/v1/business/${route.params.slug}`));
+const { data } = await useAsyncData(() => $fetch(`/api/v1/business/${route.params.slug}`))
 
 const PersonalState = ref<{ name: string, data: Tcontact, valid: boolean, component: Component }>(
   {
@@ -147,32 +171,32 @@ const AddrState = ref<{ name: string, data: TAddress, valid: boolean, component:
 
 const Steps = ref([
   PersonalState,
-  AddrState,
+  AddrState
 ])
 
-const StepperData = computed(() => Steps.value.map((current) => current.value.name))
+const StepperData = computed(() => Steps.value.map(current => current.value.name))
 
-const Step = ref(0);
+const Step = ref(0)
 const backstatus = computed(() => Steps.value[Step.value - 1]?.value ?? null)
 const current = computed(() => Steps.value[Step.value].value)
 const nextstatus = computed(() => Steps.value[Step.value + 1]?.value ?? null)
 const allsteps = computed(() => Steps.value.every(step => step.value.valid === true))
 
 const backstep = () => {
-  if (Step.value === 0) return;
+  if (Step.value === 0) { return }
   Step.value--
 }
 const nextstep = () => {
-  if (Step.value === Steps.value.length) return;
-  if (!current.value.valid) return;
+  if (Step.value === Steps.value.length) { return }
+  if (!current.value.valid) { return }
   Step.value++
 }
 const finalizar = async () => {
   try {
     const data = await $fetch(`/api/v1/order/${route.params.slug}`, { method: 'post', body: { contact: PersonalState.value.data, address: AddrState.value.data, cart: cart.$current_cart } })
-    router.push({ name: 'loja-slug-checkout-id', params: { id: data.id } });
-    cart.clean_cart();
-    cart.isVisible = false;
+    router.push({ name: 'loja-slug-checkout-id', params: { id: data.id } })
+    cart.clean_cart()
+    cart.isVisible = false
   } catch (e) { console.error(e) }
 }
 </script>

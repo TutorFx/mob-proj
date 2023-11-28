@@ -3,12 +3,21 @@
     <div class="relative">
       <div>
         <client-only>
-          <Swiper class="fallimg" :slides-per-view="1" :modules="[Pagination, Virtual, Autoplay]" :autoplay="{ delay: 5000 }" :pagination="{ clickable: true }" virtual>
+          <Swiper
+            class="fallimg"
+            :slides-per-view="1"
+            :modules="[Pagination, Virtual, Autoplay]"
+            :autoplay="{ delay: 5000 }"
+            :pagination="{ clickable: true }"
+            virtual
+          >
             <SwiperSlide v-for="(image, i) in images" :key="i">
               <div class="flex aspect-[4/3] items-center justify-center overflow-hidden lg:aspect-square">
                 <nuxt-img
-:src="usePrefixImages(image?.Key)" class="min-h-full min-w-full object-cover"
-                  :alt="'product-image-' + i" />
+                  :src="usePrefixImages(image?.Key)"
+                  class="min-h-full min-w-full object-cover"
+                  :alt="'product-image-' + i"
+                />
               </div>
             </SwiperSlide>
           </Swiper>
@@ -24,10 +33,10 @@
 </template>
 
 <script lang="ts" setup>
-import { Swiper, SwiperSlide } from 'swiper/vue';
-import { Autoplay, Pagination, Virtual } from 'swiper';
-import 'swiper/css';
-import 'swiper/css/pagination';
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import { Autoplay, Pagination, Virtual } from 'swiper'
+import 'swiper/css'
+import 'swiper/css/pagination'
 defineProps<{
   images: {
     id: string,

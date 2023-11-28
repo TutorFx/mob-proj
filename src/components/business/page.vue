@@ -17,14 +17,17 @@
         </div>
         <div>
           <transaction-create />
-          <button class="btn btn-primary btn-sm" @click.prevent="transaction.$open()">Nova transação</button>
+          <button class="btn btn-primary btn-sm" @click.prevent="transaction.$open()">
+            Nova transação
+          </button>
         </div>
       </div>
     </div>
     <div class="posts relative">
       <nuxt-link
-:to="{ name: `dashboard-id-produto`, params: { id: $route.params.id } }"
-        class="btn btn-primary btn-lg w-full gap-2">
+        :to="{ name: `dashboard-id-produto`, params: { id: $route.params.id } }"
+        class="btn btn-primary btn-lg w-full gap-2"
+      >
         <Icon name="mdi:view-grid-outline" />
         Produtos
       </nuxt-link>
@@ -48,5 +51,5 @@
 
 <script setup lang="ts">
 const transaction = useTransactions()
-const route = useRoute();
+const route = useRoute()
 </script>

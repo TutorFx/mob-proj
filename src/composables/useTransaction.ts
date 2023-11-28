@@ -1,40 +1,38 @@
-import { defineStore } from "pinia";
-import type { z } from 'zod';
+import { defineStore } from 'pinia'
+import type { z } from 'zod'
 
 export const useTransactions = defineStore('transactions', () => {
-
-  const { createMoneyDepositSchema } = useSchemas;
+  const { createMoneyDepositSchema } = useSchemas
   type ICreateTransaction = z.infer<typeof createMoneyDepositSchema>;
 
-
   const visible = ref(false)
-  const $open = () => visible.value = true;
-  const $close = () => visible.value = false;
+  const $open = () => visible.value = true
+  const $close = () => visible.value = false
   const $isVisible = () => visible.value
 
   const starterTransaction = {
     userMail: '',
-    amount: 0,
+    amount: 0
   }
 
   const requestState = ref({
     ...starterTransaction
   })
 
-  const { pending: pendingPayment, error: paymentError } = useLazyAsyncData('pay', () => $fetch(`/api/v1/private/payment`, {
-    method: "POST",
+  const { pending: pendingPayment, error: paymentError } = useLazyAsyncData('pay', () => $fetch('/api/v1/private/payment', {
+    method: 'POST',
     body: {
       ...requestState.value,
       businessId: useRoute().params.id.toString()
-    } as ICreateTransaction,
+    } as ICreateTransaction
   }).then(() => {
     $close()
-    requestState.value = starterTransaction;
+    requestState.value = starterTransaction
     refreshNuxtData('transactions')
   }),
-    {
-      immediate: false
-    }
+  {
+    immediate: false
+  }
   )
 
   const { pending: pendingList, error: listError, data: list, refresh } = useLazyAsyncData('transactions', () => $fetch('/api/v1/private/payment/', {
@@ -43,20 +41,20 @@ export const useTransactions = defineStore('transactions', () => {
       businessId: useRoute().params.id
     }
   }),
-    {
-      immediate: false,
-    }
+  {
+    immediate: false
+  }
   )
 
   watch(
     useRoute(),
     (newVal) => {
-      if(newVal.params.id) {
-        refresh();
+      if (newVal.params.id) {
+        refresh()
       }
     }
   )
-  
+
   onBeforeMount(() => refreshNuxtData('transactions'))
 
   const $create = () => {

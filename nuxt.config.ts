@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  srcDir: "src/",
+  srcDir: 'src/',
 
   modules: [
     '@nuxt/devtools',
@@ -40,8 +40,8 @@ export default defineNuxtConfig({
   postcss: {
     plugins: {
       tailwindcss: {},
-      autoprefixer: {},
-    },
+      autoprefixer: {}
+    }
   },
 
   routeRules: {
@@ -49,7 +49,7 @@ export default defineNuxtConfig({
     '/api/v1/business/**/*': { isr: 60 },
     '/api/v1/address/state/**': { swr: true },
     '/api/v1/order/status': { isr: true },
-    '/loja/**/*': { isr: 60 },
+    '/loja/**/*': { isr: 60 }
   },
 
   headlessui: {
@@ -80,25 +80,25 @@ export default defineNuxtConfig({
       SMTP_PORT: process.env.BREVO_SMTP_PORT,
       API_KEY: process.env.BREVO_API_KEY,
       SMTP_KEY: process.env.BREVO_SMTP_KEY,
-      SMTP_USER: process.env.BREVO_SMTP_USER,
+      SMTP_USER: process.env.BREVO_SMTP_USER
     },
     public: {
       URL: process.env.NUXT_PUBLIC_SITE_URL ?? 'http://localhost:3000/',
       APP_NAME: 'Nuxa',
-      cdnBaseUrl: `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.S3_DEFAULT_REGION}.amazonaws.com/`,
-    },
+      cdnBaseUrl: `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.S3_DEFAULT_REGION}.amazonaws.com/`
+    }
   },
 
   experimental: {
-    viewTransition: true,
+    viewTransition: true
   },
 
   nitro: {
-    preset: "vercel",
-    experimental: { openAPI: true },
+    preset: 'vercel',
+    experimental: { openAPI: true }
   },
 
   devtools: {
-    enabled: true,
-  },
+    enabled: true
+  }
 })

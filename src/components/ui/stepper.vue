@@ -1,15 +1,18 @@
 <template>
   <div class="stepper-cliqx">
     <label
-v-for="(etapa, i) in steps" :key="i" :class="i < props.modelValue
+      v-for="(etapa, i) in steps"
+      :key="i"
+      :class="i < props.modelValue
         ? 'status-ok'
         : i == props.modelValue
           ? 'status-current'
           : i > props.modelValue
             ? 'status-waiting'
             : null
-      ">
-      <div class="prefix-line"></div>
+      "
+    >
+      <div class="prefix-line" />
       <span class="bubble">
         <Transition name="slide-left">
           <div v-if="i >= props.modelValue">
@@ -21,35 +24,39 @@ v-for="(etapa, i) in steps" :key="i" :class="i < props.modelValue
         </Transition>
       </span>
       <input
-v-model="modelValue" type="radio" single :value="i"
-        @change="emit('update:modelValue', Number($event.target.value))" />
+        v-model="modelValue"
+        type="radio"
+        single
+        :value="i"
+        @change="emit('update:modelValue', Number($event.target.value))"
+      >
       <span class="text"><span class="inner-text">{{ etapa }}</span></span>
-      <div class="sufix-line"></div>
+      <div class="sufix-line" />
     </label>
   </div>
 </template>
 
 <script setup lang="ts">
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(['update:modelValue'])
 const props = defineProps({
   steps: {
     required: true,
-    type: Array,
+    type: Array
   },
   modelValue: {
     required: false,
     default: 0,
-    type: Number,
-  },
-});
-const modelValue = ref(props.modelValue);
+    type: Number
+  }
+})
+const modelValue = ref(props.modelValue)
 
 watch(
   () => modelValue,
   (newValue, oldValue) => {
-    emit("update:modelValue", newValue);
+    emit('update:modelValue', newValue)
   }
-);
+)
 </script>
 <style lang="scss">
 .stepper-cliqx {

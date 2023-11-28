@@ -5,11 +5,21 @@
         <table class="w-full table-auto border-collapse text-sm">
           <thead>
             <tr>
-              <th class="border-b p-4 pb-3 pl-8 pt-0 text-left font-medium">Image</th>
-              <th class="border-b p-4 pb-3 pl-8 pt-0 text-left font-medium">Nome</th>
-              <th class="border-b p-4 pb-3 pl-8 pt-0 text-left font-medium">Status</th>
-              <th class="border-b p-4 pb-3 pl-8 pt-0 text-left font-medium">Visivel</th>
-              <th class="border-b p-4 pb-3 pl-8 pt-0 text-left font-medium">Dono</th>
+              <th class="border-b p-4 pb-3 pl-8 pt-0 text-left font-medium">
+                Image
+              </th>
+              <th class="border-b p-4 pb-3 pl-8 pt-0 text-left font-medium">
+                Nome
+              </th>
+              <th class="border-b p-4 pb-3 pl-8 pt-0 text-left font-medium">
+                Status
+              </th>
+              <th class="border-b p-4 pb-3 pl-8 pt-0 text-left font-medium">
+                Visivel
+              </th>
+              <th class="border-b p-4 pb-3 pl-8 pt-0 text-left font-medium">
+                Dono
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -17,9 +27,7 @@
           </tbody>
         </table>
       </div>
-      <div v-else-if="error">
-
-      </div>
+      <div v-else-if="error" />
       <div v-else>
         skeletons
       </div>
@@ -28,5 +36,5 @@
 </template>
 
 <script setup lang="ts">
-  const { data: businesses, error, pending } = await useAsyncData<IBusinessWithImage[]>('admin-business', () => $fetch('/api/v1/private/admin'))
+const { data: businesses, error, pending } = await useAsyncData<IBusinessWithImage[]>('admin-business', () => $fetch('/api/v1/private/admin'))
 </script>

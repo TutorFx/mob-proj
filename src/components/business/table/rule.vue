@@ -10,7 +10,9 @@
     </td>
     <td class="border-b p-4 pl-8">
       <div>
-        <UiInputsCheckbox v-model="banned">{{ banned ? 'Banido' : 'Não Banido' }}</UiInputsCheckbox>
+        <UiInputsCheckbox v-model="banned">
+          {{ banned ? 'Banido' : 'Não Banido' }}
+        </UiInputsCheckbox>
       </div>
     </td>
     <td class="border-b p-4 pl-8">
@@ -45,14 +47,13 @@ const banned = computed({
             ban: value
           }
         })
-      );
-
+      )
     } catch (error) {
       alert.danger({
         title: 'Erro!',
         body: 'Dados não puderam ser enviados, tente novamente',
-        cancel: 'Ok',
-      });
+        cancel: 'Ok'
+      })
     }
   }
 })

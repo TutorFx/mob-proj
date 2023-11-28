@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 export default defineEventHandler(async (event) => {
@@ -10,34 +10,35 @@ export default defineEventHandler(async (event) => {
         Products: {
           select: {
             name: true,
-            updatedAt: true,
+            updatedAt: true
           }
         }
       }
-    })).map((business) => ([
+    })).map(business => ([
       {
         _path: `/loja/${business.slug}`,
-        modifiedAt: business.updatedAt,
+        modifiedAt: business.updatedAt
       },
-      ...business.Products.map((product) => ({
+      ...business.Products.map(product => ({
         _path: `/loja/${business.slug}/${product.name}`,
         modifiedAt: product.updatedAt
       }))
     ]))
     const mergedArray = mapped.reduce((accumulator, currentArray) => {
-      return accumulator.concat(currentArray);
-    }, []);
+      return accumulator.concat(currentArray)
+    }, [])
     return mergedArray
   } catch (error) {
     console.log(error)
-    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002')
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
       return sendError(
         event,
         createError({
           statusCode: 204,
           statusMessage: 'Nao pode fazer entrada'
         })
-      );
+      )
+    }
 
     return sendError(
       event,
@@ -45,6 +46,6 @@ export default defineEventHandler(async (event) => {
         statusCode: 500,
         statusMessage: 'bugou'
       })
-    );
+    )
   }
 })

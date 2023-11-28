@@ -1,13 +1,15 @@
 <template>
   <Teleport to="body">
     <Transition
-enter-active-class="animate__animated animate__fadeIn"
-      leave-active-class="animate__animated animate__fadeOut">
+      enter-active-class="animate__animated animate__fadeIn"
+      leave-active-class="animate__animated animate__fadeOut"
+    >
       <div v-if="businessStore.registerFieldVisible" class="fixed inset-0 z-10 flex bg-base-300/25" />
     </Transition>
     <Transition
-enter-active-class="animate__animated animate__fadeInUp"
-      leave-active-class="animate__animated animate__fadeOutDown">
+      enter-active-class="animate__animated animate__fadeInUp"
+      leave-active-class="animate__animated animate__fadeOutDown"
+    >
       <div v-if="businessStore.registerFieldVisible" class="fixed inset-0 z-20 flex">
         <div class="w-4xl m-auto overflow-hidden rounded-xl border border-base-300">
           <div class="bg-base bg-base-100/75 p-6 text-3xl backdrop-blur">
@@ -34,13 +36,15 @@ enter-active-class="animate__animated animate__fadeInUp"
           </div>
           <div class="bg-base flex justify-between bg-base-100/75 p-6 backdrop-blur">
             <button
-class="btn btn-ghost"
-              @click.prevent="businessStore.$close()">
+              class="btn btn-ghost"
+              @click.prevent="businessStore.$close()"
+            >
               Cancelar
             </button>
             <button
-class="btn btn-primary relative overflow-hidden"
-              @click.prevent="businessStore.$createBusiness()">
+              class="btn btn-primary relative overflow-hidden"
+              @click.prevent="businessStore.$createBusiness()"
+            >
               <div v-if="businessStore.isCreating" class="absolute inset-0 flex cursor-wait items-center justify-center bg-primary text-base-100">
                 <ui-spinner />
               </div>
@@ -54,7 +58,7 @@ class="btn btn-primary relative overflow-hidden"
 </template>
 
 <script lang="ts" setup>
-const businessStore = useBusiness();
+const businessStore = useBusiness()
 const config = useRuntimeConfig()
-const url = config.public.URL;
+const url = config.public.URL
 </script>

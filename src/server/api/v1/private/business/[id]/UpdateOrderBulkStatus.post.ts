@@ -1,35 +1,39 @@
-import { OrderStatus, PrismaClient } from '@prisma/client';
-import { sendError } from "h3";
-import { ZodError, z } from 'zod';
-import { fromZodError } from 'zod-validation-error';
-import { useSchemas } from '@/composables/useSchemas';
+import { OrderStatus, PrismaClient } from '@prisma/client'
+import { sendError } from 'h3'
+import { ZodError, z } from 'zod'
+import { fromZodError } from 'zod-validation-error'
+import { useSchemas } from '@/composables/useSchemas'
 
 export default defineEventHandler(async (event) => {
-  const prisma = new PrismaClient();
-  const id = event.context.params?.id as string;
-  const { uuid } = useSchemas;
-  const { idlist, status } = await readBody(event);
-  const user = await event.context.session;
+  const prisma = new PrismaClient()
+  const id = event.context.params?.id as string
+  const { uuid } = useSchemas
+  const { idlist, status } = await readBody(event)
+  const user = await event.context.session
 
-  if (!id) return sendError(
-    event,
-    createError({
-      statusCode: 400,
-      statusMessage: 'id inválido',
-    })
-  );
+  if (!id) {
+    return sendError(
+      event,
+      createError({
+        statusCode: 400,
+        statusMessage: 'id inválido'
+      })
+    )
+  }
 
   try {
     z.array(uuid).parse(idlist)
     z.string().parse(status)
-    
-    if (!OrderStatus[status]) return sendError(
-      event,
-      createError({
-        statusCode: 400,
-        statusMessage: 'id inválido',
-      })
-    );
+
+    if (!OrderStatus[status]) {
+      return sendError(
+        event,
+        createError({
+          statusCode: 400,
+          statusMessage: 'id inválido'
+        })
+      )
+    }
 
     await prisma.order.updateMany({
       where: {
@@ -38,19 +42,20 @@ export default defineEventHandler(async (event) => {
       },
       data: {
         status
-      },
+      }
     })
 
-    return { message: 'Success' };
+    return { message: 'Success' }
   } catch (error) {
     console.log(error)
-    if (error instanceof ZodError)
+    if (error instanceof ZodError) {
       return sendError(
         event,
         createError({
           statusCode: 400,
-          statusMessage: `${fromZodError(error)}`,
+          statusMessage: `${fromZodError(error)}`
         })
-      );
+      )
+    }
   }
-});
+})

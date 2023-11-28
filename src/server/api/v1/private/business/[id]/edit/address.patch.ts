@@ -1,35 +1,35 @@
-import { PrismaClient } from '@prisma/client';
-import { ZodError } from 'zod';
-import { fromZodError } from 'zod-validation-error';
-import { useSchemas } from "~/composables/useSchemas"
-import type { TAddress } from '~/types/addr';
+import { PrismaClient } from '@prisma/client'
+import { ZodError } from 'zod'
+import { fromZodError } from 'zod-validation-error'
+import { useSchemas } from '~/composables/useSchemas'
+import type { TAddress } from '~/types/addr'
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
 export default defineEventHandler(async (event) => {
-  const id = event.context.params?.id;
+  const id = event.context.params?.id
   const { uuid, address } = useSchemas
   const body = await readBody<TAddress>(event)
-  const session = await event.context.session;
+  const session = await event.context.session
 
   try {
-    uuid.parse(id);
-    uuid.parse(session.id);
-    address.parse(body);
+    uuid.parse(id)
+    uuid.parse(session.id)
+    address.parse(body)
 
-    const { 
+    const {
       cep,
       estado,
       cidade,
       endereco,
       bairro,
       numero,
-      complemento 
+      complemento
     } = body
 
     const business = await prisma.business.findUnique({
       where: {
-        id,
+        id
       }
     })
 
@@ -55,18 +55,18 @@ export default defineEventHandler(async (event) => {
 
     await prisma.address.upsert({
       where: {
-        businessId: id,
+        businessId: id
       },
-      update: { 
+      update: {
         cep,
         estado,
         cidade,
         endereco,
         bairro,
         numero,
-        complemento 
+        complemento
       },
-      create: { 
+      create: {
         cep,
         estado,
         cidade,
@@ -74,27 +74,27 @@ export default defineEventHandler(async (event) => {
         bairro,
         numero,
         complemento,
-        businessId: id,
-      },
+        businessId: id
+      }
     })
 
     return { status: 'Sucess' }
-
   } catch (error) {
-    if (error instanceof ZodError)
+    if (error instanceof ZodError) {
       return sendError(
         event,
         createError({
           statusCode: 400,
-          statusMessage: `${fromZodError(error)}`,
+          statusMessage: `${fromZodError(error)}`
         })
-      );
+      )
+    }
     return sendError(
       event,
       createError({
         statusCode: 404,
         statusMessage: 'Businesses not found'
       })
-    );
+    )
   }
 })

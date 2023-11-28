@@ -53,7 +53,9 @@
                   {{ data?.id }}
                 </div>
                 <div>
-                  <button class="btn btn-ghost btn-xs" @click.prevent="copy()">Copiar</button>
+                  <button class="btn btn-ghost btn-xs" @click.prevent="copy()">
+                    Copiar
+                  </button>
                 </div>
               </li>
             </ul>
@@ -73,7 +75,7 @@
                 CEP
               </div>
               <div>
-                {{completeAddr.cep}}
+                {{ completeAddr.cep }}
               </div>
             </div>
             <div>
@@ -81,7 +83,7 @@
                 Estado
               </div>
               <div>
-                {{completeAddr.estado}}
+                {{ completeAddr.estado }}
               </div>
             </div>
             <div>
@@ -89,7 +91,7 @@
                 Cidade
               </div>
               <div>
-                {{completeAddr.cidade}}
+                {{ completeAddr.cidade }}
               </div>
             </div>
             <div>
@@ -97,7 +99,7 @@
                 Endereço
               </div>
               <div>
-                {{completeAddr.endereco}}
+                {{ completeAddr.endereco }}
               </div>
             </div>
             <div>
@@ -105,7 +107,7 @@
                 Bairro
               </div>
               <div>
-                {{completeAddr.bairro}}
+                {{ completeAddr.bairro }}
               </div>
             </div>
             <div>
@@ -113,22 +115,22 @@
                 Número
               </div>
               <div>
-                {{completeAddr.numero}}
+                {{ completeAddr.numero }}
               </div>
             </div>
           </div>
           <div class="border-b" />
           <div>
             <nuxt-link
-v-if="data?.Business?.whatsapp"
+              v-if="data?.Business?.whatsapp"
               :href="`https://wa.me/${useMaskRemover(data?.Business?.whatsapp)}/?text=${formatted_message}`"
               target="_blank"
-              class="btn btn-primary btn-sm gap-3">
+              class="btn btn-primary btn-sm gap-3"
+            >
               <Icon name="logos:whatsapp-icon" />
               Conversar com o cliente
             </nuxt-link>
           </div>
-
         </div>
       </div>
       <div class="grid grid-rows-[1fr_max-content] gap-3 rounded-md bg-base-200">
@@ -174,24 +176,26 @@ v-if="data?.Business?.whatsapp"
 
 <script setup lang="ts">
 import { useClipboard } from '@vueuse/core'
-import type { TOrder } from '~/types/order';
+import type { TOrder } from '~/types/order'
 
 const route = useRoute()
 const data = await $fetch<TOrder>(`/api/v1/private/checkouts/${route.params.id}/${route.params.checkoutid}`, { headers: useRequestHeaders(['cookie']) })
 const user = useAuthentication()
 
-if (!data) throw createError({
-  statusCode: 404,
-  statusMessage: 'Dados não carregados'
-})
+if (!data) {
+  throw createError({
+    statusCode: 404,
+    statusMessage: 'Dados não carregados'
+  })
+}
 
 const completeAddr = data.address ? new AddressFormatter(data.address) : null
 await completeAddr?.fetch()
 
 const formatted_message = computed(() => {
-  const greating = encodeURIComponent(`Olá, ${useGreeting()} ${data.contact?.nome.toLocaleUpperCase()}.`).replace(/'/g, "%27").replace(/"/g, "%22");
-  const message = encodeURIComponent(`Obrigado por escolher ${data?.Business.name}.`).replace(/'/g, "%27").replace(/"/g, "%22");
-  const order = encodeURIComponent(`Seu número de pedido é #${data?.id}`).replace(/'/g, "%27").replace(/"/g, "%22");
+  const greating = encodeURIComponent(`Olá, ${useGreeting()} ${data.contact?.nome.toLocaleUpperCase()}.`).replace(/'/g, '%27').replace(/"/g, '%22')
+  const message = encodeURIComponent(`Obrigado por escolher ${data?.Business.name}.`).replace(/'/g, '%27').replace(/"/g, '%22')
+  const order = encodeURIComponent(`Seu número de pedido é #${data?.id}`).replace(/'/g, '%27').replace(/"/g, '%22')
   return [greating, message, order].join('%0a')
 })
 

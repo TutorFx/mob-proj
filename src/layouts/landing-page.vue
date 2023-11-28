@@ -12,8 +12,9 @@
     </Teleport>
     <div class="fixed inset-x-0 top-0 z-50">
       <Transition
-enter-active-class="animate__animated animate__slideInDown"
-        leave-active-class="animate__animated animate__slideOutUp">
+        enter-active-class="animate__animated animate__slideInDown"
+        leave-active-class="animate__animated animate__slideOutUp"
+      >
         <landing-page-menu v-if="upperMove" v-model="menuVisible" class="shadow grid h-32 bg-white/70 backdrop-blur-lg" />
       </Transition>
     </div>
@@ -28,12 +29,12 @@ enter-active-class="animate__animated animate__slideInDown"
 </template>
 
 <script setup lang="ts">
-import 'animate.css';
-import { useScrollLock, useWindowScroll } from '@vueuse/core';
+import 'animate.css'
+import { useScrollLock, useWindowScroll } from '@vueuse/core'
 
-const el = ref();
-onMounted(() => el.value = document.body);
-const menuVisible = useScrollLock(el);
+const el = ref()
+onMounted(() => el.value = document.body)
+const menuVisible = useScrollLock(el)
 const upperMove = ref<null | boolean>(null)
 const { x, y } = useWindowScroll()
 

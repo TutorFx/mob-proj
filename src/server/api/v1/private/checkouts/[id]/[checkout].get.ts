@@ -1,32 +1,34 @@
-import { PrismaClient } from '@prisma/client';
-import { useSchemas } from '@/composables/useSchemas';
-const prisma = new PrismaClient();
+import { PrismaClient } from '@prisma/client'
+import { useSchemas } from '@/composables/useSchemas'
+const prisma = new PrismaClient()
 
 export default defineEventHandler(async (event) => {
-  const id = event.context.params?.id;
-  const checkout = event.context.params?.checkout;
+  const id = event.context.params?.id
+  const checkout = event.context.params?.checkout
   const { uuid } = useSchemas
   try {
-    uuid.parse(id);
-    uuid.parse(checkout);
+    uuid.parse(id)
+    uuid.parse(checkout)
 
-    if (!id)
+    if (!id) {
       return sendError(
         event,
         createError({
           statusCode: 404,
-          statusMessage: `invalid business id`,
+          statusMessage: 'invalid business id'
         })
-      );
+      )
+    }
 
-    if (!checkout)
+    if (!checkout) {
       return sendError(
         event,
         createError({
           statusCode: 404,
-          statusMessage: `invalid checkout id`,
+          statusMessage: 'invalid checkout id'
         })
-      );
+      )
+    }
 
     const orders = await prisma.order.findUnique({
       where: {
@@ -42,20 +44,20 @@ export default defineEventHandler(async (event) => {
             }
           }
         },
-        Business: { include: { Image: true } },
-      },
+        Business: { include: { Image: true } }
+      }
     })
 
-    if (orders?.businessId !== id)
+    if (orders?.businessId !== id) {
       return sendError(
         event,
         createError({
           statusCode: 404,
-          statusMessage: `Business not found`,
+          statusMessage: 'Business not found'
         }))
+    }
 
     return orders
-
   } catch (error) {
     console.log(error)
     return sendError(
@@ -64,6 +66,6 @@ export default defineEventHandler(async (event) => {
         statusCode: 404,
         statusMessage: 'Businesses not found'
       })
-    );
+    )
   }
 })

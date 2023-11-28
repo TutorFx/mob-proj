@@ -1,12 +1,12 @@
-import { Prisma, PrismaClient } from '@prisma/client';
-import { ZodError, z } from 'zod';
-import { fromZodError } from 'zod-validation-error';
+import { Prisma, PrismaClient } from '@prisma/client'
+import { ZodError, z } from 'zod'
+import { fromZodError } from 'zod-validation-error'
 const prisma = new PrismaClient()
 
 export default defineEventHandler(async (event) => {
   try {
     // @ts-expect-error
-    const { slug, id } = event.context.params;
+    const { slug, id } = event.context.params
     const idSchema = z.string().min(1)
     const slugSchema = z.string().min(1)
     type IName = z.infer<typeof idSchema>;
@@ -32,26 +32,27 @@ export default defineEventHandler(async (event) => {
             Key: true
           }
         }
-      },
+      }
     })
-
   } catch (error) {
-    if (error instanceof ZodError)
+    if (error instanceof ZodError) {
       return sendError(
         event,
         createError({
           statusCode: 400,
-          statusMessage: `${fromZodError(error)}`,
+          statusMessage: `${fromZodError(error)}`
         })
-      );
-    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002')
+      )
+    }
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
       return sendError(
         event,
         createError({
           statusCode: 204,
           statusMessage: 'Nao pode fazer entrada'
         })
-      );
+      )
+    }
 
     console.log(error)
     return sendError(
@@ -60,6 +61,6 @@ export default defineEventHandler(async (event) => {
         statusCode: 500,
         statusMessage: 'bugou'
       })
-    );
+    )
   }
 })

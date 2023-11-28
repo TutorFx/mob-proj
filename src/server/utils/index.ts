@@ -1,22 +1,24 @@
-import fs from 'node:fs';
-import type { H3Event } from 'h3';
-import type { DeleteApiResponse, UploadApiResponse} from 'cloudinary';
-import { v2 as _cloudinary } from 'cloudinary';
-import { DeleteObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
-import { v4 as uuidv4 } from 'uuid';
-import { getServerSession } from '@/server/utils/auth';
+import fs from 'node:fs'
+import type { H3Event } from 'h3'
+import type { DeleteApiResponse, UploadApiResponse } from 'cloudinary'
+import { v2 as _cloudinary } from 'cloudinary'
+import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
+import { v4 as uuidv4 } from 'uuid'
+import { getServerSession } from '@/server/utils/auth'
 
 export const middleware = (event: H3Event, callback: Function) => {
-  const session = getServerSession(event);
-  if (!session) sendError(
-    event,
-    createError({
-      statusCode: 401,
-      statusMessage: 'Not authenticated.',
-      message: 'You need to login first.'
-    })
-  );
-  callback();
+  const session = getServerSession(event)
+  if (!session) {
+    sendError(
+      event,
+      createError({
+        statusCode: 401,
+        statusMessage: 'Not authenticated.',
+        message: 'You need to login first.'
+      })
+    )
+  }
+  callback()
 }
 
 const cloudinary = () => {
@@ -34,8 +36,8 @@ const s3 = new S3Client({
   credentials: {
     accessKeyId: process.env.S3_KEY ?? '<ACCESS-KEY>',
     secretAccessKey: process.env.S3_KEY_SECRET ?? '<ACCESS-KEY>'
-  },
-});
+  }
+})
 
 export const uploadToCloudinary = (imagePath: string): Promise<UploadApiResponse> => {
   return new Promise((resolve, reject) => {
@@ -43,7 +45,7 @@ export const uploadToCloudinary = (imagePath: string): Promise<UploadApiResponse
       if (error) {
         reject(error)
       }
-      if (data) return resolve(data);
+      if (data) { return resolve(data) }
     })
   })
 }
@@ -54,28 +56,29 @@ export const deleteCloudinaryImage = (imageId: string): Promise<DeleteApiRespons
       if (error) {
         reject(error)
       }
-      if (data) return resolve(data);
+      if (data) { return resolve(data) }
     })
   })
 }
 
 export const uploadToS3 = async (file: any, bucketName: string = process.env.S3_BUCKET_NAME ?? '') => {
-  const fileContent = fs.readFileSync(file.filepath);
-  const Key = uuidv4() + '.' + file.originalFilename.split('.')[1];
+  const fileContent = fs.readFileSync(file.filepath)
+  const Key = uuidv4() + '.' + file.originalFilename.split('.')[1]
   return {
     ...await s3.send(new PutObjectCommand({
       Bucket: bucketName,
       Key,
       Body: fileContent,
       ACL: 'public-read',
-      ContentType: file.mimetype,
-    })), Key
-  };
-};
+      ContentType: file.mimetype
+    })),
+    Key
+  }
+}
 
 export const deleteFromS3 = async (Key: string, bucketName: string = process.env.S3_BUCKET_NAME ?? '') => {
   return await s3.send(new DeleteObjectCommand({
     Bucket: bucketName,
-    Key,
-  }));
-};
+    Key
+  }))
+}

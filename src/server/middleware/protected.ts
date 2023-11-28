@@ -1,48 +1,49 @@
-import type { H3Event } from "h3";
-import type { User } from "@prisma/client";
-import { PrismaClient } from "@prisma/client";
-import { getServerSession } from "@/server/utils/auth";
-const apiPath = "/api/v1";
-const prisma = new PrismaClient();
+import type { H3Event } from 'h3'
+import type { User } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
+import { getServerSession } from '@/server/utils/auth'
+const apiPath = '/api/v1'
+const prisma = new PrismaClient()
 
 export default defineEventHandler((event) => {
-  const { url } = event.node.req;
-  const session = getServerSession(event);
+  const { url } = event.node.req
+  const session = getServerSession(event)
 
   const notAuth = (event: H3Event) =>
     sendError(
       event,
       createError({
         statusCode: 401,
-        statusMessage: `Not authenticated`,
+        statusMessage: 'Not authenticated'
       })
-    );
+    )
 
-  if (!url) return;
+  if (!url) { return }
 
-  if (!url.startsWith(`${apiPath}/private`)) return;
+  if (!url.startsWith(`${apiPath}/private`)) { return }
 
-  if (!session) return notAuth(event);
+  if (!session) { return notAuth(event) }
 
-  const email = session?.user?.email;
+  const email = session?.user?.email
 
-  if (!email) return;
-  event.context.session = session;
+  if (!email) { return }
+  event.context.session = session
   event.context.user = async (): Promise<User | null> =>
     await prisma.user.findUnique({
       where: {
-        email,
-      },
-    });
+        email
+      }
+    })
 
-  if (!url.startsWith(`${apiPath}/private/admin`)) return;
+  if (!url.startsWith(`${apiPath}/private/admin`)) { return }
 
-  if (session.user.role !== "ADMIN")
+  if (session.user.role !== 'ADMIN') {
     return sendError(
       event,
       createError({
         statusCode: 401,
-        statusMessage: `Not authenticated`,
+        statusMessage: 'Not authenticated'
       })
-    );
-});
+    )
+  }
+})

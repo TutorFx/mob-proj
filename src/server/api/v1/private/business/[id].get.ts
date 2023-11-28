@@ -1,12 +1,12 @@
-import { PrismaClient } from '@prisma/client';
-import { useSchemas } from '@/composables/useSchemas';
-const prisma = new PrismaClient();
+import { PrismaClient } from '@prisma/client'
+import { useSchemas } from '@/composables/useSchemas'
+const prisma = new PrismaClient()
 
 export default defineEventHandler(async (event) => {
-  const id = event.context.params?.id;
+  const id = event.context.params?.id
   const { uuid } = useSchemas
   try {
-    uuid.parse(id);
+    uuid.parse(id)
     const getBusiness = await prisma.business.findUnique({
       where: {
         id
@@ -18,7 +18,6 @@ export default defineEventHandler(async (event) => {
     })
 
     return getBusiness
-
   } catch (error) {
     return sendError(
       event,
@@ -26,6 +25,6 @@ export default defineEventHandler(async (event) => {
         statusCode: 404,
         statusMessage: 'Businesses not found'
       })
-    );
+    )
   }
 })

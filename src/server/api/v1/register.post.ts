@@ -1,11 +1,10 @@
-import { Prisma, PrismaClient } from '@prisma/client';
-import { sendError } from "h3";
-import { ZodError } from 'zod';
-import { fromZodError } from 'zod-validation-error';
-import bcrypt from "bcryptjs";
-import { useSchemas } from "~/composables/useSchemas"
-const { registerSchema } = useSchemas;
-
+import { Prisma, PrismaClient } from '@prisma/client'
+import { sendError } from 'h3'
+import { ZodError } from 'zod'
+import { fromZodError } from 'zod-validation-error'
+import bcrypt from 'bcryptjs'
+import { useSchemas } from '~/composables/useSchemas'
+const { registerSchema } = useSchemas
 
 export default defineEventHandler(async (event) => {
   const prisma = new PrismaClient()
@@ -13,14 +12,15 @@ export default defineEventHandler(async (event) => {
   try {
     registerSchema.parse(body)
   } catch (error) {
-    if (error instanceof ZodError)
+    if (error instanceof ZodError) {
       return sendError(
         event,
         createError({
           statusCode: 400,
-          statusMessage: `${fromZodError(error)}`,
+          statusMessage: `${fromZodError(error)}`
         })
-      );
+      )
+    }
     return 'Unknown Error'
   }
   try {
@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
       data: {
         email: body.email,
         cpf: body.cpf,
-        password: hash,
+        password: hash
       }
     })
     return { message: 'Created' }
@@ -43,7 +43,7 @@ export default defineEventHandler(async (event) => {
             statusCode: 204,
             statusMessage: 'A new user cannot be created with this email'
           })
-        );
+        )
       }
     } else {
       return sendError(

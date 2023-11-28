@@ -1,50 +1,49 @@
-import Stripe from 'stripe';
+import Stripe from 'stripe'
 // import AccountService from '~~/lib/services/account.service';
 
-const config = useRuntimeConfig();
-const stripe = new Stripe(config.stripeSecretKey, { apiVersion: '2022-11-15' });
+const config = useRuntimeConfig()
+const stripe = new Stripe(config.stripeSecretKey, { apiVersion: '2022-11-15' })
 
 export default defineEventHandler(async (event) => {
-  const stripeSignature = getRequestHeader(event, 'stripe-signature');
-  if(!stripeSignature){
-    throw createError({ statusCode: 400, statusMessage: 'Webhook Error: No stripe signature in header' });
+  const stripeSignature = getRequestHeader(event, 'stripe-signature')
+  if (!stripeSignature) {
+    throw createError({ statusCode: 400, statusMessage: 'Webhook Error: No stripe signature in header' })
   }
 
   const rawBody = await readRawBody(event)
-  if(!rawBody){
-    throw createError({ statusCode: 400, statusMessage: 'Webhook Error: No body' });
+  if (!rawBody) {
+    throw createError({ statusCode: 400, statusMessage: 'Webhook Error: No body' })
   }
-  let stripeEvent: Stripe.Event;
+  let stripeEvent: Stripe.Event
 
   try {
-    stripeEvent = stripe.webhooks.constructEvent(rawBody, stripeSignature, config.stripeEndpointSecret);
-  }
-  catch (err) {
-    console.log(err);
-    throw createError({ statusCode: 400, statusMessage: `Error validating Webhook Event` });
+    stripeEvent = stripe.webhooks.constructEvent(rawBody, stripeSignature, config.stripeEndpointSecret)
+  } catch (err) {
+    console.log(err)
+    throw createError({ statusCode: 400, statusMessage: 'Error validating Webhook Event' })
   }
 
-  if(stripeEvent.type?.startsWith('customer.subscription')){
-    console.log(`****** Web Hook Recieved (${stripeEvent.type}) ******`);
+  if (stripeEvent.type?.startsWith('customer.subscription')) {
+    console.log(`****** Web Hook Recieved (${stripeEvent.type}) ******`)
 
-    const subscription = stripeEvent.data.object as Stripe.Subscription;
+    const subscription = stripeEvent.data.object as Stripe.Subscription
     console.log(subscription)
-    if(subscription.status === 'active'){
+    if (subscription.status === 'active') {
       const subItem = subscription.items.data.find(item => item?.object && item?.object === 'subscription_item')
-      
-      const stripeProductId = subItem?.plan.product?.toString(); // TODO - is the product ever a product object and in that case should I check for deleted?
-      if(!stripeProductId){
-        throw createError({ statusCode: 400, statusMessage: `Error validating Webhook Event` });
+
+      const stripeProductId = subItem?.plan.product?.toString() // TODO - is the product ever a product object and in that case should I check for deleted?
+      if (!stripeProductId) {
+        throw createError({ statusCode: 400, statusMessage: 'Error validating Webhook Event' })
       }
-  
+
       // const accountService = new AccountService();
-      
-      const currentPeriodEnds: Date = new Date(subscription.current_period_end * 1000);
-      currentPeriodEnds.setDate(currentPeriodEnds.getDate() + config.subscriptionGraceDays);
-  
-      console.log(`updating stripe sub details subscription.current_period_end:${subscription.current_period_end}, subscription.id:${subscription.id}, stripe_product_id:${stripeProductId}`);
+
+      const currentPeriodEnds: Date = new Date(subscription.current_period_end * 1000)
+      currentPeriodEnds.setDate(currentPeriodEnds.getDate() + config.subscriptionGraceDays)
+
+      console.log(`updating stripe sub details subscription.current_period_end:${subscription.current_period_end}, subscription.id:${subscription.id}, stripe_product_id:${stripeProductId}`)
       // accountService.updateStripeSubscriptionDetailsForAccount(subscription.customer.toString(), subscription.id, current_period_ends, stripe_product_id);
     }
   }
-  return `handled ${stripeEvent.type}.`;
-});
+  return `handled ${stripeEvent.type}.`
+})

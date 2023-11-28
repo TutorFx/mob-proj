@@ -21,6 +21,6 @@
 </template>
 
 <script setup lang="ts">
-import type { Business } from "@prisma/client"
+import type { Business } from '@prisma/client'
 const selected = ref<Business | undefined>()
 </script>

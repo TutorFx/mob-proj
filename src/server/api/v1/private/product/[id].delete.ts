@@ -1,22 +1,22 @@
-import { Prisma, PrismaClient } from '@prisma/client';
-import type { z } from 'zod';
-import { ZodError } from 'zod';
-import { fromZodError } from 'zod-validation-error';
-import { useSchemas } from '~/composables/useSchemas';
+import { Prisma, PrismaClient } from '@prisma/client'
+import type { z } from 'zod'
+import { ZodError } from 'zod'
+import { fromZodError } from 'zod-validation-error'
+import { useSchemas } from '~/composables/useSchemas'
 
 const prisma = new PrismaClient()
-const { uuid } = useSchemas;
+const { uuid } = useSchemas
 type IUuid = z.infer<typeof uuid>;
 
 export default defineEventHandler(async (event) => {
   try {
-    const session = await event.context.session;
-    const id = event.context.params?.id as IUuid;
-    const body = await readBody(event);
-    const { businessId } = body;
+    const session = await event.context.session
+    const id = event.context.params?.id as IUuid
+    const body = await readBody(event)
+    const { businessId } = body
 
-    uuid.parse(id);
-    uuid.parse(businessId);
+    uuid.parse(id)
+    uuid.parse(businessId)
 
     const productBusiness = await prisma.product.findUnique({
       where: {
@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
           select: {
             OwnerId: true,
             name: true
-          },
+          }
         },
         images: true,
         businessId: true
@@ -43,7 +43,6 @@ export default defineEventHandler(async (event) => {
         })
       )
     }
-
 
     // Usuário autenticado tem permissão?
     if (productBusiness?.Business.OwnerId !== session.id) {
@@ -63,34 +62,36 @@ export default defineEventHandler(async (event) => {
     await prisma.product.delete({
       where: {
         id
-      },
+      }
     })
-    
+
     return { status: 'Sucess' }
   } catch (error) {
-    if (error instanceof ZodError)
+    if (error instanceof ZodError) {
       return sendError(
         event,
         createError({
           statusCode: 400,
-          statusMessage: `${fromZodError(error)}`,
+          statusMessage: `${fromZodError(error)}`
         })
-      );
-    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002')
+      )
+    }
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
       return sendError(
         event,
         createError({
           statusCode: 204,
           statusMessage: 'Não pode deletar'
         })
-      );
-      console.log(error)
+      )
+    }
+    console.log(error)
     return sendError(
       event,
       createError({
         statusCode: 500,
         statusMessage: 'bugou'
       })
-    );
+    )
   }
 })

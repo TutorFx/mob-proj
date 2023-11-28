@@ -6,9 +6,13 @@
     </div>
     <div class="container my-10 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       <nuxt-link
-v-for="(product, i) in products" :key="i" :class="{ active: active === product.id }" :to="{ name: 'loja-slug-product', params: { slug: route.params.slug, product: product?.slug } }"
+        v-for="(product, i) in products"
+        :key="i"
+        :class="{ active: active === product.id }"
+        :to="{ name: 'loja-slug-product', params: { slug: route.params.slug, product: product?.slug } }"
         class="bg-base group relative grid overflow-hidden rounded-lg border border-base-300 shadow-3xl shadow-neutral/10"
-        @click="active = product.id">
+        @click="active = product.id"
+      >
         <div>
           <div class="img-container grid aspect-video items-center justify-center overflow-hidden p-3">
             <nuxt-img
@@ -17,10 +21,11 @@ v-for="(product, i) in products" :key="i" :class="{ active: active === product.i
               fit="cover"
               width="362"
               height="120"
-              :src="usePrefixImages(product.images.at(0)?.Key)" alt="" />
+              :src="usePrefixImages(product.images.at(0)?.Key)"
+              alt=""
+            />
           </div>
         </div>
-
 
         <div class="grid grid-flow-col justify-between p-3">
           <div class="grid">
@@ -38,15 +43,15 @@ v-for="(product, i) in products" :key="i" :class="{ active: active === product.i
             Comprar <Icon name="mdi:plus" size="12" />
           </button>
         </div>
-        <div class="h-1 w-full bg-base-200"></div>
+        <div class="h-1 w-full bg-base-200" />
       </nuxt-link>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-const route = useRoute();
-const config = useRuntimeConfig();
+const route = useRoute()
+const config = useRuntimeConfig()
 
 const data = await $fetch(`/api/v1/business/${route.params.slug}`).catch(() => {
   throw createError({
@@ -59,10 +64,10 @@ const products = await $fetch(`/api/v1/business/${route.params.slug}/products`)
 
 useSeoMeta({
   title: `${data?.name} | ${config.public.APP_NAME}`,
-  ogTitle: `${data?.name} | ${config.public.APP_NAME}`,
+  ogTitle: `${data?.name} | ${config.public.APP_NAME}`
 })
 
-const active = useState();
+const active = useState()
 </script>
 
 <style scoped lang="scss">

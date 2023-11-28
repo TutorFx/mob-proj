@@ -45,7 +45,9 @@
                   {{ data?.id }}
                 </div>
                 <div>
-                  <button class="btn btn-ghost btn-xs" @click.prevent="copy()">Copiar</button>
+                  <button class="btn btn-ghost btn-xs" @click.prevent="copy()">
+                    Copiar
+                  </button>
                 </div>
               </li>
             </ul>
@@ -123,8 +125,8 @@ const route = useRoute()
 const data = await $fetch(`/api/v1/order/${route.params.slug}/${route.params.id}`)
 
 const formatted_message = computed(() => {
-  const greating = encodeURIComponent(`Olá, ${useGreeting()}.`).replace(/'/g,"%27").replace(/"/g,"%22");
-  const message = encodeURIComponent(`Eu fiz o pedido #${data?.id} em ${data?.Business.name} e gostaria de dar continuidade no meu atendimento por aqui.`).replace(/'/g,"%27").replace(/"/g,"%22");
+  const greating = encodeURIComponent(`Olá, ${useGreeting()}.`).replace(/'/g, '%27').replace(/"/g, '%22')
+  const message = encodeURIComponent(`Eu fiz o pedido #${data?.id} em ${data?.Business.name} e gostaria de dar continuidade no meu atendimento por aqui.`).replace(/'/g, '%27').replace(/"/g, '%22')
   return [greating, message].join('%0a')
 })
 

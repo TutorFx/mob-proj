@@ -1,24 +1,24 @@
-import { PrismaClient } from '@prisma/client';
-import { ZodError } from 'zod';
-import { fromZodError } from 'zod-validation-error';
-import { useSchemas } from "~/composables/useSchemas"
+import { PrismaClient } from '@prisma/client'
+import { ZodError } from 'zod'
+import { fromZodError } from 'zod-validation-error'
+import { useSchemas } from '~/composables/useSchemas'
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
 export default defineEventHandler(async (event) => {
-  const id = event.context.params?.id;
+  const id = event.context.params?.id
   const { uuid, businessContact } = useSchemas
   const body = await readBody(event)
-  const session = await event.context.session;
-  
+  const session = await event.context.session
+
   try {
-    uuid.parse(id);
-    uuid.parse(session.id);
-    businessContact.parse(body);
+    uuid.parse(id)
+    uuid.parse(session.id)
+    businessContact.parse(body)
 
     const business = await prisma.business.findUnique({
       where: {
-        id,
+        id
       }
     })
     if (!business) {
@@ -43,31 +43,31 @@ export default defineEventHandler(async (event) => {
 
     await prisma.business.update({
       where: {
-        id,
+        id
       },
       data: {
         whatsapp: body.whatsapp,
-        email: body.email,
+        email: body.email
       }
     })
 
     return { status: 'Sucess' }
-
   } catch (error) {
-    if (error instanceof ZodError)
+    if (error instanceof ZodError) {
       return sendError(
         event,
         createError({
           statusCode: 400,
-          statusMessage: `${fromZodError(error)}`,
+          statusMessage: `${fromZodError(error)}`
         })
-      );
+      )
+    }
     return sendError(
       event,
       createError({
         statusCode: 404,
         statusMessage: 'Businesses not found'
       })
-    );
+    )
   }
 })

@@ -2,20 +2,27 @@
   <div>
     <div @drop.prevent="drop" @change="selectedFile">
       <div
-:class="{ 'active-dropzone': active }" class="dropzone" @dragenter.prevent="toggleActive"
-        @dragleave.prevent="toggleActive" @dragover.prevent @drop.prevent="toggleActive">
+        :class="{ 'active-dropzone': active }"
+        class="dropzone"
+        @dragenter.prevent="toggleActive"
+        @dragleave.prevent="toggleActive"
+        @dragover.prevent
+        @drop.prevent="toggleActive"
+      >
         <span>Arraste</span>
         <span>ou</span>
         <label for="file" class="btn btn-primary btn-sm rounded-md">Selecione seu Arquivo</label>
-        <input id="file" ref="dropRef" type="file" :multiple="true" class="modelValue" />
+        <input id="file" ref="dropRef" type="file" :multiple="true" class="modelValue">
       </div>
     </div>
     <div v-if="modelValue?.length > 0" ref="parent" class="mt-4 grid grid-cols-3 gap-4" @click.prevent>
       <div v-for="(image, i) in modelValue" :key="i" class="relative rounded-lg" style="aspect-ratio: 1">
-        <img v-if="image" class="h-full w-full rounded-lg object-cover" :alt="`uploaded-image-${i}`" :src="url.createObjectURL(image)" />
+        <img v-if="image" class="h-full w-full rounded-lg object-cover" :alt="`uploaded-image-${i}`" :src="url.createObjectURL(image)">
         <Icon
-name="mdi:delete" class="absolute right-0 top-0 m-2 h-6 w-6 rounded-full bg-white p-1"
-          @click="modelValue?.splice(i, 1)" />
+          name="mdi:delete"
+          class="absolute right-0 top-0 m-2 h-6 w-6 rounded-full bg-white p-1"
+          @click="modelValue?.splice(i, 1)"
+        />
       </div>
     </div>
   </div>
@@ -28,51 +35,44 @@ const emits = defineEmits<{
   (e: 'update:modelValue', value: Array<File>): void
 }>()
 const modelValue = computed({
-  get() {
+  get () {
     return props.modelValue
   },
-  set(value) {
+  set (value) {
     emits('update:modelValue', value)
   }
 })
 
-const dropRef = ref<any>();
+const dropRef = ref<any>()
 
-
-const active = ref(false);
+const active = ref(false)
 const toggleActive = () => {
-  active.value = !active.value;
-};
+  active.value = !active.value
+}
 
-const url = URL;
-const file = File;
+const url = URL
+const file = File
 
 const drop = (e: any) => {
   Array.prototype.forEach.call(e.dataTransfer.files, function (file) {
-    if (!(file instanceof File))
-      return console.error("Not a valid File");
-    if (!file.type.startsWith("image/"))
-      return console.error("The selected file is not an image!");
-    if (file.size > 5242880)
-      return console.error("The dropped file is larger than 5MB!");
-    modelValue.value.push(file);
+    if (!(file instanceof File)) { return console.error('Not a valid File') }
+    if (!file.type.startsWith('image/')) { return console.error('The selected file is not an image!') }
+    if (file.size > 5242880) { return console.error('The dropped file is larger than 5MB!') }
+    modelValue.value.push(file)
   })
-};
+}
 const selectedFile = () => {
   try {
     Array.prototype.forEach.call(dropRef.value.files, function (file) {
-      if (!(file instanceof File))
-        return console.error("Not a valid File");
-      if (!file.type.startsWith("image/"))
-        return console.error("The selected file is not an image!");
-      if (file.size > 5242880)
-        return console.error("The dropped file is larger than 5MB!");
-      modelValue.value.push(file);
-    });
+      if (!(file instanceof File)) { return console.error('Not a valid File') }
+      if (!file.type.startsWith('image/')) { return console.error('The selected file is not an image!') }
+      if (file.size > 5242880) { return console.error('The dropped file is larger than 5MB!') }
+      modelValue.value.push(file)
+    })
   } catch (e) {
-    console.error("Selection stopped by user.");
+    console.error('Selection stopped by user.')
   }
-};
+}
 // emit to parent on change
 </script>
 

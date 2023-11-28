@@ -16,7 +16,6 @@
     "plugin:jsdoc/recommended",
     "@nuxtjs/eslint-config-typescript",
     "plugin:import/typescript",
-    "prettier",
     "plugin:tailwindcss/recommended"
   ],
   "rules": {

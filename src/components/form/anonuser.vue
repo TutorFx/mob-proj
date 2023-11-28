@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Tcontact } from '~/types/user';
+import type { Tcontact } from '~/types/user'
 
 const props = withDefaults(defineProps<{
   modelValue: Tcontact,
@@ -12,27 +12,27 @@ const emits = defineEmits<{
 }>()
 
 const state = computed({
-  get() {
+  get () {
     return props.modelValue
   },
-  set(value) {
+  set (value) {
     emits('update:modelValue', value)
   }
 })
 
 const valid = computed({
-  get() {
+  get () {
     return props.valid
   },
-  set(value) {
+  set (value) {
     emits('update:valid', value)
   }
 })
 
-const result = computed(() => useSchemas.contact.safeParse(state.value));
-const errors = computed(() => result.value.success ? {} : result.value.error.format());
+const result = computed(() => useSchemas.contact.safeParse(state.value))
+const errors = computed(() => result.value.success ? {} : result.value.error.format())
 
-watchEffect(() => valid.value = result.value.success);
+watchEffect(() => valid.value = result.value.success)
 
 const isDirty = ref(true)
 
@@ -43,10 +43,9 @@ const getErrors = (field: string) => {
 
 const touch = () => (isDirty.value = true)
 
-
 defineExpose({
   touch
-});
+})
 </script>
 
 <template>
@@ -56,10 +55,17 @@ defineExpose({
         <span class="label-text">Nome</span>
       </label>
       <input
-id="nome" v-model="state.nome" type="text" placeholder="Preencha seu nome" name="nome"
-        class="input input-bordered w-full">
+        id="nome"
+        v-model="state.nome"
+        type="text"
+        placeholder="Preencha seu nome"
+        name="nome"
+        class="input input-bordered w-full"
+      >
       <ul>
-        <li class="text-xs text-error">{{ getErrors('nome') }}</li>
+        <li class="text-xs text-error">
+          {{ getErrors('nome') }}
+        </li>
       </ul>
     </div>
     <div class="form-control">
@@ -67,10 +73,19 @@ id="nome" v-model="state.nome" type="text" placeholder="Preencha seu nome" name=
         <span class="label-text">Celular</span>
       </label>
       <input
-id="celular" v-model="state.celular" v-maska type="text" data-maska="['(##) ####-####', '(##) # ####-####']" placeholder="Preencha seu celular" name="celular"
-        class="input input-bordered w-full">
+        id="celular"
+        v-model="state.celular"
+        v-maska
+        type="text"
+        data-maska="['(##) ####-####', '(##) # ####-####']"
+        placeholder="Preencha seu celular"
+        name="celular"
+        class="input input-bordered w-full"
+      >
       <ul>
-        <li class="text-xs text-error">{{ getErrors('celular') }}</li>
+        <li class="text-xs text-error">
+          {{ getErrors('celular') }}
+        </li>
       </ul>
     </div>
   </div>

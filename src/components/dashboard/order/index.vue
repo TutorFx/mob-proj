@@ -4,14 +4,17 @@
       <div class="grid grid-cols-[max-content_1fr] gap-2 lg:gap-6">
         <label class="block">
           <input
-v-model="state"
+            v-model="state"
             type="checkbox"
-            class="checkbox checkbox-primary border-dashed border-base-content checked:border-primary hover:border-base-content" :value="order.id">
+            class="checkbox checkbox-primary border-dashed border-base-content checked:border-primary hover:border-base-content"
+            :value="order.id"
+          >
         </label>
         <div class="grid gap-2">
           <nuxt-link
-class="grid gap-2 md:grid-cols-[1fr_max-content]"
-            :to="{ name: 'dashboard-id-fechamento-checkoutid', params: { id: order.Business.id, checkoutid: order.id } }">
+            class="grid gap-2 md:grid-cols-[1fr_max-content]"
+            :to="{ name: 'dashboard-id-fechamento-checkoutid', params: { id: order.Business.id, checkoutid: order.id } }"
+          >
             <div class="grid grid-flow-col items-center justify-start gap-1">
               <div class="truncate font-bold">
                 Pedido
@@ -45,7 +48,7 @@ class="grid gap-2 md:grid-cols-[1fr_max-content]"
                 day: 'numeric',
               }).replaceAll(',', '') : '' }}
             </span>
-            <div class="h-4 border-r border-base-content/30"></div>
+            <div class="h-4 border-r border-base-content/30" />
             <div>
               {{ order?.contact?.nome }}
             </div>
@@ -57,12 +60,16 @@ class="grid gap-2 md:grid-cols-[1fr_max-content]"
             <dashboard-order-product class="grid grid-cols-[max-content_1fr] gap-3" :item="order?.ProductOnOrder[0]" />
             <div v-if="order?.ProductOnOrder.length > 1 && isVisible" class="grid gap-3">
               <dashboard-order-product
-v-for="(item, i) in order?.ProductOnOrder.slice(1)"
-                :key="i" class="grid grid-cols-[max-content_1fr] gap-3" :item="item" />
+                v-for="(item, i) in order?.ProductOnOrder.slice(1)"
+                :key="i"
+                class="grid grid-cols-[max-content_1fr] gap-3"
+                :item="item"
+              />
             </div>
             <div v-if="order?.ProductOnOrder.length > 1">
-              <button class="btn btn-ghost btn-xs" @click="isVisible = !isVisible">Mais {{ order?.ProductOnOrder.length -
-                1 }} Produtos
+              <button class="btn btn-ghost btn-xs" @click="isVisible = !isVisible">
+                Mais {{ order?.ProductOnOrder.length -
+                  1 }} Produtos
                 <Icon :name="!isVisible ? 'mdi:chevron-down' : 'mdi:chevron-up'" />
               </button>
             </div>
@@ -74,8 +81,8 @@ v-for="(item, i) in order?.ProductOnOrder.slice(1)"
 </template>
 
 <script setup lang="ts">
-import type { IObjectStatus } from "~/types";
-import type { TOrder } from "~/types/order";
+import type { IObjectStatus } from '~/types'
+import type { TOrder } from '~/types/order'
 
 const isVisible = ref(false)
 
@@ -90,10 +97,10 @@ const emits = defineEmits<{
 }>()
 
 const state = computed({
-  get() {
+  get () {
     return props.modelValue
   },
-  set(value) {
+  set (value) {
     emits('update:modelValue', value)
   }
 })

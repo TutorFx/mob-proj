@@ -1,53 +1,53 @@
-import type { RouteLocationRaw } from "#vue-router";
+import type { RouteLocationRaw } from '#vue-router'
 
 const home = [
   {
-    title: "Benefícios",
-    to: { path: "/", hash: "#beneficios" }
+    title: 'Benefícios',
+    to: { path: '/', hash: '#beneficios' }
   },
   {
-    title: "Nossos Clientes",
-    to: { path: "/", hash: "#nossos-clientes" }
+    title: 'Nossos Clientes',
+    to: { path: '/', hash: '#nossos-clientes' }
   },
   {
-    title: "Preço",
-    to: { path: "/", hash: "#preco" }
+    title: 'Preço',
+    to: { path: '/', hash: '#preco' }
   }
 ]
 
 const StoreDashboard = [
   {
-    icon: "mdi:view-dashboard-outline",
-    title: "Informações",
-    to: { name: "dashboard-id" }
+    icon: 'mdi:view-dashboard-outline',
+    title: 'Informações',
+    to: { name: 'dashboard-id' }
   },
   {
-    icon: "mdi:view-grid-outline",
-    title: "Produtos",
-    to: { name: "dashboard-id-produto" }
+    icon: 'mdi:view-grid-outline',
+    title: 'Produtos',
+    to: { name: 'dashboard-id-produto' }
   },
   {
-    icon: "mdi:view-grid-plus-outline",
-    title: "Novo Produto",
-    to: { name: "dashboard-id-produto-novo" }
+    icon: 'mdi:view-grid-plus-outline',
+    title: 'Novo Produto',
+    to: { name: 'dashboard-id-produto-novo' }
   },
   {
-    icon: "mdi:store-settings-outline",
-    title: "Perfil da Empresa",
-    to: { name: "dashboard-id-profile" }
+    icon: 'mdi:store-settings-outline',
+    title: 'Perfil da Empresa',
+    to: { name: 'dashboard-id-profile' }
   },
   {
-    icon: "mdi:basket-fill",
-    title: "Fechamentos",
-    to: { name: "dashboard-id-fechamento" }
+    icon: 'mdi:basket-fill',
+    title: 'Fechamentos',
+    to: { name: 'dashboard-id-fechamento' }
   }
 ]
 
 const AdminDashboard = [
   {
-    icon: "ic:outline-business-center",
-    title: "Empresas",
-    to: { name: "dashboard-admin" }
+    icon: 'ic:outline-business-center',
+    title: 'Empresas',
+    to: { name: 'dashboard-admin' }
   }
 ]
 

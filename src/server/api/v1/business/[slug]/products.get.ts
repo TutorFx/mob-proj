@@ -1,16 +1,15 @@
-import { Prisma, PrismaClient } from '@prisma/client';
-import sanitizeHtml from 'sanitize-html';
+import { Prisma, PrismaClient } from '@prisma/client'
+import sanitizeHtml from 'sanitize-html'
 const prisma = new PrismaClient()
 
 export default defineEventHandler(async (event) => {
-  const slug = event.context.params?.slug;
+  const slug = event.context.params?.slug
   try {
-
     return (await prisma.business.findUnique({
       where: {
         slug
       },
-      select:{
+      select: {
         Products: {
           select: {
             id: true,
@@ -27,21 +26,21 @@ export default defineEventHandler(async (event) => {
           orderBy: { updatedAt: 'desc' }
         }
       }
-    }))?.Products.map((e) => ({
+    }))?.Products.map(e => ({
       ...e,
       slug: encodeURIComponent(e.name),
       description: sanitizeHtml(e.description).replace(/<[^>]+>/g, '')
     }))
-
   } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002')
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
       return sendError(
         event,
         createError({
           statusCode: 204,
           statusMessage: 'Nao pode fazer entrada'
         })
-      );
+      )
+    }
 
     console.log(error)
     return sendError(
@@ -50,6 +49,6 @@ export default defineEventHandler(async (event) => {
         statusCode: 500,
         statusMessage: 'bugou'
       })
-    );
+    )
   }
 })
