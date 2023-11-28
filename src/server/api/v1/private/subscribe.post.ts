@@ -1,11 +1,11 @@
-import { CreatePaymentAccount } from '~/server/utils/auth'
+import { CreatePaymentAccount } from "~/server/utils/auth";
 
 export default defineEventHandler((event) => {
-  const account = new CreatePaymentAccount(event)
+  const account = new CreatePaymentAccount(event);
   // account.init()
-  console.log(account)
+  console.log(account);
 
-  return ':)'
+  return ":)";
   // const url = 'https://www.google.com'
   // await sendRedirect(event, url)
-})
+});

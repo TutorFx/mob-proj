@@ -1,51 +1,56 @@
 <script lang="ts" setup>
-import type { Tcontact } from '~/types/user'
+import type { Tcontact } from "~/types/user";
 
-const props = withDefaults(defineProps<{
-  modelValue: Tcontact,
-  valid: boolean
-}>(), {})
+const props = withDefaults(
+  defineProps<{
+    modelValue: Tcontact;
+    valid: boolean;
+  }>(),
+  {},
+);
 
 const emits = defineEmits<{
-  (e: 'update:modelValue', value: Tcontact): void,
-  (e: 'update:valid', value: boolean): void,
-}>()
+  (e: "update:modelValue", value: Tcontact): void;
+  (e: "update:valid", value: boolean): void;
+}>();
 
 const state = computed({
-  get () {
-    return props.modelValue
+  get() {
+    return props.modelValue;
   },
-  set (value) {
-    emits('update:modelValue', value)
-  }
-})
+  set(value) {
+    emits("update:modelValue", value);
+  },
+});
 
 const valid = computed({
-  get () {
-    return props.valid
+  get() {
+    return props.valid;
   },
-  set (value) {
-    emits('update:valid', value)
-  }
-})
+  set(value) {
+    emits("update:valid", value);
+  },
+});
 
-const result = computed(() => useSchemas.contact.safeParse(state.value))
-const errors = computed(() => result.value.success ? {} : result.value.error.format())
+const result = computed(() => useSchemas.contact.safeParse(state.value));
+const errors = computed(() =>
+  result.value.success ? {} : result.value.error.format(),
+);
 
-watchEffect(() => valid.value = result.value.success)
+watchEffect(() => (valid.value = result.value.success));
 
-const isDirty = ref(true)
+const isDirty = ref(true);
 
 const getErrors = (field: string) => {
   // @ts-expect-error
-  return isDirty.value ? errors.value?.[field]?._errors?.at(0) : undefined
-}
+  return isDirty.value ? errors.value?.[field]?._errors?.at(0) : undefined;
+};
 
-const touch = () => (isDirty.value = true)
+const touch = () => (isDirty.value = true);
 
 defineExpose({
-  touch
-})
+  touch,
+});
 </script>
 
 <template>
@@ -61,10 +66,10 @@ defineExpose({
         placeholder="Preencha seu nome"
         name="nome"
         class="input input-bordered w-full"
-      >
+      />
       <ul>
         <li class="text-xs text-error">
-          {{ getErrors('nome') }}
+          {{ getErrors("nome") }}
         </li>
       </ul>
     </div>
@@ -81,10 +86,10 @@ defineExpose({
         placeholder="Preencha seu celular"
         name="celular"
         class="input input-bordered w-full"
-      >
+      />
       <ul>
         <li class="text-xs text-error">
-          {{ getErrors('celular') }}
+          {{ getErrors("celular") }}
         </li>
       </ul>
     </div>

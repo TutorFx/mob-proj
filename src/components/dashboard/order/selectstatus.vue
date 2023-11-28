@@ -4,9 +4,19 @@
       <ListboxButton
         class="shadow-md relative cursor-default rounded-lg border bg-white py-2 pl-3 pr-10 text-left focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm"
       >
-        <span class="grid grid-flow-col items-center justify-start gap-2 truncate"><div :class="`bg-${current?.color} rounded-full h-2 w-2`" /> {{ current?.name }}</span>
-        <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-          <Icon name="bi:chevron-expand" class="h-5 w-5 text-gray-400" aria-hidden="true" />
+        <span
+          class="grid grid-flow-col items-center justify-start gap-2 truncate"
+          ><div :class="`bg-${current?.color} rounded-full h-2 w-2`" />
+          {{ current?.name }}</span
+        >
+        <span
+          class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2"
+        >
+          <Icon
+            name="bi:chevron-expand"
+            class="h-5 w-5 text-gray-400"
+            aria-hidden="true"
+          />
         </span>
       </ListboxButton>
 
@@ -36,9 +46,17 @@
                   selected ? 'font-medium' : 'font-normal',
                   'block truncate',
                 ]"
-              >{{ useStatusPreset(status)?.name }}</span>
-              <span v-if="selected" class="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
-                <Icon name="material-symbols:check-box-outline" class="h-5 w-5" aria-hidden="true" />
+                >{{ useStatusPreset(status)?.name }}</span
+              >
+              <span
+                v-if="selected"
+                class="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600"
+              >
+                <Icon
+                  name="material-symbols:check-box-outline"
+                  class="h-5 w-5"
+                  aria-hidden="true"
+                />
               </span>
             </li>
           </ListboxOption>
@@ -49,29 +67,33 @@
 </template>
 
 <script setup lang="ts">
-import type { IObjectStatus } from '~/types'
+import type { IObjectStatus } from "~/types";
 
 const props = defineProps<{
-  data: IObjectStatus,
-  modelValue?: string | string[] | null
-}>()
+  data: IObjectStatus;
+  modelValue?: string | string[] | null;
+}>();
 
 const emits = defineEmits<{
-  (e: 'update:modelValue', value?: string | string[] | null): void,
-}>()
+  (e: "update:modelValue", value?: string | string[] | null): void;
+}>();
 
 const state = computed({
-  get () {
-    return props.modelValue
+  get() {
+    return props.modelValue;
   },
-  set (value) {
-    emits('update:modelValue', value)
-  }
-})
+  set(value) {
+    emits("update:modelValue", value);
+  },
+});
 
 const current = computed(() => {
-  if (!state.value) { return undefined }
-  if (state.value instanceof Array) { return undefined }
-  return useStatusPreset(state.value)
-})
+  if (!state.value) {
+    return undefined;
+  }
+  if (state.value instanceof Array) {
+    return undefined;
+  }
+  return useStatusPreset(state.value);
+});
 </script>

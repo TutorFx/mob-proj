@@ -1,33 +1,33 @@
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
-  const user = await event.context.session
+  const user = await event.context.session;
   try {
     const getBusiness = await prisma.business.findMany({
       where: {
-        OwnerId: user.id
-      }
-    })
+        OwnerId: user.id,
+      },
+    });
 
     if (getBusiness.length === 0) {
       return sendError(
         event,
         createError({
           statusCode: 404,
-          statusMessage: 'Business not found'
-        })
-      )
+          statusMessage: "Business not found",
+        }),
+      );
     }
 
-    return getBusiness
+    return getBusiness;
   } catch (error) {
     return sendError(
       event,
       createError({
         statusCode: 404,
-        statusMessage: 'Businesses not found'
-      })
-    )
+        statusMessage: "Businesses not found",
+      }),
+    );
   }
-})
+});

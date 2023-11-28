@@ -7,7 +7,9 @@
             <a aria-label="Home" href="/#">
               <Icon name="Logotype" width="180" height="40" />
             </a>
-            <landing-page-menu-items class="hidden text-sm md:flex md:gap-x-6" />
+            <landing-page-menu-items
+              class="hidden text-sm md:flex md:gap-x-6"
+            />
           </div>
           <div class="flex items-center gap-x-5 md:gap-x-8">
             <div class="hidden md:block">
@@ -22,7 +24,9 @@
               class="group inline-flex items-center justify-center rounded-lg bg-nuxa-600 px-4 py-2 text-sm font-semibold text-white hover:bg-nuxa-500 hover:text-slate-100 focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nuxa-600 active:bg-nuxa-800 active:text-nuxa-100"
               to="/register"
             >
-              <span>Cadastre-se <span class="hidden lg:inline">hoje</span></span>
+              <span
+                >Cadastre-se <span class="hidden lg:inline">hoje</span></span
+              >
             </nuxt-link>
             <div class="-mr-1 md:hidden">
               <div data-headlessui-state="">
@@ -32,8 +36,18 @@
                   type="button"
                   @click.prevent="menuVisible = !menuVisible"
                 >
-                  <Icon v-if="!menuVisible" name="line-md:menu" class="text-content" size="48" />
-                  <Icon v-else name="line-md:close-small" class="text-content" size="48" />
+                  <Icon
+                    v-if="!menuVisible"
+                    name="line-md:menu"
+                    class="text-content"
+                    size="48"
+                  />
+                  <Icon
+                    v-else
+                    name="line-md:close-small"
+                    class="text-content"
+                    size="48"
+                  />
                 </button>
               </div>
             </div>
@@ -45,21 +59,27 @@
 </template>
 
 <script setup lang="ts">
-const props = withDefaults(defineProps<{
-  modelValue: boolean,
-}>(), { modelValue: false })
+const props = withDefaults(
+  defineProps<{
+    modelValue: boolean;
+  }>(),
+  { modelValue: false },
+);
 
-const emits = defineEmits<(e: 'update:modelValue', value: boolean) => void>()
+const emits = defineEmits<(e: "update:modelValue", value: boolean) => void>();
 const menuVisible = computed({
-  get () {
-    return props.modelValue
+  get() {
+    return props.modelValue;
   },
-  set (value) {
-    emits('update:modelValue', value)
-  }
-})
+  set(value) {
+    emits("update:modelValue", value);
+  },
+});
 
-watch(() => useRoute().path, () => {
-  menuVisible.value = false
-})
+watch(
+  () => useRoute().path,
+  () => {
+    menuVisible.value = false;
+  },
+);
 </script>

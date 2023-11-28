@@ -15,7 +15,11 @@
             fit="cover"
             height="32"
             width="32"
-            :src="product?.images[0]?.Key ? usePrefixImages(product?.images[0]?.Key) : `https://avatar.vercel.sh/${product.id}`"
+            :src="
+              product?.images[0]?.Key
+                ? usePrefixImages(product?.images[0]?.Key)
+                : `https://avatar.vercel.sh/${product.id}`
+            "
             :alt="`Foto de um ${product.name} ${product.description}`"
           />
         </div>
@@ -25,7 +29,9 @@
         <div class="truncate">
           {{ product.description }}
         </div>
-        <div class="btn btn-circle btn-ghost btn-md group-hover:bg-base-300 group-hover:text-base-content">
+        <div
+          class="btn btn-circle btn-ghost btn-md group-hover:bg-base-300 group-hover:text-base-content"
+        >
           <Icon name="mdi:edit" size="24" />
         </div>
       </div>
@@ -40,7 +46,9 @@
       <div class="isloading h-8 w-8 overflow-hidden rounded-xl" />
       <div class="isloading h-3 w-full truncate font-semibold" />
       <div class="isloading h-3 w-full truncate" />
-      <div class="btn btn-circle btn-ghost btn-md group-hover:bg-base-300 group-hover:text-base-content">
+      <div
+        class="btn btn-circle btn-ghost btn-md group-hover:bg-base-300 group-hover:text-base-content"
+      >
         <div class="isloading h-6 w-6 rounded-md" />
       </div>
     </div>
@@ -48,20 +56,18 @@
 </template>
 
 <script lang="ts" setup>
-const { pending, error, refresh, data } = useAsyncData('product-get', () => $fetch('/api/v1/private/product',
-  {
-    method: 'GET',
+const { pending, error, refresh, data } = useAsyncData("product-get", () =>
+  $fetch("/api/v1/private/product", {
+    method: "GET",
     params: {
-      businessId: useRoute().params?.id
+      businessId: useRoute().params?.id,
     },
-    headers: useRequestHeaders(['cookie'])
-  })
-)
-watch(useRoute(),
-  async (newVal) => {
-    if (newVal.params.id) {
-      await refresh()
-    }
+    headers: useRequestHeaders(["cookie"]),
+  }),
+);
+watch(useRoute(), async (newVal) => {
+  if (newVal.params.id) {
+    await refresh();
   }
-)
+});
 </script>

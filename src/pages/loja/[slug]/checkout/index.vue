@@ -1,10 +1,14 @@
 <template>
-  <div class="fill-screen container grid grid-rows-[max-content_1fr] items-start gap-6">
+  <div
+    class="fill-screen container grid grid-rows-[max-content_1fr] items-start gap-6"
+  >
     <ui-nav class="grid grid-cols-[max-content_1fr] gap-3">
       <template #default>
-        <nuxt-link :to="{ name: 'loja-slug' }" class="btn btn-ghost text-xl font-black normal-case">
-          {{ data?.name
-          }}
+        <nuxt-link
+          :to="{ name: 'loja-slug' }"
+          class="btn btn-ghost text-xl font-black normal-case"
+        >
+          {{ data?.name }}
         </nuxt-link>
       </template>
       <template #end>
@@ -13,28 +17,37 @@
         </div>
       </template>
     </ui-nav>
-    <div v-if="!auth.isAuthenticated && !isAnonymous" class="grid min-h-full pb-6">
+    <div
+      v-if="!auth.isAuthenticated && !isAnonymous"
+      class="grid min-h-full pb-6"
+    >
       <div class="grid items-center rounded-xl bg-primary/5 text-center">
         <div class="mx-auto max-w-md px-6">
           <h2 class="mb-3 text-xl font-semibold">
             De que forma deseja seguir?
           </h2>
           <h4 class="text-md mb-6">
-            Tem como você fazer a compra de duas formas, anônima ou então acesse sua conta para obter
-            prêmios que podem ser trocados por produtos.
+            Tem como você fazer a compra de duas formas, anônima ou então acesse
+            sua conta para obter prêmios que podem ser trocados por produtos.
           </h4>
           <div class="grid grid-flow-col gap-3">
-            <div class="btn btn-primary btn-sm rounded-full" @click="selectAnon()">
+            <div
+              class="btn btn-primary btn-sm rounded-full"
+              @click="selectAnon()"
+            >
               Anônima
             </div>
-            <div class="btn btn-primary btn-sm gap-3 rounded-full" @click="selectRewards()">
+            <div
+              class="btn btn-primary btn-sm gap-3 rounded-full"
+              @click="selectRewards()"
+            >
               <div>
                 Resgatar prêmios (<span
                   class="whitespace-nowrap break-keep bg-gradient-to-r from-yellow-500 to-orange-400 bg-clip-text font-bold text-transparent"
                 >
                   {{ cart.$get?.info.pricesum }}
-                  <Icon name="Coin" size="12" />
-                </span>)
+                  <Icon name="Coin" size="12" /> </span
+                >)
               </div>
             </div>
           </div>
@@ -55,9 +68,16 @@
           v-model:valid="Steps[Step].value.valid"
         />
       </div>
-      <div class="grid max-w-sm grid-rows-[max-content_1fr] items-start gap-6 rounded-lg border border-base-200 p-6">
+      <div
+        class="grid max-w-sm grid-rows-[max-content_1fr] items-start gap-6 rounded-lg border border-base-200 p-6"
+      >
         <div class="order-last grid gap-3 sm:order-first">
-          <ui-cart-item v-for="(item) in cart.$get?.items" :key="item.id" class="lg:max-w-sm" :item="item" />
+          <ui-cart-item
+            v-for="item in cart.$get?.items"
+            :key="item.id"
+            class="lg:max-w-sm"
+            :item="item"
+          />
         </div>
         <div class="border-b" />
         <div class="order-first grid gap-4 sm:order-last">
@@ -74,7 +94,11 @@
             >
               Voltar
             </div>
-            <nuxt-link v-else :to="{ name: 'loja-slug' }" class="btn btn-primary btn-block">
+            <nuxt-link
+              v-else
+              :to="{ name: 'loja-slug' }"
+              class="btn btn-primary btn-block"
+            >
               Adicionar produtos
             </nuxt-link>
             <div
@@ -101,102 +125,128 @@
 </template>
 
 <script setup lang="ts">
-import { useGeolocation } from '@vueuse/core'
-import type { TAddress } from '~/types/addr'
-import type { Tcontact } from '~/types/user'
+import { useGeolocation } from "@vueuse/core";
+import type { TAddress } from "~/types/addr";
+import type { Tcontact } from "~/types/user";
 
-const auth = useAuthentication()
+const auth = useAuthentication();
 
-const route = useRoute()
-const { coords, locatedAt, error, resume, pause } = useGeolocation({ immediate: false })
+const route = useRoute();
+const { coords, locatedAt, error, resume, pause } = useGeolocation({
+  immediate: false,
+});
 
 const selectAnon = () => {
-  isAnonymous.value = !isAnonymous.value
-  resume()
-}
+  isAnonymous.value = !isAnonymous.value;
+  resume();
+};
 const selectRewards = async () => {
   // await signIn(undefined, { callbackUrl: route.fullPath })
   router.push({
-    path: '/login',
+    path: "/login",
     query: {
-      callback: route.fullPath
-    }
-  })
-}
+      callback: route.fullPath,
+    },
+  });
+};
 
-const personal_component = resolveComponent('FormAnonuser')
-const addr_component = resolveComponent('FormAddr')
+const personal_component = resolveComponent("FormAnonuser");
+const addr_component = resolveComponent("FormAddr");
 
 const personal_default = {
-  nome: '',
-  celular: '',
-  whatsapp: true
-}
+  nome: "",
+  celular: "",
+  whatsapp: true,
+};
 
 const addr_default = {
-  cep: '',
-  endereco: '',
+  cep: "",
+  endereco: "",
   numero: null,
-  bairro: '',
+  bairro: "",
   cidade: 0,
   estado: 0,
-  complemento: ''
-}
+  complemento: "",
+};
 
-const router = useRouter()
-const cart = useCart()
-const isAnonymous = ref<boolean>(false)
+const router = useRouter();
+const cart = useCart();
+const isAnonymous = ref<boolean>(false);
 
-const { data } = await useAsyncData(() => $fetch(`/api/v1/business/${route.params.slug}`))
+const { data } = await useAsyncData(() =>
+  $fetch(`/api/v1/business/${route.params.slug}`),
+);
 
-const PersonalState = ref<{ name: string, data: Tcontact, valid: boolean, component: Component }>(
-  {
-    name: 'Dados de contato',
-    data: personal_default,
-    valid: false,
-    // @ts-expect-error
-    component: markRaw(personal_component)
-  }
-)
+const PersonalState = ref<{
+  name: string;
+  data: Tcontact;
+  valid: boolean;
+  component: Component;
+}>({
+  name: "Dados de contato",
+  data: personal_default,
+  valid: false,
+  // @ts-expect-error
+  component: markRaw(personal_component),
+});
 
-const AddrState = ref<{ name: string, data: TAddress, valid: boolean, component: Component }>(
-  {
-    name: 'Endereço',
-    data: addr_default,
-    valid: false,
-    // @ts-expect-error
-    component: markRaw(addr_component)
-  }
-)
+const AddrState = ref<{
+  name: string;
+  data: TAddress;
+  valid: boolean;
+  component: Component;
+}>({
+  name: "Endereço",
+  data: addr_default,
+  valid: false,
+  // @ts-expect-error
+  component: markRaw(addr_component),
+});
 
-const Steps = ref([
-  PersonalState,
-  AddrState
-])
+const Steps = ref([PersonalState, AddrState]);
 
-const StepperData = computed(() => Steps.value.map(current => current.value.name))
+const StepperData = computed(() =>
+  Steps.value.map((current) => current.value.name),
+);
 
-const Step = ref(0)
-const backstatus = computed(() => Steps.value[Step.value - 1]?.value ?? null)
-const current = computed(() => Steps.value[Step.value].value)
-const nextstatus = computed(() => Steps.value[Step.value + 1]?.value ?? null)
-const allsteps = computed(() => Steps.value.every(step => step.value.valid === true))
+const Step = ref(0);
+const backstatus = computed(() => Steps.value[Step.value - 1]?.value ?? null);
+const current = computed(() => Steps.value[Step.value].value);
+const nextstatus = computed(() => Steps.value[Step.value + 1]?.value ?? null);
+const allsteps = computed(() =>
+  Steps.value.every((step) => step.value.valid === true),
+);
 
 const backstep = () => {
-  if (Step.value === 0) { return }
-  Step.value--
-}
+  if (Step.value === 0) {
+    return;
+  }
+  Step.value--;
+};
 const nextstep = () => {
-  if (Step.value === Steps.value.length) { return }
-  if (!current.value.valid) { return }
-  Step.value++
-}
+  if (Step.value === Steps.value.length) {
+    return;
+  }
+  if (!current.value.valid) {
+    return;
+  }
+  Step.value++;
+};
 const finalizar = async () => {
   try {
-    const data = await $fetch(`/api/v1/order/${route.params.slug}`, { method: 'post', body: { contact: PersonalState.value.data, address: AddrState.value.data, cart: cart.$current_cart } })
-    router.push({ name: 'loja-slug-checkout-id', params: { id: data.id } })
-    cart.clean_cart()
-    cart.isVisible = false
-  } catch (e) { console.error(e) }
-}
+    const data = await $fetch(`/api/v1/order/${route.params.slug}`, {
+      method: "post",
+      body: {
+        contact: PersonalState.value.data,
+        address: AddrState.value.data,
+        cart: cart.$current_cart,
+      },
+    });
+    router.push({ name: "loja-slug-checkout-id", params: { id: data.id } });
+    cart.clean_cart();
+    cart.isVisible = false;
+  } catch (e) {
+    console.error(e);
+  }
+};
 </script>

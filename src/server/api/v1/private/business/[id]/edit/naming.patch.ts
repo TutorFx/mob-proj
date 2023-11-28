@@ -1,34 +1,34 @@
-import { PrismaClient } from '@prisma/client'
-import { ZodError } from 'zod'
-import { fromZodError } from 'zod-validation-error'
-import { useSchemas } from '~/composables/useSchemas'
+import { PrismaClient } from "@prisma/client";
+import { ZodError } from "zod";
+import { fromZodError } from "zod-validation-error";
+import { useSchemas } from "~/composables/useSchemas";
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
-  const id = event.context.params?.id
-  const { uuid, createBusinessSchema } = useSchemas
-  const body = await readBody(event)
-  const session = await event.context.session
+  const id = event.context.params?.id;
+  const { uuid, createBusinessSchema } = useSchemas;
+  const body = await readBody(event);
+  const session = await event.context.session;
 
   try {
-    uuid.parse(id)
-    uuid.parse(session.id)
-    createBusinessSchema.parse(body)
+    uuid.parse(id);
+    uuid.parse(session.id);
+    createBusinessSchema.parse(body);
 
     const business = await prisma.business.findUnique({
       where: {
-        id
-      }
-    })
+        id,
+      },
+    });
     if (!business) {
       return sendError(
         event,
         createError({
           statusCode: 404,
-          statusMessage: `Business with ID ${id} not found`
-        })
-      )
+          statusMessage: `Business with ID ${id} not found`,
+        }),
+      );
     }
     // Usuário autenticado tem permissão?
     if (business.OwnerId !== session.id) {
@@ -36,39 +36,39 @@ export default defineEventHandler(async (event) => {
         event,
         createError({
           statusCode: 404,
-          statusMessage: `User with ID ${session.user.email} is not the owner of business ${business.name}`
-        })
-      )
+          statusMessage: `User with ID ${session.user.email} is not the owner of business ${business.name}`,
+        }),
+      );
     }
 
     await prisma.business.update({
       where: {
-        id
+        id,
       },
       data: {
         name: body.name,
         description: body.description,
-        slug: body.slug
-      }
-    })
+        slug: body.slug,
+      },
+    });
 
-    return { status: 'Sucess' }
+    return { status: "Sucess" };
   } catch (error) {
     if (error instanceof ZodError) {
       return sendError(
         event,
         createError({
           statusCode: 400,
-          statusMessage: `${fromZodError(error)}`
-        })
-      )
+          statusMessage: `${fromZodError(error)}`,
+        }),
+      );
     }
     return sendError(
       event,
       createError({
         statusCode: 404,
-        statusMessage: 'Businesses not found'
-      })
-    )
+        statusMessage: "Businesses not found",
+      }),
+    );
   }
-})
+});

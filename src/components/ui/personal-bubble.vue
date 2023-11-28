@@ -30,5 +30,5 @@
 </template>
 
 <script lang="ts" setup>
-const auth = useAuthentication()
+const auth = useAuthentication();
 </script>

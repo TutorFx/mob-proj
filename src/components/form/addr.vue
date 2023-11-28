@@ -1,104 +1,148 @@
 <script lang="ts" setup>
-import { AsyncData } from '#app'
-import { useTextareaAutosize } from '@vueuse/core'
-import type { TAddress } from '@/types/addr'
-import type { IViacep } from '~/types'
+import { AsyncData } from "#app";
+import { useTextareaAutosize } from "@vueuse/core";
+import type { TAddress } from "@/types/addr";
+import type { IViacep } from "~/types";
 
-const { textarea, input } = useTextareaAutosize()
+const { textarea, input } = useTextareaAutosize();
 
-const props = withDefaults(defineProps<{
-  modelValue: TAddress,
-  valid: boolean,
-}>(), {})
+const props = withDefaults(
+  defineProps<{
+    modelValue: TAddress;
+    valid: boolean;
+  }>(),
+  {},
+);
 
 const emits = defineEmits<{
-  (e: 'update:modelValue', value: TAddress): void,
-  (e: 'update:valid', value: boolean): void,
-}>()
+  (e: "update:modelValue", value: TAddress): void;
+  (e: "update:valid", value: boolean): void;
+}>();
 
 const state = computed({
-  get () {
-    return props.modelValue
+  get() {
+    return props.modelValue;
   },
-  set (value) {
-    emits('update:modelValue', value)
-  }
-})
+  set(value) {
+    emits("update:modelValue", value);
+  },
+});
 
 const valid = computed({
-  get () {
-    return props.valid
+  get() {
+    return props.valid;
   },
-  set (value) {
-    emits('update:valid', value)
-  }
-})
+  set(value) {
+    emits("update:valid", value);
+  },
+});
 
-watch(() => state.value.complemento, (newVal) => {
-  input.value = newVal
-}, { deep: true })
+watch(
+  () => state.value.complemento,
+  (newVal) => {
+    input.value = newVal;
+  },
+  { deep: true },
+);
 
-const [{ data: viacep, error: viacepError }, { data: estados }, { data: cidades }] = await Promise.all([
-  useAsyncData('cep', () => $fetch<IViacep>(`https://viacep.com.br/ws/${state.value.cep}/json/`), { immediate: false }),
-  useAsyncData('state', () => $fetch('/api/v1/address/state')),
-  useAsyncData('city', () => $fetch(`/api/v1/address/city/${state.value.estado}`), { immediate: false })
-])
+const [
+  { data: viacep, error: viacepError },
+  { data: estados },
+  { data: cidades },
+] = await Promise.all([
+  useAsyncData(
+    "cep",
+    () => $fetch<IViacep>(`https://viacep.com.br/ws/${state.value.cep}/json/`),
+    { immediate: false },
+  ),
+  useAsyncData("state", () => $fetch("/api/v1/address/state")),
+  useAsyncData(
+    "city",
+    () => $fetch(`/api/v1/address/city/${state.value.estado}`),
+    { immediate: false },
+  ),
+]);
 
 if (state.value.estado) {
-  await refreshNuxtData('city')
+  await refreshNuxtData("city");
 }
 
-watch(() => state.value.cep,
+watch(
+  () => state.value.cep,
   async (newVal, oldVal) => {
-    if (state.value.cep?.length !== 9) { return }
-    await refreshNuxtData('cep')
-    if (viacepError.value) { return }
-    if (!viacep.value) { return }
-    const { logradouro, complemento, bairro, uf, ibge /* gia, ddd, siafi, localidade */ } = viacep.value
-    const { data: estado } = await useFetch(`/api/v1/address/state/getid/${uf}`)
-    const { data: municipio } = await useFetch(`/api/v1/address/city/getid/${ibge}`)
+    if (state.value.cep?.length !== 9) {
+      return;
+    }
+    await refreshNuxtData("cep");
+    if (viacepError.value) {
+      return;
+    }
+    if (!viacep.value) {
+      return;
+    }
+    const {
+      logradouro,
+      complemento,
+      bairro,
+      uf,
+      ibge /* gia, ddd, siafi, localidade */,
+    } = viacep.value;
+    const { data: estado } = await useFetch(
+      `/api/v1/address/state/getid/${uf}`,
+    );
+    const { data: municipio } = await useFetch(
+      `/api/v1/address/city/getid/${ibge}`,
+    );
     Object.assign(state.value, {
       endereco: logradouro,
       complemento,
-      bairro
-    })
-    if (!estado.value) { return }
+      bairro,
+    });
+    if (!estado.value) {
+      return;
+    }
     Object.assign(state.value, {
-      estado: estado.value?.Id ?? 0
-    })
+      estado: estado.value?.Id ?? 0,
+    });
     nextTick(() => {
-      if (!municipio.value) { return }
+      if (!municipio.value) {
+        return;
+      }
       Object.assign(state.value, {
-        cidade: municipio.value?.Id ?? 0
-      })
-    })
+        cidade: municipio.value?.Id ?? 0,
+      });
+    });
   },
-  { deep: true }
-)
+  { deep: true },
+);
 
-watch(() => state.value.estado,
+watch(
+  () => state.value.estado,
   async () => {
-    state.value.cidade = 0
-    await refreshNuxtData('city')
-  })
+    state.value.cidade = 0;
+    await refreshNuxtData("city");
+  },
+);
 
-const result = computed(() => useSchemas.address.safeParse(state.value))
-const errors = computed(() => result.value.success ? {} : result.value.error.format())
+const result = computed(() => useSchemas.address.safeParse(state.value));
+const errors = computed(() =>
+  result.value.success ? {} : result.value.error.format(),
+);
 
-watchEffect(() => valid.value = result.value.success)
+watchEffect(() => (valid.value = result.value.success));
 
-const isDirty = ref(true)
+const isDirty = ref(true);
 
 const getErrors = (field: string) => {
   // @ts-expect-error
-  return isDirty.value ? errors.value?.[field]?._errors?.at(0) : undefined
-}
+  return isDirty.value ? errors.value?.[field]?._errors?.at(0) : undefined;
+};
 
-const touch = () => (isDirty.value = true)
+const touch = () => (isDirty.value = true);
 
 defineExpose({
-  touch
-})
+  touch,
+});
 </script>
 
 <template>
@@ -116,10 +160,10 @@ defineExpose({
         name="cep"
         class="input input-bordered w-full"
         data-maska="#####-###"
-      >
+      />
       <ul>
         <li class="text-xs text-error">
-          {{ getErrors('cep') }}
+          {{ getErrors("cep") }}
         </li>
       </ul>
     </div>
@@ -134,16 +178,18 @@ defineExpose({
         name="estado"
         class="input input-bordered w-full"
       >
-        <option :value="0" selected disabled>
-          Selecione
-        </option>
-        <option v-for="(estado) in estados" :key="estado.CodigoUf" :value="estado.Id">
+        <option :value="0" selected disabled>Selecione</option>
+        <option
+          v-for="estado in estados"
+          :key="estado.CodigoUf"
+          :value="estado.Id"
+        >
           {{ estado.Uf }} - {{ estado.Nome }}
         </option>
       </select>
       <ul>
         <li class="text-xs text-error">
-          {{ getErrors('estado') }}
+          {{ getErrors("estado") }}
         </li>
       </ul>
     </div>
@@ -158,16 +204,18 @@ defineExpose({
         name="cidade"
         class="input input-bordered w-full"
       >
-        <option :value="0" selected disabled>
-          Selecione
-        </option>
-        <option v-for="(cidade) in cidades" :key="cidade.Codigo" :value="cidade.Id">
+        <option :value="0" selected disabled>Selecione</option>
+        <option
+          v-for="cidade in cidades"
+          :key="cidade.Codigo"
+          :value="cidade.Id"
+        >
           {{ cidade.Nome }}
         </option>
       </select>
       <ul>
         <li class="text-xs text-error">
-          {{ getErrors('cidade') }}
+          {{ getErrors("cidade") }}
         </li>
       </ul>
     </div>
@@ -182,10 +230,10 @@ defineExpose({
         placeholder="Informe seu bairro"
         name="bairro"
         class="input input-bordered w-full"
-      >
+      />
       <ul>
         <li class="text-xs text-error">
-          {{ getErrors('bairro') }}
+          {{ getErrors("bairro") }}
         </li>
       </ul>
     </div>
@@ -200,10 +248,10 @@ defineExpose({
         placeholder="Informe seu endereço"
         name="endereco"
         class="input input-bordered w-full"
-      >
+      />
       <ul>
         <li class="text-xs text-error">
-          {{ getErrors('endereco') }}
+          {{ getErrors("endereco") }}
         </li>
       </ul>
     </div>
@@ -218,7 +266,7 @@ defineExpose({
         placeholder="Informe seu número"
         name="numero"
         class="input input-bordered w-full"
-      >
+      />
     </div>
     <div class="form-control col-span-1 md:col-span-2">
       <label class="label">

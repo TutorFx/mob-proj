@@ -1,22 +1,22 @@
 <template>
   <div>
-    <input v-model="modelValue" type="checkbox" class="toggle">
+    <input v-model="modelValue" type="checkbox" class="toggle" />
   </div>
 </template>
 
 <script setup lang="ts">
 const props = defineProps<{
-  modelValue: boolean
-}>()
+  modelValue: boolean;
+}>();
 
-const emits = defineEmits<(e: 'update:modelValue', value: boolean) => void>()
+const emits = defineEmits<(e: "update:modelValue", value: boolean) => void>();
 
 const modelValue = computed({
-  get () {
-    return props.modelValue
+  get() {
+    return props.modelValue;
   },
-  set (value) {
-    emits('update:modelValue', value)
-  }
-})
+  set(value) {
+    emits("update:modelValue", value);
+  },
+});
 </script>

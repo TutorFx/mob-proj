@@ -12,85 +12,91 @@
   </ui-card-edit>
 </template>
 <script lang="ts" setup>
-import { FetchError } from 'ofetch'
-import { ZodError } from 'zod'
-import type { IEditBusiness } from '~/types/edit'
-const alert = new NuxaAlert()
+import { FetchError } from "ofetch";
+import { ZodError } from "zod";
+import type { IEditBusiness } from "~/types/edit";
+const alert = new NuxaAlert();
 
 const props = defineProps<{
-  modelValue: IEditBusiness,
-  refresh: Function
-}>()
+  modelValue: IEditBusiness;
+  refresh: Function;
+}>();
 
-const emits = defineEmits<(e: 'update:modelValue', value: IEditBusiness) => void>()
+const emits =
+  defineEmits<(e: "update:modelValue", value: IEditBusiness) => void>();
 const state = computed({
-  get () {
-    return props.modelValue
+  get() {
+    return props.modelValue;
   },
-  set (value) {
-    emits('update:modelValue', value)
-  }
-})
+  set(value) {
+    emits("update:modelValue", value);
+  },
+});
 
-const editing = ref(false)
-const editingState = ref({ ...state.value })
-const updating = ref(false)
+const editing = ref(false);
+const editingState = ref({ ...state.value });
+const updating = ref(false);
 
 const onEdit = () => {
-  editing.value = true
-}
+  editing.value = true;
+};
 const onApply = async () => {
   const triggerApply = async () => {
     try {
-      useSchemas.createBusinessSchema.parse(editingState.value)
-      updating.value = true
+      useSchemas.createBusinessSchema.parse(editingState.value);
+      updating.value = true;
       await $fetch(`/api/v1/private/business/${state.value.id}/edit/naming`, {
-        method: 'PATCH',
+        method: "PATCH",
         body: {
           name: editingState.value.name,
           description: editingState.value.description,
-          slug: editingState.value.slug
-        }
-      })
-      editing.value = false
-      await props.refresh()
+          slug: editingState.value.slug,
+        },
+      });
+      editing.value = false;
+      await props.refresh();
       alert.success({
-        title: 'Sucesso!',
-        body: 'Dados atualizados com sucesso',
-        cancel: 'continuar'
-      })
+        title: "Sucesso!",
+        body: "Dados atualizados com sucesso",
+        cancel: "continuar",
+      });
     } catch (e) {
       if (e instanceof ZodError) {
         return alert.warning({
-          title: 'Dados inválidos',
-          body: 'Por favor, preencha os campos requisitados corretamente e tente novamente',
-          cancel: 'Voltar'
-        })
+          title: "Dados inválidos",
+          body: "Por favor, preencha os campos requisitados corretamente e tente novamente",
+          cancel: "Voltar",
+        });
       }
       if (e instanceof FetchError) {
-        return alert.warning({
-          title: 'Erro ao enviar dados',
-          body: 'Tente novamente mais tarde',
-          cancel: 'Voltar',
-          accept: 'Tentar novamente'
-        }, triggerApply)
+        return alert.warning(
+          {
+            title: "Erro ao enviar dados",
+            body: "Tente novamente mais tarde",
+            cancel: "Voltar",
+            accept: "Tentar novamente",
+          },
+          triggerApply,
+        );
       }
     } finally {
-      updating.value = false
+      updating.value = false;
     }
-  }
-  alert.danger({
-    title: 'Atenção!',
-    body: 'Você está prestes a alterar informações de seu empreendimento',
-    cancel: 'Voltar à segurança',
-    accept: 'Continuar'
-  }, async () => {
-    triggerApply()
-  })
-}
+  };
+  alert.danger(
+    {
+      title: "Atenção!",
+      body: "Você está prestes a alterar informações de seu empreendimento",
+      cancel: "Voltar à segurança",
+      accept: "Continuar",
+    },
+    async () => {
+      triggerApply();
+    },
+  );
+};
 const onCancel = () => {
-  editingState.value = { ...state.value }
-  editing.value = false
-}
-
+  editingState.value = { ...state.value };
+  editing.value = false;
+};
 </script>

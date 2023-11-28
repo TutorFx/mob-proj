@@ -21,9 +21,15 @@
         >
           <title id="title-01">Seta</title>
           <desc id="description-01">
-            Ícone de seta que aponta para a próxima página em tamanhos de resolução de tela grande e para a página anterior em tamanhos de resolução de tela pequena.
+            Ícone de seta que aponta para a próxima página em tamanhos de
+            resolução de tela grande e para a página anterior em tamanhos de
+            resolução de tela pequena.
           </desc>
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15 19l-7-7 7-7"
+          />
         </svg>
       </li>
       <li class="flex items-center gap-2">

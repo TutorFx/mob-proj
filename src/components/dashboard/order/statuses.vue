@@ -6,7 +6,12 @@
       :class="{ 'border-dashed border-primary': !state }"
     >
       <dashboard-order-status name="TUDO" />
-      <input v-model="state" class="absolute opacity-0" type="radio" :value="undefined">
+      <input
+        v-model="state"
+        class="absolute opacity-0"
+        type="radio"
+        :value="undefined"
+      />
     </label>
     <label
       v-for="(status, i) in data"
@@ -16,29 +21,34 @@
       :class="{ 'border-dashed border-primary': state === status }"
     >
       <dashboard-order-status :name="status" />
-      <input v-model="state" class="absolute opacity-0" type="radio" :value="status">
+      <input
+        v-model="state"
+        class="absolute opacity-0"
+        type="radio"
+        :value="status"
+      />
     </label>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { IObjectStatus } from '~/types'
+import type { IObjectStatus } from "~/types";
 
 const props = defineProps<{
-  data: IObjectStatus,
-  modelValue?: string | string[] | undefined
-}>()
+  data: IObjectStatus;
+  modelValue?: string | string[] | undefined;
+}>();
 
 const emits = defineEmits<{
-  (e: 'update:modelValue', value?: string | string[] | undefined): void,
-}>()
+  (e: "update:modelValue", value?: string | string[] | undefined): void;
+}>();
 
 const state = computed({
-  get () {
-    return props.modelValue
+  get() {
+    return props.modelValue;
   },
-  set (value) {
-    emits('update:modelValue', value)
-  }
-})
+  set(value) {
+    emits("update:modelValue", value);
+  },
+});
 </script>

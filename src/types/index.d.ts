@@ -1,6 +1,6 @@
 type IObjectStatus = {
   [key: string]: string;
-}
+};
 interface ILoginParams {
   nome: string;
   sobrenome: string;
@@ -14,8 +14,8 @@ type IProductForm = {
   name: string;
   description: string;
   price: number;
-  files: Array<File>
-}
+  files: Array<File>;
+};
 
 type INav = {
   slug: string;
@@ -32,7 +32,7 @@ type IAddress = {
   estado: number;
   cidade: number;
   complemento: string;
-}
+};
 
 type IViacep = {
   logradouro: string;
@@ -44,14 +44,14 @@ type IViacep = {
   gia: string;
   ddd: string;
   siafi: string;
-}
+};
 
 type TokenData = {
   id: string;
   nome: string | null;
   email: string;
   isCostumer: boolean;
-}
+};
 
 type IValidateToken = {
   id: string;
@@ -62,16 +62,24 @@ type IValidateToken = {
   iat: number;
   exp: number;
   isCostumer: boolean;
-}
+};
 
 type Session = {
-  user: { nome: string | null; email: string; plan: string; isCostumer: boolean; role: string; }
+  user: {
+    nome: string | null;
+    email: string;
+    plan: string;
+    isCostumer: boolean;
+    role: string;
+  };
   id: string;
+};
+
+type ValidateResponse = { user: Session; token: string };
+
+type TItem = { id: string; quantity: number };
+export type TCart = { [key: string]: Array<TItem> };
+
+declare global {
+  ILoginParams, IItem, IAddress, IObjectStatus;
 }
-
-type ValidateResponse = { user: Session, token: string }
-
-type TItem = { id: string, quantity: number }
-export type TCart = { [key: string]: Array<TItem> }
-
-declare global { ILoginParams, IItem, IAddress, IObjectStatus };

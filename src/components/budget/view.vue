@@ -2,13 +2,15 @@
   <div v-if="!pending" class="grid gap-6">
     <div class="border-y border-yellow-500 py-6">
       <div class="container">
-        <div class="flex flex-wrap items-center justify-center text-center text-3xl">
-          <span>Você tem um total de <span
-            class="whitespace-nowrap break-keep bg-gradient-to-r from-yellow-500 to-orange-400 bg-clip-text font-bold text-transparent"
-          >{{
-             data?.total }}
-            <Icon name="Coin" size="18" />
-          </span>.
+        <div
+          class="flex flex-wrap items-center justify-center text-center text-3xl"
+        >
+          <span
+            >Você tem um total de
+            <span
+              class="whitespace-nowrap break-keep bg-gradient-to-r from-yellow-500 to-orange-400 bg-clip-text font-bold text-transparent"
+              >{{ data?.total }} <Icon name="Coin" size="18" /> </span
+            >.
           </span>
         </div>
       </div>
@@ -42,9 +44,9 @@
 </template>
 
 <script setup lang="ts">
-const headers = useRequestHeaders(['cookie'])
-const { data, pending } = await useFetch('/api/v1/private/budget', {
+const headers = useRequestHeaders(["cookie"]);
+const { data, pending } = await useFetch("/api/v1/private/budget", {
   headers,
-  method: 'GET'
-})
+  method: "GET",
+});
 </script>

@@ -25,23 +25,26 @@
               stroke="currentColor"
               class="h-5 w-5 rtl:rotate-180"
             >
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"
+              />
             </svg>
 
             <span>Voltar</span>
           </button>
           <nuxt-link to="/">
-            <button
-              class="btn btn-primary btn-md"
-            >
-              Voltar para o início
-            </button>
+            <button class="btn btn-primary btn-md">Voltar para o início</button>
           </nuxt-link>
         </div>
 
         <div class="mt-10 space-y-6">
           <div>
-            <a href="#" class="inline-flex items-center gap-x-2 text-sm text-primary hover:underline">
+            <a
+              href="#"
+              class="inline-flex items-center gap-x-2 text-sm text-primary hover:underline"
+            >
               <span>Documentação</span>
 
               <svg
@@ -52,7 +55,11 @@
                 stroke="currentColor"
                 class="h-5 w-5 rtl:rotate-180"
               >
-                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
+                />
               </svg>
             </a>
 
@@ -62,7 +69,10 @@
           </div>
 
           <div>
-            <a href="#" class="inline-flex items-center gap-x-2 text-sm text-primary hover:underline">
+            <a
+              href="#"
+              class="inline-flex items-center gap-x-2 text-sm text-primary hover:underline"
+            >
               <span>Nosso blog</span>
 
               <svg
@@ -73,7 +83,11 @@
                 stroke="currentColor"
                 class="h-5 w-5 rtl:rotate-180"
               >
-                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
+                />
               </svg>
             </a>
 
@@ -83,7 +97,10 @@
           </div>
 
           <div>
-            <a href="#" class="inline-flex items-center gap-x-2 text-sm text-primary hover:underline">
+            <a
+              href="#"
+              class="inline-flex items-center gap-x-2 text-sm text-primary hover:underline"
+            >
               <span>Abrir ticket</span>
 
               <svg
@@ -94,7 +111,11 @@
                 stroke="currentColor"
                 class="h-5 w-5 rtl:rotate-180"
               >
-                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
+                />
               </svg>
             </a>
 
@@ -116,5 +137,5 @@ type ErrorResponse = {
   message: string;
   stack: string;
 };
-defineProps<{error: ErrorResponse}>()
+defineProps<{ error: ErrorResponse }>();
 </script>

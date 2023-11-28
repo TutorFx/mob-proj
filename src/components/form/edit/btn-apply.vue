@@ -7,5 +7,5 @@
 </template>
 
 <script lang="ts" setup>
-defineProps<{updating: boolean}>()
+defineProps<{ updating: boolean }>();
 </script>

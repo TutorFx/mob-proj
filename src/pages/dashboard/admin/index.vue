@@ -23,18 +23,26 @@
             </tr>
           </thead>
           <tbody>
-            <BusinessTableRule v-for="(business, i) in businesses" :key="i" :data="business" />
+            <BusinessTableRule
+              v-for="(business, i) in businesses"
+              :key="i"
+              :data="business"
+            />
           </tbody>
         </table>
       </div>
       <div v-else-if="error" />
-      <div v-else>
-        skeletons
-      </div>
+      <div v-else>skeletons</div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-const { data: businesses, error, pending } = await useAsyncData<IBusinessWithImage[]>('admin-business', () => $fetch('/api/v1/private/admin'))
+const {
+  data: businesses,
+  error,
+  pending,
+} = await useAsyncData<IBusinessWithImage[]>("admin-business", () =>
+  $fetch("/api/v1/private/admin"),
+);
 </script>

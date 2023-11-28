@@ -1,58 +1,58 @@
-import type { User } from '@prisma/client'
-import { Prisma, PrismaClient } from '@prisma/client'
-import type { z } from 'zod'
-import { ZodError } from 'zod'
-import { fromZodError } from 'zod-validation-error'
-import { getServerSession } from '@/server/utils/auth'
-import { useSchemas } from '~/composables/useSchemas'
-const prisma = new PrismaClient()
-const { createMoneyDepositSchema } = useSchemas
+import type { User } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
+import type { z } from "zod";
+import { ZodError } from "zod";
+import { fromZodError } from "zod-validation-error";
+import { getServerSession } from "@/server/utils/auth";
+import { useSchemas } from "~/composables/useSchemas";
+const prisma = new PrismaClient();
+const { createMoneyDepositSchema } = useSchemas;
 type TransactionRequest = z.infer<typeof createMoneyDepositSchema>;
 
 export default defineEventHandler(async (event) => {
-  const body = await readBody<TransactionRequest>(event)
-  const session = getServerSession(event)
+  const body = await readBody<TransactionRequest>(event);
+  const session = getServerSession(event);
   try {
-    createMoneyDepositSchema.parse(body)
+    createMoneyDepositSchema.parse(body);
   } catch (error) {
     if (error instanceof ZodError) {
       return sendError(
         event,
         createError({
           statusCode: 400,
-          statusMessage: `${fromZodError(error)}`
-        })
-      )
+          statusMessage: `${fromZodError(error)}`,
+        }),
+      );
     }
-    return 'Unknown Error'
+    return "Unknown Error";
   }
   if (session?.user?.email == null) {
     return sendError(
       event,
       createError({
         statusCode: 500,
-        statusMessage: 'Bad news, server error'
-      })
-    )
+        statusMessage: "Bad news, server error",
+      }),
+    );
   }
   try {
-    const { businessId, userMail, amount } = body
+    const { businessId, userMail, amount } = body;
 
-    const user : User = await event.context.user()
+    const user: User = await event.context.user();
 
     const business = await prisma.business.findUnique({
       where: { id: businessId },
-      include: { Owner: true }
-    })
+      include: { Owner: true },
+    });
 
     if (!business) {
       return sendError(
         event,
         createError({
           statusCode: 404,
-          statusMessage: `Business with ID ${businessId} not found`
-        })
-      )
+          statusMessage: `Business with ID ${businessId} not found`,
+        }),
+      );
     }
     // Usuário autenticado tem permissão?
     if (business.OwnerId !== user.id) {
@@ -60,25 +60,25 @@ export default defineEventHandler(async (event) => {
         event,
         createError({
           statusCode: 404,
-          statusMessage: `User with ID ${user.email} is not the owner of business ${business.name}`
-        })
-      )
+          statusMessage: `User with ID ${user.email} is not the owner of business ${business.name}`,
+        }),
+      );
     }
 
     const target = await prisma.user.findUnique({
       where: {
-        email: userMail
-      }
-    })
+        email: userMail,
+      },
+    });
 
     if (!target) {
       return sendError(
         event,
         createError({
           statusCode: 404,
-          statusMessage: `User with Email ${userMail} was not found. Please try again with a registered user.`
-        })
-      )
+          statusMessage: `User with Email ${userMail} was not found. Please try again with a registered user.`,
+        }),
+      );
     }
 
     const transaction = await prisma.transaction.create({
@@ -86,30 +86,32 @@ export default defineEventHandler(async (event) => {
         amount,
         businessId,
         userId: target.id,
-        originId: user.id
-      }
-    })
+        originId: user.id,
+      },
+    });
 
-    return transaction
+    return transaction;
   } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002')
-    // The .code property can be accessed in a type-safe manner
-    {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      // The .code property can be accessed in a type-safe manner
       return sendError(
         event,
         createError({
           statusCode: 204,
-          statusMessage: 'Nao pode fazer entrada'
-        })
-      )
+          statusMessage: "Nao pode fazer entrada",
+        }),
+      );
     }
 
     return sendError(
       event,
       createError({
         statusCode: 500,
-        statusMessage: 'bugou'
-      })
-    )
+        statusMessage: "bugou",
+      }),
+    );
   }
-})
+});

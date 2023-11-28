@@ -1,39 +1,39 @@
-import type { Prisma } from '@prisma/client'
-import { PrismaClient } from '@prisma/client'
+import type { Prisma } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 const BusinessWithImageQuery = {
   include: {
     Image: {
       select: {
-        Key: true
-      }
+        Key: true,
+      },
     },
     Owner: {
       select: {
         nome: true,
-        email: true
-      }
-    }
-  }
-}
+        email: true,
+      },
+    },
+  },
+};
 
 export type IBusinessWithImage = Prisma.BusinessGetPayload<
   typeof BusinessWithImageQuery
 >;
 
 export const BusinessWithImage = async (): Promise<IBusinessWithImage[]> => {
-  const prisma = new PrismaClient()
-  return await prisma.business.findMany(BusinessWithImageQuery)
-}
+  const prisma = new PrismaClient();
+  return await prisma.business.findMany(BusinessWithImageQuery);
+};
 
 export const ToggleBan = (id: string, bool: boolean) => {
-  const prisma = new PrismaClient()
+  const prisma = new PrismaClient();
   return prisma.business.update({
     where: {
-      id
+      id,
     },
     data: {
-      banned: bool
-    }
-  })
-}
+      banned: bool,
+    },
+  });
+};
