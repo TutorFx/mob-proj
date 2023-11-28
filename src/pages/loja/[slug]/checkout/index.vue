@@ -132,7 +132,7 @@ import type { Tcontact } from "~/types/user";
 const auth = useAuthentication();
 
 const route = useRoute();
-const { coords, locatedAt, error, resume, pause } = useGeolocation({
+const { resume } = useGeolocation({
   immediate: false,
 });
 
@@ -186,7 +186,7 @@ const PersonalState = ref<{
   name: "Dados de contato",
   data: personal_default,
   valid: false,
-  // @ts-expect-error
+  // @ts-expect-error because the type of the component is not yet known
   component: markRaw(personal_component),
 });
 
@@ -199,7 +199,7 @@ const AddrState = ref<{
   name: "Endereço",
   data: addr_default,
   valid: false,
-  // @ts-expect-error
+  // @ts-expect-error because the type of the component is not yet known
   component: markRaw(addr_component),
 });
 

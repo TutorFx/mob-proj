@@ -2,7 +2,6 @@ import { PrismaClient } from "@prisma/client";
 import { sendError } from "h3";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
-import { useSchemas } from "~/composables/useSchemas";
 import type { IAddress, ICart, IContact } from "~/types/cart";
 import { getServerSession } from "@/server/utils/auth";
 const { contact, address, cart } = useSchemas;
@@ -11,19 +10,16 @@ const { contact, address, cart } = useSchemas;
 
 export default defineEventHandler(async (event) => {
   const prisma = new PrismaClient();
-  const body = await readBody(event);
+  const body = await readBody<{
+    contact: IContact;
+    address: IAddress;
+    cart: ICart;
+  }>(event);
 
-  if (!event.context.params || !("slug" in event.context.params))
-    // Handle the error case when params does not exist or when it does not have a slug property
-    return sendError(
-      event,
-      createError({
-        statusCode: 400,
-        statusMessage: "Slug inválido",
-      }),
-    );
-
-  const { slug } = event.context.params;
+  const { requirePublicStore } = useSchemas;
+  const context = event.context.params;
+  requirePublicStore.parse(context);
+  const { slug } = context as IUseSchemas["requirePublicStore"];
 
   try {
     const session = getServerSession(event);
@@ -31,11 +27,7 @@ export default defineEventHandler(async (event) => {
     address.parse(body.address);
     cart.parse(body.cart);
     const userId = session?.id;
-    const {
-      contact: contData,
-      address: addrData,
-      cart: cartData,
-    }: { contact: IContact; address: IAddress; cart: ICart } = body;
+    const { contact: contData, address: addrData, cart: cartData } = body;
     const createdOrder = await prisma.order.create({
       data: {
         Business: { connect: { slug } },

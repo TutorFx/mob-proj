@@ -58,6 +58,4 @@
 <script setup lang="ts">
 definePageMeta({ layout: "clean" });
 const recovery = new CreateRecovery();
-
-const credential = ref("");
 </script>
