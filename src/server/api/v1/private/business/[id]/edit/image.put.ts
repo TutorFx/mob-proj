@@ -12,17 +12,18 @@ export default defineEventHandler(async (event) => {
   const session = await event.context.session;
 
   const form = formidable({});
-  const response = await new Promise((resolve, reject) => {
-    form.parse(event.node.req, (err, fields, files) => {
-      if (err) {
-        reject(err);
-      }
-      resolve({ files });
+  const response: { fields: formidable.Fields; files: formidable.Files } =
+    await new Promise((resolve, reject) => {
+      form.parse(event.node.req, (err, fields, files) => {
+        if (err) {
+          reject(err);
+        }
+        resolve({ fields, files });
+      });
     });
-  });
 
   try {
-    const { files }: { files: any } = response as { files: any };
+    const { files } = response;
     uuid.parse(id);
     uuid.parse(session.id);
 
@@ -52,14 +53,19 @@ export default defineEventHandler(async (event) => {
     }
 
     await Promise.all(
-      Object.keys(files).map(async (key: any) => {
+      Object.keys(files).map(async (key: string) => {
         const file = files[key];
+
+        if (file instanceof Array) {
+          return;
+        }
+
         const { Key } = await uploadToS3(file);
         // const { bytes, secure_url, original_filename, public_id, etag } = await uploadToCloudinary(file.filepath)
         await prisma.image.create({
           data: {
             Key,
-            bytes: file.bytes,
+            bytes: file.size,
             businessId: business.id,
           },
         });

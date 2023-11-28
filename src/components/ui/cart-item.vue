@@ -62,8 +62,8 @@ const container = ref<HTMLElement | null>(null);
 const containerWidth = computed(() => container.value?.offsetWidth);
 const left = ref("0");
 const opacity = ref(1);
-const { direction, isSwiping, lengthX, lengthY } = useSwipe(target, {
-  onSwipe(e: TouchEvent) {
+const { isSwiping, lengthX } = useSwipe(target, {
+  onSwipe() {
     if (containerWidth.value) {
       if (lengthX.value < 0) {
         const length = Math.abs(lengthX.value);
@@ -75,7 +75,7 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(target, {
       }
     }
   },
-  onSwipeEnd(e: TouchEvent, direction: UseSwipeDirection) {
+  onSwipeEnd() {
     if (
       lengthX.value < 0 &&
       containerWidth.value &&

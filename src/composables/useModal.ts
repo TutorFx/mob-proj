@@ -14,10 +14,10 @@ interface ModalData {
 export interface NuxaModal extends ModalData {}
 
 export class NuxaModal {
-  callback?: Function;
+  callback?: () => void;
   constructor(
     { title, body, cancel, accept, style }: ModalData,
-    callback?: Function,
+    callback?: () => void,
   ) {
     this.title = title;
     this.body = body;
@@ -31,7 +31,7 @@ export class NuxaModal {
 export const useModal = defineStore("modal", () => {
   const queue = ref<NuxaModal[]>([]);
 
-  function create(Modal: ModalData, callback?: Function) {
+  function create(Modal: ModalData, callback?: () => void) {
     if (process.client) {
       const modal = new NuxaModal(Modal, callback);
       queue.value.push(modal);
@@ -63,7 +63,7 @@ export class NuxaAlert {
     this.modal = useModal();
   }
 
-  danger(Modal: ModalData, callback?: Function) {
+  danger(Modal: ModalData, callback?: () => void) {
     this.modal.create(
       {
         ...Modal,
@@ -73,7 +73,7 @@ export class NuxaAlert {
     );
   }
 
-  warning(Modal: ModalData, callback?: Function) {
+  warning(Modal: ModalData, callback?: () => void) {
     this.modal.create(
       {
         ...Modal,
@@ -83,7 +83,7 @@ export class NuxaAlert {
     );
   }
 
-  success(Modal: ModalData, callback?: Function) {
+  success(Modal: ModalData, callback?: () => void) {
     this.modal.create(
       {
         ...Modal,

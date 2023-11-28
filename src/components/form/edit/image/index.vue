@@ -69,7 +69,7 @@ const alert = new NuxaAlert();
 
 const props = defineProps<{
   modelValue: IEditBusiness;
-  refresh: Function;
+  refresh: () => void;
 }>();
 const emits =
   defineEmits<(e: "update:modelValue", value: IEditBusiness) => void>();

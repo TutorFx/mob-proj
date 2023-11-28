@@ -1,14 +1,22 @@
-import { Image, Prisma, PrismaClient, Product } from "@prisma/client";
-import { ZodError } from "zod";
-import { fromZodError } from "zod-validation-error";
+import { Prisma, PrismaClient } from "@prisma/client";
 import { useSchemas } from "~/composables/useSchemas";
+import { TItem } from "~/types";
 import type { IProductCart } from "~/types/cart";
 
 const prisma = new PrismaClient();
 const { cart } = useSchemas;
 export default defineEventHandler(async (event) => {
   try {
-    // @ts-expect-error
+    if (!event.context.params || !("slug" in event.context.params))
+      // Handle the error case when params does not exist or when it does not have a slug property
+      return sendError(
+        event,
+        createError({
+          statusCode: 400,
+          statusMessage: "Slug inválido",
+        }),
+      );
+
     const { slug } = event.context.params;
     const body = await readBody(event);
 

@@ -40,5 +40,5 @@
 <script setup lang="ts">
 import type { NuxaModal } from "@/composables/useModal";
 
-defineProps<{ instance: NuxaModal; accept: Function; cancel: Function }>();
+defineProps<{ instance: NuxaModal; accept: () => void; cancel: () => void }>();
 </script>

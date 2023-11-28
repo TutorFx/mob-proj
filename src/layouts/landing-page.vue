@@ -44,7 +44,7 @@ const el = ref();
 onMounted(() => (el.value = document.body));
 const menuVisible = useScrollLock(el);
 const upperMove = ref<null | boolean>(null);
-const { x, y } = useWindowScroll();
+const { y } = useWindowScroll();
 
 watch(y, (newv, oldv) => (upperMove.value = oldv > newv && y.value > 250));
 </script>

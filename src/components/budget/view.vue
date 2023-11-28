@@ -16,7 +16,11 @@
       </div>
     </div>
     <div class="container grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-      <div v-for="(wallet, i) in data?.wallets" class="rounded-lg bg-base-200">
+      <div
+        v-for="(wallet, i) in data?.wallets"
+        :key="i"
+        class="rounded-lg bg-base-200"
+      >
         <div class="truncate p-3 text-2xl font-bold capitalize">
           {{ wallet.name }}
         </div>

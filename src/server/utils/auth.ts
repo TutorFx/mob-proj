@@ -76,7 +76,7 @@ export class CreatePaymentAccount extends VerifyAuthentication {
   //   super(event);
   // }
 
-  async init(priceId: string, callback: Function) {
+  async init(priceId: string, callback: () => void) {
     const session = this.getSession();
     if (!session.user.isCostumer) {
       const user = await prisma.user.findUnique({

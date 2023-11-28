@@ -36,7 +36,7 @@ interface Email {
   from?: string;
   subject?: string;
   template?: templates;
-  context?: any;
+  context?: unknown;
 }
 
 interface RecoveryEmail extends Email {

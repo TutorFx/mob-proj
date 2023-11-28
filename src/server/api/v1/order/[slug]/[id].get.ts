@@ -8,11 +8,8 @@ import { fromZodError } from "zod-validation-error";
 export default defineEventHandler(async (event) => {
   const prisma = new PrismaClient();
 
-  // @ts-expect-error
-  const { slug } = event.context.params;
-  // @ts-expect-error
-  const { id } = event.context.params;
-  if (!slug) {
+  if (!event.context.params || !("slug" in event.context.params))
+    // Handle the error case when params does not exist or when it does not have a slug property
     return sendError(
       event,
       createError({
@@ -20,16 +17,20 @@ export default defineEventHandler(async (event) => {
         statusMessage: "Slug inválido",
       }),
     );
-  }
-  if (!id) {
+
+  if (!event.context.params || !("id" in event.context.params))
+    // Handle the error case when params does not exist or when it does not have a ID property
     return sendError(
       event,
       createError({
         statusCode: 400,
-        statusMessage: "id inválido",
+        statusMessage: "ID inválido",
       }),
     );
-  }
+
+  const { slug } = event.context.params;
+
+  const { id } = event.context.params;
 
   try {
     const order = await prisma.order.findUnique({

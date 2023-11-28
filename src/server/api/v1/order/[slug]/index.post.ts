@@ -1,6 +1,6 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { sendError } from "h3";
-import { ZodError, z } from "zod";
+import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
 import { useSchemas } from "~/composables/useSchemas";
 import type { IAddress, ICart, IContact } from "~/types/cart";
@@ -13,9 +13,8 @@ export default defineEventHandler(async (event) => {
   const prisma = new PrismaClient();
   const body = await readBody(event);
 
-  // @ts-expect-error
-  const { slug } = event.context.params;
-  if (!slug) {
+  if (!event.context.params || !("slug" in event.context.params))
+    // Handle the error case when params does not exist or when it does not have a slug property
     return sendError(
       event,
       createError({
@@ -23,7 +22,8 @@ export default defineEventHandler(async (event) => {
         statusMessage: "Slug inválido",
       }),
     );
-  }
+
+  const { slug } = event.context.params;
 
   try {
     const session = getServerSession(event);

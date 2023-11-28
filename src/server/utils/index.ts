@@ -9,8 +9,9 @@ import {
 } from "@aws-sdk/client-s3";
 import { v4 as uuidv4 } from "uuid";
 import { getServerSession } from "@/server/utils/auth";
+import formidable from "formidable";
 
-export const middleware = (event: H3Event, callback: Function) => {
+export const middleware = (event: H3Event, callback: () => void) => {
   const session = getServerSession(event);
   if (!session) {
     sendError(
@@ -74,11 +75,11 @@ export const deleteCloudinaryImage = (
 };
 
 export const uploadToS3 = async (
-  file: any,
+  file: formidable.File,
   bucketName: string = process.env.S3_BUCKET_NAME ?? "",
 ) => {
   const fileContent = fs.readFileSync(file.filepath);
-  const Key = uuidv4() + "." + file.originalFilename.split(".")[1];
+  const Key = uuidv4() + "." + file.originalFilename?.split(".")[1];
   return {
     ...(await s3.send(
       new PutObjectCommand({
@@ -86,7 +87,7 @@ export const uploadToS3 = async (
         Key,
         Body: fileContent,
         ACL: "public-read",
-        ContentType: file.mimetype,
+        ContentType: file.mimetype ?? undefined,
       }),
     )),
     Key,
