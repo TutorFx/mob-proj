@@ -1,10 +1,17 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import sanitizeHtml from "sanitize-html";
+import { IUseSchemas, useSchemas } from "~/composables/useSchemas";
 const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
-  const slug = event.context.params?.slug;
   try {
+    const { requirePublicStore } = useSchemas;
+    const context = event.context.params;
+
+    requirePublicStore.parse(context);
+
+    const { slug } = context as IUseSchemas["requirePublicStore"];
+
     return (
       await prisma.business.findUnique({
         where: {

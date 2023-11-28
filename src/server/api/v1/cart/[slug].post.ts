@@ -7,18 +7,14 @@ const prisma = new PrismaClient();
 const { cart } = useSchemas;
 export default defineEventHandler(async (event) => {
   try {
-    if (!event.context.params || !("slug" in event.context.params))
-      // Handle the error case when params does not exist or when it does not have a slug property
-      return sendError(
-        event,
-        createError({
-          statusCode: 400,
-          statusMessage: "Slug inválido",
-        }),
-      );
+    const { requirePublicStore } = useSchemas;
+    const context = event.context.params;
 
-    const { slug } = event.context.params;
-    const body = await readBody(event);
+    requirePublicStore.parse(context);
+
+    const { slug } = context as IUseSchemas["requirePublicStore"];
+
+    const body = await readBody<TItem[]>(event);
 
     cart.parse(body);
 
@@ -44,6 +40,7 @@ export default defineEventHandler(async (event) => {
       })
     ).map((item) => {
       const cartitem = body?.find((record: TItem) => record.id == item.id);
+      if (!cartitem) return;
       const totalprice = cartitem.quantity * item.price;
       return {
         ...item,

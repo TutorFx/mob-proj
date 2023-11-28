@@ -1,18 +1,17 @@
 import { Prisma, PrismaClient } from "@prisma/client";
-import { ZodError, z } from "zod";
+import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
+import { useSchemas, IUseSchemas } from "@/composables/useSchemas";
 const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
   try {
-    // @ts-expect-error
-    const { slug, id } = event.context.params;
-    const idSchema = z.string().min(1);
-    const slugSchema = z.string().min(1);
-    type IName = z.infer<typeof idSchema>;
-    type ISlug = z.infer<typeof slugSchema>;
-    idSchema.parse(id);
-    slugSchema.parse(slug);
+    const { validateBusiness } = useSchemas;
+
+    const context = event.context.params as IUseSchemas["validateBusiness"];
+    validateBusiness.parse(context);
+
+    const { slug, id } = context;
 
     return await prisma.product.findFirst({
       where: {

@@ -2,6 +2,10 @@ import { OrderStatus } from "@prisma/client";
 import { z } from "zod";
 import { useRules } from "~/composables/useRules";
 
+const slug = z.string().nonempty("Campo obrigatório");
+const id = z.string().refine(useRules.uuid);
+const productName = z.string().nonempty("Campo obrigatório");
+
 export const useSchemas = {
   registerSchema: z.object({
     email: z.string().min(1).max(50),
@@ -12,20 +16,20 @@ export const useSchemas = {
     password: z.string(),
   }),
   User: z.object({
-    id: z.string().refine(useRules.uuid),
+    id,
     nome: z.string().nonempty("Campo obrigatório").nullable(),
     email: z.string().min(1).max(50),
     iat: z.number(),
     exp: z.number(),
   }),
   createMoneyDepositSchema: z.object({
-    businessId: z.string().refine(useRules.uuid),
+    businessId: id,
     userMail: z.string().email().min(5),
     amount: z.number(),
   }),
   createBusinessSchema: z.object({
-    name: z.string().nonempty("Campo obrigatório"),
-    slug: z.string().nonempty("Campo obrigatório"),
+    name: productName,
+    slug,
   }),
   businessContact: z.object({
     whatsapp: z
@@ -39,29 +43,29 @@ export const useSchemas = {
       .email("Email não é válido"),
   }),
   getBusinessPaymentSchema: z.object({
-    businessId: z.string().refine(useRules.uuid),
+    businessId: id,
   }),
   createProductSchema: z.object({
-    name: z.string().nonempty("Campo obrigatório"),
+    name: productName,
     description: z.string().nonempty("Campo obrigatório"),
     price: z.number().nonnegative("O número deve ser positivo"),
-    businessId: z.string().refine(useRules.uuid),
+    businessId: id,
   }),
   editProductSchema: z.object({
-    name: z.string().nonempty("Campo obrigatório"),
+    name: productName,
     description: z.string().nonempty("Campo obrigatório"),
     price: z.number().nonnegative("O número deve ser positivo"),
-    businessId: z.string().refine(useRules.uuid),
+    businessId: id,
   }),
   getProductSchema: z.object({
-    businessId: z.string().refine(useRules.uuid),
+    businessId: id,
     search: z.string().optional(),
     page: z.number().nonnegative().optional(),
   }),
   uuid: z.string().refine(useRules.uuid),
   cart: z.array(
     z.object({
-      id: z.string().refine(useRules.uuid),
+      id,
       quantity: z.number().nonnegative(),
     }),
   ),
@@ -109,4 +113,19 @@ export const useSchemas = {
     status: z.nativeEnum(OrderStatus).optional(),
     search: z.string().optional(),
   }),
+  validateBusiness: z.object({
+    id,
+    slug,
+  }),
+  requirePublicProduct: z.object({
+    product: productName,
+    slug,
+  }),
+  requirePublicStore: z.object({
+    slug,
+  }),
+};
+
+export type IUseSchemas = {
+  [K in keyof typeof useSchemas]: z.infer<(typeof useSchemas)[K]>;
 };

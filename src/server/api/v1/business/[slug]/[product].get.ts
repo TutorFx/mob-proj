@@ -1,20 +1,18 @@
 import { Prisma, PrismaClient } from "@prisma/client";
-import { ZodError, z } from "zod";
+import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
 import sanitizeHtml from "sanitize-html";
+import { IUseSchemas, useSchemas } from "~/composables/useSchemas";
 const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
   try {
-    // @ts-expect-error
-    const { slug, product } = event.context.params;
-    const nameSchema = z.string().min(1);
-    const slugSchema = z.string().min(1);
-    type IName = z.infer<typeof nameSchema>;
-    type ISlug = z.infer<typeof slugSchema>;
-    nameSchema.parse(product);
-    slugSchema.parse(slug);
-    console.log(decodeURI(decodeURIComponent(product)), slug);
+    const { requirePublicProduct } = useSchemas;
+    const context = event.context.params;
+
+    requirePublicProduct.parse(context);
+
+    const { slug, product } = context as IUseSchemas["requirePublicProduct"];
 
     const response = await prisma.product.findFirst({
       where: {
