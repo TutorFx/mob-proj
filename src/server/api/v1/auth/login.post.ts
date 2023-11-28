@@ -1,9 +1,7 @@
 import bcrypt from "bcryptjs";
-import { Prisma, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
-import { generateToken } from "../../../utils/token";
-import { useSchemas } from "~/composables/useSchemas";
 import { Authentication } from "~/server/utils/auth";
 
 export default defineEventHandler(async (event) => {

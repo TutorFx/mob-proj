@@ -35,6 +35,7 @@ const state = ref({
   files: [] as Array<File>,
 });
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const formEl = ref<any>(null);
 const isCreating = ref(false);
 

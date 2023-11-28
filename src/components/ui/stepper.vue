@@ -38,7 +38,13 @@
         type="radio"
         single
         :value="i"
-        @change="emit('update:modelValue', Number($event.target.value))"
+        @change="
+          $event.target &&
+            emit(
+              'update:modelValue',
+              Number(($event.target as HTMLInputElement).value),
+            )
+        "
       />
       <span class="text"
         ><span class="inner-text">{{ etapa }}</span></span
@@ -65,7 +71,7 @@ const modelValue = ref(props.modelValue);
 
 watch(
   () => modelValue,
-  (newValue, oldValue) => {
+  (newValue) => {
     emit("update:modelValue", newValue);
   },
 );
