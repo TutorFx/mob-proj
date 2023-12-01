@@ -48,5 +48,4 @@
 
 <script setup lang="ts">
 const transaction = useTransactions();
-const route = useRoute();
 </script>

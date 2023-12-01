@@ -17,7 +17,7 @@ export interface TextCompletion {
   choices: {
     text: string;
     index: number;
-    logprobs: null | any; // Você pode ajustar o tipo de logprobs conforme necessário
+    logprobs: null | unknown; // Você pode ajustar o tipo de logprobs conforme necessário
     finish_reason: string;
   }[];
   usage: {

@@ -48,8 +48,6 @@
 </template>
 <script lang="ts" setup>
 import type { IEditBusiness } from "~/types/edit";
-const config = useRuntimeConfig();
-const url = config.public.URL;
 
 const props = defineProps<{
   modelValue: IEditBusiness;

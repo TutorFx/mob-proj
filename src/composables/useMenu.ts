@@ -59,10 +59,6 @@ export type MenuType = {
 
 export type MenuItems = MenuType[];
 
-interface MenuTypeObject<T> {
-  [key: string]: T[];
-}
-
 const menu = {
   home,
   StoreDashboard,

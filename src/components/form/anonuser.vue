@@ -42,7 +42,7 @@ watchEffect(() => (valid.value = result.value.success));
 const isDirty = ref(true);
 
 const getErrors = (field: string) => {
-  // @ts-expect-error
+  // @ts-expect-error - Todo: Fix
   return isDirty.value ? errors.value?.[field]?._errors?.at(0) : undefined;
 };
 

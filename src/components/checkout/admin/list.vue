@@ -69,7 +69,6 @@ const search = computed({
 
 const {
   data: orders,
-  refresh,
   pending,
   error,
 } = useAsyncData("checkouts", () =>
