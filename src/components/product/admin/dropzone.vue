@@ -66,7 +66,7 @@ const modelValue = computed({
   },
 });
 
-const dropRef = ref<any>();
+const dropRef = ref<HTMLInputElement>();
 
 const active = ref(false);
 const toggleActive = () => {
@@ -74,25 +74,10 @@ const toggleActive = () => {
 };
 
 const url = URL;
-const file = File;
 
-const drop = (e: any) => {
-  Array.prototype.forEach.call(e.dataTransfer.files, function (file) {
-    if (!(file instanceof File)) {
-      return console.error("Not a valid File");
-    }
-    if (!file.type.startsWith("image/")) {
-      return console.error("The selected file is not an image!");
-    }
-    if (file.size > 5242880) {
-      return console.error("The dropped file is larger than 5MB!");
-    }
-    modelValue.value.push(file);
-  });
-};
-const selectedFile = () => {
-  try {
-    Array.prototype.forEach.call(dropRef.value.files, function (file) {
+const drop = (e: DragEvent) => {
+  if (e.dataTransfer) {
+    Array.prototype.forEach.call(e.dataTransfer.files, function (file) {
       if (!(file instanceof File)) {
         return console.error("Not a valid File");
       }
@@ -104,6 +89,24 @@ const selectedFile = () => {
       }
       modelValue.value.push(file);
     });
+  }
+};
+const selectedFile = () => {
+  try {
+    if (dropRef.value) {
+      Array.prototype.forEach.call(dropRef.value.files, function (file) {
+        if (!(file instanceof File)) {
+          return console.error("Not a valid File");
+        }
+        if (!file.type.startsWith("image/")) {
+          return console.error("The selected file is not an image!");
+        }
+        if (file.size > 5242880) {
+          return console.error("The dropped file is larger than 5MB!");
+        }
+        modelValue.value.push(file);
+      });
+    }
   } catch (e) {
     console.error("Selection stopped by user.");
   }

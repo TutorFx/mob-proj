@@ -56,7 +56,7 @@
 </template>
 
 <script lang="ts" setup>
-const { pending, error, refresh, data } = useAsyncData("product-get", () =>
+const { pending, refresh, data } = useAsyncData("product-get", () =>
   $fetch("/api/v1/private/product", {
     method: "GET",
     params: {

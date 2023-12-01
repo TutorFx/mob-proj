@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { AsyncData } from "#app";
 import { useTextareaAutosize } from "@vueuse/core";
 import type { TAddress } from "@/types/addr";
 import type { IViacep } from "~/types";
@@ -37,6 +36,13 @@ const valid = computed({
   },
 });
 
+const isDirty = ref(true);
+
+const touch = () => (isDirty.value = true);
+defineExpose({
+  touch,
+});
+
 watch(
   () => state.value.complemento,
   (newVal) => {
@@ -69,7 +75,7 @@ if (state.value.estado) {
 
 watch(
   () => state.value.cep,
-  async (newVal, oldVal) => {
+  async () => {
     if (state.value.cep?.length !== 9) {
       return;
     }
@@ -131,18 +137,10 @@ const errors = computed(() =>
 
 watchEffect(() => (valid.value = result.value.success));
 
-const isDirty = ref(true);
-
 const getErrors = (field: string) => {
-  // @ts-expect-error
+  // @ts-expect-error - TODO: Fix
   return isDirty.value ? errors.value?.[field]?._errors?.at(0) : undefined;
 };
-
-const touch = () => (isDirty.value = true);
-
-defineExpose({
-  touch,
-});
 </script>
 
 <template>

@@ -75,5 +75,5 @@ const modelValue = computed({
   },
 });
 
-onClickOutside(cartzone, (event) => (modelValue.value = false));
+onClickOutside(cartzone, () => (modelValue.value = false));
 </script>

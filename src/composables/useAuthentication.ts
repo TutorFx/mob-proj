@@ -1,12 +1,10 @@
 import { useTimestamp } from "@vueuse/core";
-import jwt from "jsonwebtoken";
 import { useCookies } from "@vueuse/integrations/useCookies";
 import type { z } from "zod";
 import { ZodError } from "zod";
 import moment from "moment";
 import { FetchError } from "ofetch";
 import { defineStore } from "pinia";
-import { VerifyAuthentication } from "@/server/utils/auth";
 import type { IValidateToken } from "@/types";
 import { useSchemas } from "@/composables/useSchemas";
 type Login = z.infer<typeof useSchemas.loginSchema>;
@@ -22,7 +20,7 @@ export const useAuthentication = defineStore("authentication", () => {
 
   const tokenData = computed(() => {
     try {
-      return JSON.parse(atob(token.value?.split(".")[1])) as validateToken;
+      return JSON.parse(atob(token.value?.split(".")[1])) as IValidateToken;
     } catch (e) {
       return false;
     }
@@ -95,7 +93,9 @@ export class CreateAuthentication {
           );
         }
       });
-    } catch (err) {}
+    } catch (err) {
+      /* empty */
+    }
   }
 }
 

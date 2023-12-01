@@ -1,5 +1,5 @@
 export default cachedEventHandler(
-  async (e) => {
+  async () => {
     const business = await $fetch("/api/v1/crawler/business");
     return business.map((p) => {
       return {

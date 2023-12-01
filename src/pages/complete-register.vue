@@ -70,13 +70,6 @@ async function finalizeRegister() {
     body: {
       ...userdata.value,
     },
-    onResponse({ request, response, options }) {
-      // Process the response data
-      // if (response.status == 200)
-    },
-    onResponseError({ request, response, options }) {
-      // Handle the response errors
-    },
   });
 }
 </script>

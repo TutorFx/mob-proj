@@ -1,2 +1,2 @@
 import "animate.css";
-export default defineNuxtPlugin((nuxtApp) => {});
+export default defineNuxtPlugin(() => {});

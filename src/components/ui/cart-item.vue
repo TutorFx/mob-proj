@@ -51,7 +51,6 @@
 
 <script setup lang="ts">
 import { useSwipe } from "@vueuse/core";
-import type { UseSwipeDirection } from "@vueuse/core";
 import type { IItem } from "~/types/cart";
 
 const props = defineProps<{ item: IItem }>();

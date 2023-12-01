@@ -195,7 +195,6 @@ const data = await $fetch<TOrder>(
   `/api/v1/private/checkouts/${route.params.id}/${route.params.checkoutid}`,
   { headers: useRequestHeaders(["cookie"]) },
 );
-const user = useAuthentication();
 
 if (!data) {
   throw createError({
@@ -225,5 +224,5 @@ const formatted_message = computed(() => {
 });
 
 const source = ref(data?.id ?? "");
-const { text, copy, copied, isSupported } = useClipboard({ source });
+const { copy } = useClipboard({ source });
 </script>

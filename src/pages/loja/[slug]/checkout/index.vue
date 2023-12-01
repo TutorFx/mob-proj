@@ -126,6 +126,7 @@
 
 <script setup lang="ts">
 import { useGeolocation } from "@vueuse/core";
+import { IOrder } from "~/server/utils/repository/order";
 import type { TAddress } from "~/types/addr";
 import type { Tcontact } from "~/types/user";
 
@@ -234,7 +235,7 @@ const nextstep = () => {
 };
 const finalizar = async () => {
   try {
-    const data = await $fetch(`/api/v1/order/${route.params.slug}`, {
+    const data = await $fetch<IOrder>(`/api/v1/order/${route.params.slug}`, {
       method: "post",
       body: {
         contact: PersonalState.value.data,

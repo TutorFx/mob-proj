@@ -35,6 +35,7 @@ module.exports = {
       animation: {
         skeleton: "skeleton-loading 2.0s ease-in-out infinite",
       },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       backgroundImage: (theme: any) => ({
         "skeleton-gradient": `linear-gradient(45deg, ${theme(
           "colors.base-100",

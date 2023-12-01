@@ -142,7 +142,7 @@ const state = computed({
 
 const status = ref(props.order.status);
 
-watch(status, async (newVal, oldVal) => {
+watch(status, async (newVal) => {
   await $fetch(
     `/api/v1/private/business/${useRoute().params.id}/UpdateOrderBulkStatus`,
     {

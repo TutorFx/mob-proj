@@ -135,7 +135,7 @@ async function signUp() {
     body: {
       ...userdata.value,
     },
-    onResponse({ request, response, options }) {
+    onResponse({ response }) {
       // Process the response data
       if (response.status == 200) {
         return auth.login({
@@ -143,9 +143,6 @@ async function signUp() {
           password: userdata.value.password,
         });
       }
-    },
-    onResponseError({ request, response, options }) {
-      // Handle the response errors
     },
   });
 }

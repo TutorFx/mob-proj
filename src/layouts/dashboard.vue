@@ -41,7 +41,6 @@
 </template>
 
 <script setup lang="ts">
-const business = useBusiness();
 const menu = ref(false);
 watch(useRoute(), () => (menu.value = false));
 </script>

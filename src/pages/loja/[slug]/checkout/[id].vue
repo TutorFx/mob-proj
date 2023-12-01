@@ -162,5 +162,5 @@ const formatted_message = computed(() => {
 });
 
 const source = ref(data?.id ?? "");
-const { text, copy, copied, isSupported } = useClipboard({ source });
+const { copy } = useClipboard({ source });
 </script>

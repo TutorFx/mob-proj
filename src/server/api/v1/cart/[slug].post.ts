@@ -49,10 +49,10 @@ export default defineEventHandler(async (event) => {
       };
     }) as IProductCart;
 
-    const pricesum = products.reduce((accumulator, item) => {
+    const pricesum = products.reduce<number>((accumulator, item) => {
       return accumulator + item.totalprice;
     }, 0);
-    const quantitysum = products.reduce((accumulator, item) => {
+    const quantitysum = products.reduce<number>((accumulator, item) => {
       return accumulator + item.quantity;
     }, 0);
     return { items: products, info: { pricesum, quantitysum } };

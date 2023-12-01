@@ -69,7 +69,9 @@ export const useTransactions = defineStore("transactions", () => {
     try {
       createMoneyDepositSchema.parse(requestState.value);
       refreshNuxtData("pay");
-    } catch (e) {}
+    } catch (e) {
+      /* empty */
+    }
   };
 
   return {

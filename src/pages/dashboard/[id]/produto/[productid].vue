@@ -58,17 +58,13 @@
 <script setup lang="ts">
 import { ZodError } from "zod";
 import { FetchError } from "ofetch";
-import { VueElement } from "nuxt/dist/app/compat/capi";
 
-const formEl = ref<any>(null);
+const formEl = ref<HTMLFormElement>();
 const alert = new NuxaAlert();
 const route = useRoute();
-const {
-  data: product,
-  pending,
-  refresh,
-  error,
-} = await useFetch(`/api/v1/private/product/${route.params.productid}`);
+const { data: product, refresh } = await useFetch(
+  `/api/v1/private/product/${route.params.productid}`,
+);
 
 const state = ref({
   name: "",
@@ -90,7 +86,7 @@ const formdata = computed(() => {
       businessId: useRoute().params.id.toString(),
     }),
   );
-  state.value.files.forEach((file: any, i: number) => {
+  state.value.files.forEach((file: File, i: number) => {
     if (file instanceof File) {
       return form.append(`files-${i}`, file);
     }
@@ -100,7 +96,7 @@ const formdata = computed(() => {
 const edit = async () => {
   const triggerEdit = async () => {
     try {
-      formEl.value.touch();
+      formEl.value?.touch();
       useSchemas.createProductSchema.parse(state.value);
       isSending.value = true;
       await $fetch(`/api/v1/private/product/${route.params.productid}`, {

@@ -1,12 +1,8 @@
 import bcrypt from "bcryptjs";
-import { Prisma, PrismaClient, TokenStatus } from "@prisma/client";
+import { PrismaClient, TokenStatus } from "@prisma/client";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
-import { generateToken } from "../../../utils/token";
-import { useSchemas } from "~/composables/useSchemas";
 import { Authentication } from "~/server/utils/auth";
-
-const { public: global } = useRuntimeConfig();
 
 export default defineEventHandler(async (event) => {
   const body = await readBody<{ password: string; token: string }>(event);

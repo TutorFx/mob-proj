@@ -2,14 +2,11 @@ import { acceptHMRUpdate, defineStore } from "pinia";
 import type { Business } from "@prisma/client";
 import type { z } from "zod";
 import { FetchError } from "ofetch";
-import { getPlan } from "~/server/utils/plan";
 
 export const useBusiness = () => {
   const { createBusinessSchema } = useSchemas;
   type ICreateBusiness = z.infer<typeof createBusinessSchema>;
   const router = useRouter();
-  const auth = useAuthentication();
-  const session = auth.session;
 
   const business = defineStore("business", () => {
     const starterFields = {
@@ -102,6 +99,6 @@ export const useBusiness = () => {
 };
 
 if (import.meta.hot) {
-  // @ts-expect-error
+  // @ts-expect-error - Todo: Fix
   import.meta.hot.accept(acceptHMRUpdate(useBusiness, import.meta.hot));
 }

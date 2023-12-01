@@ -15,7 +15,8 @@
 </template>
 
 <script setup lang="ts">
+import { INav } from "~/types";
+
 defineProps<{ data: INav }>();
 const { slug } = useRoute().params;
-const cart = useCart();
 </script>
