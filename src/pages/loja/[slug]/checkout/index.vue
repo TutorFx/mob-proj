@@ -126,7 +126,7 @@
 
 <script setup lang="ts">
 import { useGeolocation } from "@vueuse/core";
-import { IOrder } from "~/server/utils/repository/order";
+import type { IOrder } from "~repository/order";
 import type { TAddress } from "~/types/addr";
 import type { Tcontact } from "~/types/user";
 

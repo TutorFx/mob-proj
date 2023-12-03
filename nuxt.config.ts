@@ -1,4 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { fileURLToPath } from "url";
+
 export default defineNuxtConfig({
   srcDir: "src/",
 
@@ -61,6 +63,12 @@ export default defineNuxtConfig({
         propsDestructure: true,
       },
     },
+  },
+
+  alias: {
+    "~repository": fileURLToPath(
+      new URL("./src/server/utils/repository", import.meta.url),
+    ),
   },
 
   eslint: {

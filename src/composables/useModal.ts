@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-declaration-merging */
+
 import { defineStore } from "pinia";
 import type { Style } from "#build/components";
 

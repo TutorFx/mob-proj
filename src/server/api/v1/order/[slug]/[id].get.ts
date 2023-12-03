@@ -1,7 +1,7 @@
 import { sendError } from "h3";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
-import { getOrderByID } from "~/server/utils/repository/order";
+import { getOrderByID } from "~repository/order";
 
 // TODO: Validate if the product is from this business
 
