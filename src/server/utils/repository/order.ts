@@ -18,6 +18,13 @@ const OrderQuery = {
   },
 };
 
+/**
+ * Function to get order by ID
+ * @async
+ * @param {Record<string, string> | undefined} params - parameters to pass to the method
+ * @throws {Error} Throws an error if the requested order could not be found.
+ * @return {Promise<IOrder>} - return a promise that resolves to an order
+ */
 export const getOrderByID = async (
   params: Record<string, string> | undefined,
 ) => {

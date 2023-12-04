@@ -40,10 +40,7 @@ export default defineEventHandler(async (event) => {
 
     const user: User = await event.context.user();
 
-    const business = await prisma.business.findUnique({
-      where: { id: businessId },
-      include: { Owner: true },
-    });
+    const business = await getBusinessOwnerById(businessId);
 
     if (!business) {
       return sendError(

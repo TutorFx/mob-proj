@@ -36,6 +36,7 @@
     "eslint-plugin-no-only-tests": "^3.1.0",
     "eslint-plugin-tailwindcss": "^3.13.0",
     "nuxt": "^3.7.0",
+    "nuxt-security": "^1.0.0-rc.4",
     "nuxt-simple-sitemap": "^3.2.6",
     "nuxt-typed-router": "^3.2.2",
     "postcss": "^8.4.21",

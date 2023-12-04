@@ -124,6 +124,7 @@ export const useSchemas = {
   requirePublicStore: z.object({
     slug,
   }),
+  id,
 };
 
 export type IUseSchemas = {

@@ -1,39 +1,23 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
 import sanitizeHtml from "sanitize-html";
 import { IUseSchemas, useSchemas } from "~/composables/useSchemas";
-const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
   try {
     const { requirePublicProduct } = useSchemas;
-    const context = event.context.params;
+    const params = event.context.params;
 
-    requirePublicProduct.parse(context);
+    requirePublicProduct.parse(params);
 
-    const { slug, product } = context as IUseSchemas["requirePublicProduct"];
+    const { slug, product } = params as IUseSchemas["requirePublicProduct"];
 
-    const response = await prisma.product.findFirst({
-      where: {
-        name: decodeURI(decodeURIComponent(product)),
-        Business: {
-          slug,
-        },
-      },
-      select: {
-        id: true,
-        name: true,
-        description: true,
-        price: true,
-        images: {
-          select: {
-            id: true,
-            Key: true,
-          },
-        },
-      },
+    const response = await getProductWithImage({
+      product: decodeProduct(product),
+      slug,
     });
+
     if (!response) {
       return sendError(
         event,
@@ -43,6 +27,7 @@ export default defineEventHandler(async (event) => {
         }),
       );
     }
+
     return {
       ...response,
       description: sanitizeHtml(response.description),

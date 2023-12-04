@@ -1,14 +1,7 @@
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
-
 export default defineEventHandler(async (event) => {
   const user = await event.context.session;
   try {
-    const getBusiness = await prisma.business.findMany({
-      where: {
-        OwnerId: user.id,
-      },
-    });
+    const getBusiness = await getBusinessByOwnerId(user.id);
 
     if (getBusiness.length === 0) {
       return sendError(

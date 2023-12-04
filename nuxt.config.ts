@@ -6,6 +6,7 @@ export default defineNuxtConfig({
 
   modules: [
     "@nuxt/devtools",
+    "nuxt-security",
     "@nuxtjs/tailwindcss",
     "@nuxtjs/eslint-module",
     "nuxt-headlessui",
@@ -15,6 +16,18 @@ export default defineNuxtConfig({
     "nuxt-simple-sitemap",
     "nuxt-simple-robots",
   ],
+
+  security: {
+    enabled: true,
+    nonce: true,
+    headers: {
+      contentSecurityPolicy: {
+        "script-src": ["'nonce-{{nonce}}'", "'strict-dynamic'"],
+      },
+      // 2.
+      crossOriginEmbedderPolicy: false,
+    },
+  },
 
   image: {
     domains: [

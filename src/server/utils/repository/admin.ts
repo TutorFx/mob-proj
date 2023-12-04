@@ -21,7 +21,12 @@ export type IBusinessWithImage = Prisma.BusinessGetPayload<
   typeof BusinessWithImageQuery
 >;
 
-export const BusinessWithImage = async (): Promise<IBusinessWithImage[]> => {
+/**
+ * Fetches businesses with their respective images from the database
+ *
+ * @return {Promise<IBusinessWithImage[]>} A promise that resolves to an array of businesses with images
+ */
+export const getBusinessWithImage = async (): Promise<IBusinessWithImage[]> => {
   const prisma = new PrismaClient();
   return await prisma.business.findMany(BusinessWithImageQuery);
 };

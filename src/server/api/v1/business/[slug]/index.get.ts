@@ -1,6 +1,5 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { IUseSchemas, useSchemas } from "~/composables/useSchemas";
-const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
   try {
@@ -11,13 +10,8 @@ export default defineEventHandler(async (event) => {
 
     const { slug } = context as IUseSchemas["requirePublicStore"];
 
-    return await prisma.business.findUnique({
-      where: {
-        slug,
-      },
-    });
+    return await getBusinessBySlug({ slug });
   } catch (error) {
-    console.log(error);
     if (
       error instanceof Prisma.PrismaClientKnownRequestError &&
       error.code === "P2002"

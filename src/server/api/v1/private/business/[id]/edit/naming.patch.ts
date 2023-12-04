@@ -6,7 +6,7 @@ import { useSchemas } from "~/composables/useSchemas";
 const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
-  const id = event.context.params?.id;
+  const id = event.context.params?.id as string;
   const { uuid, createBusinessSchema } = useSchemas;
   const body = await readBody(event);
   const session = await event.context.session;
@@ -16,11 +16,7 @@ export default defineEventHandler(async (event) => {
     uuid.parse(session.id);
     createBusinessSchema.parse(body);
 
-    const business = await prisma.business.findUnique({
-      where: {
-        id,
-      },
-    });
+    const business = await getBusinessById(id);
     if (!business) {
       return sendError(
         event,

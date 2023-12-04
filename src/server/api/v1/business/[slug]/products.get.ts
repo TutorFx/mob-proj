@@ -1,7 +1,6 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import sanitizeHtml from "sanitize-html";
 import { IUseSchemas, useSchemas } from "~/composables/useSchemas";
-const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
   try {
@@ -12,30 +11,7 @@ export default defineEventHandler(async (event) => {
 
     const { slug } = context as IUseSchemas["requirePublicStore"];
 
-    return (
-      await prisma.business.findUnique({
-        where: {
-          slug,
-        },
-        select: {
-          Products: {
-            select: {
-              id: true,
-              name: true,
-              description: true,
-              price: true,
-              images: {
-                select: {
-                  id: true,
-                  Key: true,
-                },
-              },
-            },
-            orderBy: { updatedAt: "desc" },
-          },
-        },
-      })
-    )?.Products.map((e) => ({
+    return (await getProductsWithImage({ slug }))?.Products.map((e) => ({
       ...e,
       slug: encodeURIComponent(e.name),
       description: sanitizeHtml(e.description).replace(/<[^>]+>/g, ""),

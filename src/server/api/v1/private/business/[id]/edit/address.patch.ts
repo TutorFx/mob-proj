@@ -7,7 +7,7 @@ import type { TAddress } from "~/types/addr";
 const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
-  const id = event.context.params?.id;
+  const id = event.context.params?.id as string;
   const { uuid, address } = useSchemas;
   const body = await readBody<TAddress>(event);
   const session = await event.context.session;
@@ -19,11 +19,7 @@ export default defineEventHandler(async (event) => {
 
     const { cep, estado, cidade, endereco, bairro, numero, complemento } = body;
 
-    const business = await prisma.business.findUnique({
-      where: {
-        id,
-      },
-    });
+    const business = await getBusinessById(id);
 
     if (!business) {
       return sendError(
