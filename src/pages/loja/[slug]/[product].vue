@@ -10,10 +10,13 @@
 
 <script setup lang="ts">
 import type { IItem } from "~/types/cart";
+import type { IBusiness } from "@/types";
 
 const route = useRoute();
 
-const data = await $fetch(`/api/v1/business/${route.params.slug}`).catch(() => {
+const data = await $fetch<IBusiness>(
+  `/api/v1/business/${route.params.slug}`,
+).catch(() => {
   throw createError({
     statusCode: 404,
     statusMessage: "Estabelecimento não encontrado",

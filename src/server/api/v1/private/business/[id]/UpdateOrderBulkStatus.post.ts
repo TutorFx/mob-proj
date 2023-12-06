@@ -8,7 +8,10 @@ export default defineEventHandler(async (event) => {
   const prisma = new PrismaClient();
   const id = event.context.params?.id as string;
   const { uuid } = useSchemas;
-  const { idlist, status } = await readBody(event);
+  const { idlist, status } = (await readBody(event)) as {
+    idlist: string[];
+    status: OrderStatus;
+  };
   const user = await getPrivateSession(event);
 
   if (!id) {
@@ -23,7 +26,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     z.array(uuid).parse(idlist);
-    z.string().parse(status);
+    z.nativeEnum(OrderStatus).parse(status);
 
     if (!OrderStatus[status]) {
       return sendError(

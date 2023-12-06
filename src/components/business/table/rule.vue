@@ -15,9 +15,10 @@
     </td>
     <td class="border-b p-4 pl-8">
       <div>
+        <!--         
         <UiInputsCheckbox v-model="banned">
           {{ banned ? "Banido" : "Não Banido" }}
-        </UiInputsCheckbox>
+        </UiInputsCheckbox> -->
       </div>
     </td>
     <td class="border-b p-4 pl-8">
@@ -30,8 +31,8 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{ data: IBusinessWithImage }>();
-const alert = new NuxaAlert();
+defineProps<{ data: IBusinessWithImage }>();
+/*  const alert = new NuxaAlert();
 
 const banned = computed({
   get: () => {
@@ -63,5 +64,5 @@ const banned = computed({
       });
     }
   },
-});
+}); */
 </script>

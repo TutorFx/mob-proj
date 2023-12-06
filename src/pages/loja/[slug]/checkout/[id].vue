@@ -143,9 +143,10 @@
 
 <script setup lang="ts">
 import { useClipboard } from "@vueuse/core";
+import type { IOrder } from "@/types";
 
 const route = useRoute();
-const data = await $fetch(
+const data = await $fetch<IOrder>(
   `/api/v1/order/${route.params.slug}/${route.params.id}`,
 );
 

@@ -88,6 +88,10 @@ export default defineNuxtConfig({
     emitWarning: false,
   },
 
+  typescript: {
+    typeCheck: true,
+  },
+
   runtimeConfig: {
     stripeSecretKey: process.env.STRIPE_KEY,
     stripeEndpointSecret: process.env.STRIPE_KEY_PUBLIC,

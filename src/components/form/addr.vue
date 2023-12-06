@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useTextareaAutosize } from "@vueuse/core";
 import type { TAddress } from "@/types/addr";
-import type { IViacep } from "~/types";
+import type { IViacep } from "@/types";
 
 const { textarea, input } = useTextareaAutosize();
 

@@ -1,7 +1,9 @@
 {
   // https://nuxt.com/docs/guide/concepts/typescript
   "extends": "./.nuxt/tsconfig.json",
-  "resolveJsonModule": true,
+  "compilerOptions": {
+    "resolveJsonModule": true
+  },
   "esModuleInterop": true,
   "include": [
     "env.d.ts",
