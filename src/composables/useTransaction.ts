@@ -43,18 +43,13 @@ export const useTransactions = defineStore("transactions", () => {
     error: listError,
     data: list,
     refresh,
-  } = useLazyAsyncData(
-    "transactions",
-    () =>
-      $fetch("/api/v1/private/payment/", {
-        method: "GET",
-        query: {
-          businessId: useRoute().params.id,
-        },
-      }),
-    {
-      immediate: false,
-    },
+  } = useLazyAsyncData("transactions", () =>
+    $fetch("/api/v1/private/payment/", {
+      method: "GET",
+      query: {
+        businessId: useRoute().params.id,
+      },
+    }),
   );
 
   watch(useRoute(), (newVal) => {
@@ -62,8 +57,6 @@ export const useTransactions = defineStore("transactions", () => {
       refresh();
     }
   });
-
-  onBeforeMount(() => refreshNuxtData("transactions"));
 
   const $create = () => {
     try {

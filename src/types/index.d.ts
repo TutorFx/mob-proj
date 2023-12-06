@@ -1,7 +1,9 @@
-type IObjectStatus = {
+export * from "~repository";
+
+export type IObjectStatus = {
   [key: string]: string;
 };
-interface ILoginParams {
+export interface ILoginParams {
   nome: string;
   sobrenome: string;
   cpf: string;
@@ -10,21 +12,21 @@ interface ILoginParams {
   password: string;
 }
 
-type IProductForm = {
+export type IProductForm = {
   name: string;
   description: string;
   price: number;
   files: Array<File>;
 };
 
-type INav = {
+export type INav = {
   slug: string;
   name: string;
   logo_url: string;
   id: string;
 } | null;
 
-type IAddress = {
+export type IAddress = {
   cep: string;
   endereco: string;
   numero: number | null;
@@ -34,7 +36,7 @@ type IAddress = {
   complemento: string;
 };
 
-type IViacep = {
+export type IViacep = {
   logradouro: string;
   complemento: string;
   bairro: string;
@@ -46,14 +48,14 @@ type IViacep = {
   siafi: string;
 };
 
-type TokenData = {
+export type TokenData = {
   id: string;
   nome: string | null;
   email: string;
   isCostumer: boolean;
 };
 
-type IValidateToken = {
+export type IValidateToken = {
   id: string;
   nome: string | null;
   email: string;
@@ -64,20 +66,9 @@ type IValidateToken = {
   isCostumer: boolean;
 };
 
-type Session = {
-  user: {
-    nome: string | null;
-    email: string;
-    plan: string;
-    isCostumer: boolean;
-    role: string;
-  };
-  id: string;
-};
+export type ValidateResponse = { user: Session; token: string };
 
-type ValidateResponse = { user: Session; token: string };
-
-type TItem = { id: string; quantity: number };
+export type TItem = { id: string; quantity: number };
 export type TCart = { [key: string]: Array<TItem> };
 
 declare global {

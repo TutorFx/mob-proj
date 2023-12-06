@@ -15,8 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { INav } from "~/types";
-
-defineProps<{ data: INav }>();
+import type { IBusiness } from "~/types";
+defineProps<{ data: IBusiness }>();
 const { slug } = useRoute().params;
 </script>

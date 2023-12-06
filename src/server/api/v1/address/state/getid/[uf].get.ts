@@ -1,7 +1,8 @@
 import * as estados from "@/server/utils/json/estados.json";
 
 export default defineEventHandler((event) => {
-  const { uf } = event.context.params;
+  // Todo: Fix types and validation
+  const { uf } = event.context.params as { uf: string };
   if (uf === "undefined") {
     return {
       Id: 0,

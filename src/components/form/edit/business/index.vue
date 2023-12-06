@@ -14,16 +14,16 @@
 <script lang="ts" setup>
 import { FetchError } from "ofetch";
 import { ZodError } from "zod";
-import type { IEditBusiness } from "~/types/edit";
+import type { IBusinessProfile } from "@/types/";
 const alert = new NuxaAlert();
 
 const props = defineProps<{
-  modelValue: IEditBusiness;
+  modelValue: IBusinessProfile;
   refresh: () => void;
 }>();
 
 const emits =
-  defineEmits<(e: "update:modelValue", value: IEditBusiness) => void>();
+  defineEmits<(e: "update:modelValue", value: IBusinessProfile) => void>();
 const state = computed({
   get() {
     return props.modelValue;

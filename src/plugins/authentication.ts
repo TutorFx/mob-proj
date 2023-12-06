@@ -1,7 +1,8 @@
 import { useAuthentication } from "@/composables/useAuthentication";
+import { Pinia } from "pinia";
 
 export default defineNuxtPlugin(async (nuxt) => {
-  const login = useAuthentication(nuxt.$pinia);
+  const login = useAuthentication(nuxt.$pinia as Pinia);
   const route = useRoute();
 
   // On unauthenticated request redirect and delete data

@@ -47,15 +47,20 @@
   </div>
 </template>
 <script lang="ts" setup>
-import type { IEditBusiness } from "~/types/edit";
+import type { IBusinessProfile } from "@/types";
 
 const props = defineProps<{
-  modelValue: IEditBusiness;
+  modelValue: IBusinessProfile;
 }>();
 
+type BusinessProfileWithPlaceData = IBusinessProfile & {
+  stateData?: { Nome: string };
+  cityData?: { nome: string };
+};
+
 const emits =
-  defineEmits<(e: "update:modelValue", value: IEditBusiness) => void>();
-const state = computed({
+  defineEmits<(e: "update:modelValue", value: IBusinessProfile) => void>();
+const state = computed<BusinessProfileWithPlaceData>({
   get() {
     return props.modelValue;
   },
@@ -67,8 +72,8 @@ const place = ref();
 if (state.value?.stateData?.Nome && state.value?.cityData?.nome) {
   place.value = await $fetch("/api/v1/address/", {
     query: {
-      cityId: state.value.Address.cidade,
-      stateId: state.value.Address.estado,
+      cityId: state.value.Address?.cidade,
+      stateId: state.value.Address?.estado,
     },
   });
 }

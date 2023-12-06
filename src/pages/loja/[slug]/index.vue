@@ -1,7 +1,7 @@
 <template>
   <div>
     <NuxtLoadingIndicator color="false" class="bg-primary" />
-    <div class="container">
+    <div v-if="data != null" class="container">
       <ui-store-nav :data="data" />
     </div>
     <div
@@ -59,10 +59,14 @@
 </template>
 
 <script setup lang="ts">
+import { IBusiness } from "~/types";
+
 const route = useRoute();
 const config = useRuntimeConfig();
 
-const data = await $fetch(`/api/v1/business/${route.params.slug}`).catch(() => {
+const data = await $fetch<IBusiness>(
+  `/api/v1/business/${route.params.slug}`,
+).catch(() => {
   throw createError({
     statusCode: 404,
     statusMessage: "Estabelecimento não encontrado",

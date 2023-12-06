@@ -49,12 +49,12 @@
   </div>
 </template>
 <script lang="ts" setup>
-import type { IEditBusiness } from "~/types/edit";
+import type { IBusinessProfile } from "@/types";
 const config = useRuntimeConfig();
 const url = config.public.URL;
 
 const props = defineProps<{
-  modelValue: IEditBusiness;
+  modelValue: IBusinessProfile;
 }>();
 
 const result = computed(() =>
@@ -70,7 +70,7 @@ const getErrors = (field: string) => {
 };
 
 const emits =
-  defineEmits<(e: "update:modelValue", value: IEditBusiness) => void>();
+  defineEmits<(e: "update:modelValue", value: IBusinessProfile) => void>();
 const state = computed({
   get() {
     return props.modelValue;

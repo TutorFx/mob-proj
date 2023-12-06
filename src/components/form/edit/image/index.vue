@@ -64,15 +64,15 @@
 
 <script setup lang="ts">
 import { FetchError } from "ofetch";
-import type { IEditBusiness } from "~/types/edit";
+import type { IBusinessProfile } from "@/types";
 const alert = new NuxaAlert();
 
 const props = defineProps<{
-  modelValue: IEditBusiness;
+  modelValue: IBusinessProfile;
   refresh: () => void;
 }>();
 const emits =
-  defineEmits<(e: "update:modelValue", value: IEditBusiness) => void>();
+  defineEmits<(e: "update:modelValue", value: IBusinessProfile) => void>();
 const state = computed({
   get() {
     return props.modelValue;
@@ -97,6 +97,9 @@ const onDelete = async () => {
     },
     async () => {
       const triggerDelete = async () => {
+        if (!state.value.Image) {
+          return;
+        }
         try {
           isDeleting.value = true;
           await $fetch(`/api/v1/private/image/${state.value.Image.id}`, {

@@ -1,7 +1,7 @@
 import * as municipios from "@/server/utils/json/municipios.json";
 
 export default defineEventHandler((event) => {
-  const { ibge } = event.context.params;
+  const { ibge } = event.context.params as { ibge: string };
   if (ibge === "undefined") {
     return {
       Id: 0,

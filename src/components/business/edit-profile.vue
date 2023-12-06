@@ -25,15 +25,13 @@
 </template>
 
 <script setup lang="ts">
-import type { IEditBusiness } from "~/types/edit";
-
+import type { IBusinessProfile } from "@/types";
 const route = useRoute();
-const { data: business, refresh: namingRefresh } =
-  await useAsyncData<IEditBusiness>(() =>
-    $fetch<IEditBusiness>(`/api/v1/private/business/${route.params.id}`, {
-      headers: useRequestHeaders(["cookie"]),
-    }),
-  );
+const { data: business, refresh: namingRefresh } = await useAsyncData(() =>
+  $fetch<IBusinessProfile>(`/api/v1/private/business/${route.params.id}`, {
+    headers: useRequestHeaders(["cookie"]),
+  }),
+);
 if (business.value === null) {
   throw createError({
     statusCode: 500,
