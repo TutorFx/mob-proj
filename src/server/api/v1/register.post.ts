@@ -3,12 +3,12 @@ import { sendError } from "h3";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
 import bcrypt from "bcryptjs";
-import { useSchemas } from "~/composables/useSchemas";
+
 const { registerSchema } = useSchemas;
 
 export default defineEventHandler(async (event) => {
   const prisma = new PrismaClient();
-  const body = await readBody(event);
+  const body = await readBody<IUseSchemas["registerSchema"]>(event);
   try {
     registerSchema.parse(body);
   } catch (error) {

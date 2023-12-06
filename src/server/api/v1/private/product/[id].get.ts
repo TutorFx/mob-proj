@@ -8,7 +8,7 @@ const { uuid } = useSchemas;
 type IUuid = z.infer<typeof uuid>;
 
 export default defineEventHandler(async (event) => {
-  const session = await event.context.session;
+  const session = await getPrivateSession(event);
   const id = event.context.params?.id as IUuid;
   try {
     uuid.parse(id);

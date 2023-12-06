@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
   const id = event.context.params?.id as string;
   const { uuid, address } = useSchemas;
   const body = await readBody<TAddress>(event);
-  const session = await event.context.session;
+  const session = await getPrivateSession(event);
 
   try {
     uuid.parse(id);

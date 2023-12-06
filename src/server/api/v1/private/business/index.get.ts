@@ -1,5 +1,5 @@
 export default defineEventHandler(async (event) => {
-  const user = await event.context.session;
+  const user = await getPrivateSession(event);
   try {
     const getBusiness = await getBusinessByOwnerId(user.id);
 

@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
   const id = event.context.params?.id as string;
   const { uuid } = useSchemas;
   const { idlist, status } = await readBody(event);
-  const user = await event.context.session;
+  const user = await getPrivateSession(event);
 
   if (!id) {
     return sendError(

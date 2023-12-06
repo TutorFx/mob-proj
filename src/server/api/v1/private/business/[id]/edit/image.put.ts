@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
 export default defineEventHandler(async (event) => {
   const id = event.context.params?.id as string;
   const { uuid } = useSchemas;
-  const session = await event.context.session;
+  const session = await getPrivateSession(event);
 
   const form = formidable({});
   const response: { fields: formidable.Fields; files: formidable.Files } =

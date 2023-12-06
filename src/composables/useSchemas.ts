@@ -10,6 +10,7 @@ export const useSchemas = {
   registerSchema: z.object({
     email: z.string().min(1).max(50),
     password: z.string(),
+    cpf: z.string(),
   }),
   loginSchema: z.object({
     username: z.string().min(1).max(50),

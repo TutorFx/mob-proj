@@ -10,7 +10,7 @@ const { getProductSchema } = useSchemas;
 type IProductSchema = z.infer<typeof getProductSchema>;
 
 export default defineEventHandler(async (event) => {
-  const session = await event.context.session;
+  const session = await getPrivateSession(event);
   const query = getQuery(event) as IProductSchema;
   try {
     getProductSchema.parse(query);
