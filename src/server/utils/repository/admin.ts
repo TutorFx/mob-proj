@@ -31,6 +31,13 @@ export const getBusinessWithImage = async (): Promise<IBusinessWithImage[]> => {
   return await prisma.business.findMany(BusinessWithImageQuery);
 };
 
+/**
+ * Toggles the ban status of a business.
+ *
+ * @param {string} id - The ID of the business.
+ * @param {boolean} bool - The new ban status.
+ * @return {Prisma.Prisma__BusinessClient<Prisma.Business>} The updated business.
+ */
 export const ToggleBan = (id: string, bool: boolean) => {
   const prisma = new PrismaClient();
   return prisma.business.update({

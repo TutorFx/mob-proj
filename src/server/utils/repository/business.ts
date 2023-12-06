@@ -60,15 +60,42 @@ export type IBusinessOwner = Prisma.BusinessGetPayload<
 /**
  * Returns a business owner by business id
  * @param {number} BusinessId - The id of the business.
- * @returns {Promise<IBusiness | null>} - A Promise that resolves to an IBusiness object or null.
+ * @returns {Promise<IBusinessOwner | null>} - A Promise that resolves to an IBusinessOwner object or null.
  */
 export const getBusinessOwnerById = async (
   BusinessId: IUseSchemas["id"],
-): Promise<IBusiness | null> => {
+): Promise<IBusinessOwner | null> => {
   return prisma.business.findUnique({
     where: {
       id: BusinessId,
     },
     ...BusinessWithOwnerPayload,
+  });
+};
+
+const BusinessProfileQuery = {
+  include: {
+    Image: true,
+    Address: true,
+  },
+};
+
+export type IBusinessProfile = Prisma.BusinessGetPayload<
+  typeof BusinessProfileQuery
+>;
+
+/**
+ * Returns a business profile by its id
+ * @param {number} id - The id of the business.
+ * @returns {Promise<IBusinessProfile | null>} - A Promise that resolves to an IBusinessProfile object or null including Image and Address.
+ */
+export const getBusinessProfileById = async (
+  id: IUseSchemas["id"],
+): Promise<IBusinessProfile | null> => {
+  return await prisma.business.findUnique({
+    where: {
+      id,
+    },
+    ...BusinessProfileQuery,
   });
 };

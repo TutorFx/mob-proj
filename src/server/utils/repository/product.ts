@@ -84,3 +84,34 @@ export const getProductsWithImage = async ({
     },
   });
 };
+
+const ProductWithImageAndBusinessPayload = {
+  include: {
+    images: true,
+    Business: true,
+  },
+};
+
+export type IProductWithImageAndBusiness = Prisma.ProductGetPayload<
+  typeof ProductWithImageAndBusinessPayload
+>;
+
+/**
+ * Async function to get a product with its image and associated business from the database
+ * using its product id.
+ *
+ * @async
+ * @param {string} id - The id of the product to get.
+ *
+ * @returns {Promise<IProductWithImageAndBusiness|null>} A Promise that resolves to the product with its image and associated business if it exists, or null otherwise.
+ */
+export const getProductById = async (
+  id: IUseSchemas["id"],
+): Promise<IProductWithImageAndBusiness | null> => {
+  return await prisma.product.findUnique({
+    where: {
+      id,
+    },
+    ...ProductWithImageAndBusinessPayload,
+  });
+};

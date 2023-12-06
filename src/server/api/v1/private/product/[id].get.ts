@@ -1,10 +1,9 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import type { z } from "zod";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
 import { useSchemas } from "~/composables/useSchemas";
 
-const prisma = new PrismaClient();
 const { uuid } = useSchemas;
 type IUuid = z.infer<typeof uuid>;
 
@@ -41,15 +40,7 @@ export default defineEventHandler(async (event) => {
     );
   }
   try {
-    const product = await prisma.product.findUnique({
-      where: {
-        id,
-      },
-      include: {
-        images: true,
-        Business: true,
-      },
-    });
+    const product = await getProductById(id);
 
     return product;
   } catch (error) {
