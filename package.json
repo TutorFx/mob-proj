@@ -83,7 +83,6 @@
     "estree-walker": "^3.0.3",
     "express-handlebars": "^7.1.2",
     "formidable": "^2.1.1",
-    "isomorphic-dompurify": "^1.11.0",
     "jsdoc": "^4.0.2",
     "jsonwebtoken": "^9.0.0",
     "maska": "^2.1.9",

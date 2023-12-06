@@ -1,4 +1,4 @@
-import DOMPurify from "isomorphic-dompurify";
+/* import DOMPurify from "isomorphic-dompurify";
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.directive("safe-html", {
@@ -16,3 +16,6 @@ export default defineNuxtPlugin((nuxtApp) => {
     },
   });
 });
+ */
+
+export default defineNuxtPlugin(() => {});
