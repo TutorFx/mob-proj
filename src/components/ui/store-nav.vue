@@ -1,8 +1,12 @@
 <template>
   <ui-nav>
     <template #default>
-      <nuxt-link :to="{ name: 'loja-slug', params: { slug } }" class="btn btn-ghost normal-case font-black text-xl">{{
-        data?.name }}</nuxt-link>
+      <nuxt-link
+        :to="{ name: 'loja-slug', params: { slug } }"
+        class="btn btn-ghost text-xl font-black normal-case"
+      >
+        {{ data?.name }}
+      </nuxt-link>
     </template>
     <template #end>
       <ui-cart-icon />
@@ -11,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{ data: INav }>()
-const { slug } = useRoute().params
-const cart = useCart()
+import type { IBusiness } from "~/types";
+defineProps<{ data: IBusiness }>();
+const { slug } = useRoute().params;
 </script>

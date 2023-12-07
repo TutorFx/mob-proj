@@ -1,33 +1,36 @@
-import { Prisma, PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient()
+import { Prisma } from "@prisma/client";
+import { IUseSchemas, useSchemas } from "~/composables/useSchemas";
 
 export default defineEventHandler(async (event) => {
-  const slug = event.context.params?.slug;
   try {
+    const { requirePublicStore } = useSchemas;
+    const context = event.context.params;
 
-    return await prisma.business.findUnique({
-      where: {
-        slug
-      },
-    })
+    requirePublicStore.parse(context);
 
+    const { slug } = context as IUseSchemas["requirePublicStore"];
+
+    return await getBusinessBySlug({ slug });
   } catch (error) {
-    console.log(error)
-    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002')
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
       return sendError(
         event,
         createError({
           statusCode: 204,
-          statusMessage: 'Nao pode fazer entrada'
-        })
+          statusMessage: "Nao pode fazer entrada",
+        }),
       );
+    }
 
     return sendError(
       event,
       createError({
         statusCode: 500,
-        statusMessage: 'bugou'
-      })
+        statusMessage: "bugou",
+      }),
     );
   }
-})
+});

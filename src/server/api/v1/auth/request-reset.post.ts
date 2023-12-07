@@ -1,10 +1,6 @@
-import { generateToken } from "../../../utils/token";
-import bcrypt from "bcryptjs";
-import { PrismaClient, Prisma } from "@prisma/client";
-import { useSchemas } from "~/composables/useSchemas";
+import { PrismaClient } from "@prisma/client";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
-import { Authentication } from "~/server/utils/auth";
 
 const { public: global } = useRuntimeConfig();
 
@@ -19,14 +15,15 @@ export default defineEventHandler(async (event) => {
       },
     });
 
-    if (!user)
+    if (!user) {
       return sendError(
         event,
         createError({
           statusCode: 404,
           statusMessage: "User not found",
-        })
+        }),
       );
+    }
 
     const token = await prisma.resetToken.create({
       data: {
@@ -48,13 +45,14 @@ export default defineEventHandler(async (event) => {
 
     return { status: 200, message: "Redefine token sent" };
   } catch (error) {
-    if (error instanceof ZodError)
+    if (error instanceof ZodError) {
       return sendError(
         event,
         createError({
           statusCode: 400,
           statusMessage: `${fromZodError(error)}`,
-        })
+        }),
       );
+    }
   }
 });

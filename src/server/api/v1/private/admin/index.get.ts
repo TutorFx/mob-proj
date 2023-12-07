@@ -1,3 +1,3 @@
-export default defineEventHandler(async (event) => {
-  return await BusinessWithImage()
+export default defineEventHandler(async () => {
+  return await getBusinessWithImage();
 });

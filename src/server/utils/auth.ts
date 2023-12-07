@@ -1,14 +1,14 @@
-import { User, Prisma, PrismaClient } from '@prisma/client';
-import { H3Event } from 'h3'
-import { validateToken, generateToken } from './token';
-import { useSchemas } from '@/composables/useSchemas'
-import Stripe from 'stripe';
-import { TokenData, Session, IValidateToken } from '~/types';
+import type { User } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
+import type { H3Event } from "h3";
+import Stripe from "stripe";
+import { generateToken, validateToken } from "./token";
+import { useSchemas } from "@/composables/useSchemas";
+import type { IValidateToken, Session, TokenData } from "~/types";
 const config = useRuntimeConfig();
-const stripe = new Stripe(config.stripeSecretKey, { apiVersion: '2022-11-15' });
+const stripe = new Stripe(config.stripeSecretKey, { apiVersion: "2022-11-15" });
 
-
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 export class Authentication {
   static token: string;
@@ -20,13 +20,14 @@ export class Authentication {
       email: user.email,
       plan: user.plan,
       role: user.role,
-      isCostumer: Boolean(user.stripe_costumer_id)
+      isCostumer: Boolean(user.stripe_costumer_id),
     };
     Authentication.user = data;
     Authentication.token = generateToken(data);
   }
+
   createCookie(event: H3Event) {
-    setCookie(event, 'token', Authentication.token)
+    setCookie(event, "token", Authentication.token);
   }
 }
 
@@ -34,39 +35,48 @@ export class VerifyAuthentication {
   static token: string;
   static user: IValidateToken;
   constructor(event: H3Event) {
-    const token = getCookie(event, 'token');
-    if (!token) throw new Error('Invalid_Token', { cause: 'You got an invalid token' })
+    const token = getCookie(event, "token");
+    if (!token) {
+      throw new Error("Invalid_Token", { cause: "You got an invalid token" });
+    }
     const tokenResponse = validateToken(token);
     useSchemas.User.parse(tokenResponse);
-    // @ts-expect-error
+    // @ts-expect-error because the type casting is necessary here
     VerifyAuthentication.user = tokenResponse as validateToken;
-    VerifyAuthentication.token = token
+    VerifyAuthentication.token = token;
   }
-  getUser() { return VerifyAuthentication.user };
-  getToken() { return VerifyAuthentication.token };
+
+  getUser() {
+    return VerifyAuthentication.user;
+  }
+  getToken() {
+    return VerifyAuthentication.token;
+  }
   getSession() {
-    const { id, email, nome, plan, role, isCostumer } = VerifyAuthentication.user
+    const { id, email, nome, plan, role, isCostumer } =
+      VerifyAuthentication.user;
     return {
       user: { email, nome, plan, role, isCostumer },
-      id
-    } as Session
+      id,
+    } as Session;
   }
 }
 
 export const getServerSession = (event: H3Event): Session | null => {
   try {
     const auth = new VerifyAuthentication(event);
-    return auth.getSession()
+    return auth.getSession();
   } catch (error) {
     return null;
   }
-}
+};
 
 export class CreatePaymentAccount extends VerifyAuthentication {
-  constructor(event: H3Event) {
-    super(event);
-  }
-  async init(price_id: string, callback: Function){
+  // constructor(event: H3Event) {
+  //   super(event);
+  // }
+
+  async init(priceId: string, callback: () => void) {
     const session = this.getSession();
     if (!session.user.isCostumer) {
       const user = await prisma.user.findUnique({
@@ -74,24 +84,26 @@ export class CreatePaymentAccount extends VerifyAuthentication {
           id: session.id,
         },
         select: {
-          stripe_costumer_id: true
-        }
-      })
-      if (user?.stripe_costumer_id) return;
+          stripe_costumer_id: true,
+        },
+      });
+      if (user?.stripe_costumer_id) {
+        return;
+      }
       try {
         await prisma.user.update({
           where: {
             id: session.id,
           },
           data: {
-            stripe_costumer_id: session.id
-          }
-        })
-        const stripe_session = await stripe.checkout.sessions.create({
-          mode: 'subscription',
+            stripe_costumer_id: session.id,
+          },
+        });
+        const stripeSession = await stripe.checkout.sessions.create({
+          mode: "subscription",
           line_items: [
             {
-              price: price_id,
+              price: priceId,
               quantity: 1,
             },
           ],
@@ -100,12 +112,12 @@ export class CreatePaymentAccount extends VerifyAuthentication {
           // is redirected to the success page.
           success_url: `${config.public.URL}/success?session_id={CHECKOUT_SESSION_ID}`,
           cancel_url: `${config.public.URL}/cancel`,
-          customer: session.id
+          customer: session.id,
         });
-        console.log(stripe_session)
-        callback.bind(stripe_session)();
+        console.log(stripeSession);
+        callback.bind(stripeSession)();
       } catch {
-        console.log('Subscription FAILED')
+        console.log("Subscription FAILED");
       }
     }
     callback.bind(this)();

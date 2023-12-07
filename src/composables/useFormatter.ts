@@ -1,4 +1,4 @@
-import { Address } from "@prisma/client";
+import type { Address } from "@prisma/client";
 
 export class AddressFormatter {
   cep: string;
@@ -22,21 +22,25 @@ export class AddressFormatter {
         this.complemento = address.complemento;
         this.estadoId = address.estado;
         this.cidadeId = address.cidade;
-      } else throw createError({
-        statusCode: 404,
-        statusMessage: 'Invalid Address'
-      })
+      } else {
+        throw createError({
+          statusCode: 404,
+          statusMessage: "Invalid Address",
+        });
+      }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       throw createError({
         statusCode: 404,
-        statusMessage: 'Dados de endereço não encontrados'
-      })
+        statusMessage: "Dados de endereço não encontrados",
+      });
     }
   }
 
   async fetch() {
-    const response = await $fetch('/api/v1/address/', { query: { cityId: this.cidadeId, stateId: this.estadoId } });
+    const response = await $fetch("/api/v1/address/", {
+      query: { cityId: this.cidadeId, stateId: this.estadoId },
+    });
     this.cidade = response.cityData.Nome;
     this.estado = response.stateData.Nome;
   }

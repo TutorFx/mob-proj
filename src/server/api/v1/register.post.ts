@@ -1,48 +1,48 @@
-import { PrismaClient, Prisma } from '@prisma/client';
+import { Prisma, PrismaClient } from "@prisma/client";
 import { sendError } from "h3";
-import { z, ZodError } from 'zod';
-import { useSchemas } from "~/composables/useSchemas"
-import { fromZodError } from 'zod-validation-error';
+import { ZodError } from "zod";
+import { fromZodError } from "zod-validation-error";
 import bcrypt from "bcryptjs";
+
 const { registerSchema } = useSchemas;
 
-
 export default defineEventHandler(async (event) => {
-  const prisma = new PrismaClient()
-  const body = await readBody(event)
+  const prisma = new PrismaClient();
+  const body = await readBody<IUseSchemas["registerSchema"]>(event);
   try {
-    registerSchema.parse(body)
+    registerSchema.parse(body);
   } catch (error) {
-    if (error instanceof ZodError)
+    if (error instanceof ZodError) {
       return sendError(
         event,
         createError({
           statusCode: 400,
           statusMessage: `${fromZodError(error)}`,
-        })
+        }),
       );
-    return 'Unknown Error'
+    }
+    return "Unknown Error";
   }
   try {
-    const hash = await bcrypt.hash(body.password, 10)
+    const hash = await bcrypt.hash(body.password, 10);
     await prisma.user.create({
       data: {
         email: body.email,
         cpf: body.cpf,
         password: hash,
-      }
-    })
-    return { message: 'Created' }
+      },
+    });
+    return { message: "Created" };
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       // The .code property can be accessed in a type-safe manner
-      if (error.code === 'P2002') {
+      if (error.code === "P2002") {
         return sendError(
           event,
           createError({
             statusCode: 204,
-            statusMessage: 'A new user cannot be created with this email'
-          })
+            statusMessage: "A new user cannot be created with this email",
+          }),
         );
       }
     } else {
@@ -50,9 +50,9 @@ export default defineEventHandler(async (event) => {
         event,
         createError({
           statusCode: 400,
-          statusMessage: 'Unknown error'
-        })
-      )
+          statusMessage: "Unknown error",
+        }),
+      );
     }
   }
-})
+});

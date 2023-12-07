@@ -1,40 +1,55 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { fileURLToPath } from "url";
+const isProdEnv = process.env.NODE_ENV === "production";
+
 export default defineNuxtConfig({
   srcDir: "src/",
 
   modules: [
-    '@nuxt/devtools',
-    '@nuxtjs/tailwindcss',
-    'nuxt-headlessui',
-    'nuxt-icon',
-    '@pinia/nuxt',
-    '@nuxt/image-edge',
-    'nuxt-simple-sitemap',
-    'nuxt-simple-robots'
+    "@nuxt/devtools",
+    "nuxt-security",
+    "@nuxtjs/tailwindcss",
+    "@nuxtjs/eslint-module",
+    "nuxt-headlessui",
+    "nuxt-icon",
+    "@pinia/nuxt",
+    "@nuxt/image-edge",
+    "nuxt-simple-sitemap",
+    "nuxt-simple-robots",
   ],
+
+  security: {
+    enabled: true,
+    nonce: true,
+    headers: {
+      contentSecurityPolicy: {
+        "script-src": ["'nonce-{{nonce}}'", "'strict-dynamic'"],
+      },
+      // 2.
+      crossOriginEmbedderPolicy: false,
+    },
+  },
 
   image: {
     domains: [
-      'res.cloudinary.com',
-      `${process.env.S3_BUCKET_NAME}.s3.${process.env.S3_DEFAULT_REGION}.amazonaws.com/`
+      "res.cloudinary.com",
+      `${process.env.S3_BUCKET_NAME}.s3.${process.env.S3_DEFAULT_REGION}.amazonaws.com/`,
     ],
-    format: ['webp']
+    format: ["webp"],
   },
 
   app: {
-    //pageTransition: { name: 'page', mode: 'out-in' },
+    // pageTransition: { name: 'page', mode: 'out-in' },
     head: {
-      title: 'Mob-Proj 0.1v',
-      meta: [
-        { name: 'description', content: 'Lorem ipsun!.' }
-      ],
+      title: "Mob-Proj 0.1v",
+      meta: [{ name: "description", content: "Lorem ipsun!." }],
       htmlAttrs: {
-        lang: 'pt-BR'
-      }
-    }
+        lang: "pt-BR",
+      },
+    },
   },
 
-  css: ['@/main.scss'],
+  css: ["@/main.scss"],
 
   postcss: {
     plugins: {
@@ -44,31 +59,45 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    '/api/auth/**': { cors: true },
-    '/api/v1/business/**/*': { isr: 60 },
-    '/api/v1/address/state/**': { swr: true },
-    '/api/v1/order/status': { isr: true },
-    '/loja/**/*': { isr: 60 },
+    "/api/auth/**": { cors: true },
+    "/api/v1/business/**/*": { isr: 60 },
+    "/api/v1/address/state/**": { swr: true },
+    "/api/v1/order/status": { isr: true },
+    "/loja/**/*": { isr: 60 },
   },
 
   headlessui: {
-    prefix: ''
+    prefix: "",
   },
 
   vite: {
     vue: {
       script: {
         defineModel: true,
-        propsDestructure: true
-      }
-    }
+        propsDestructure: true,
+      },
+    },
+  },
+
+  alias: {
+    "~repository": fileURLToPath(
+      new URL("./src/server/utils/repository/", import.meta.url),
+    ),
+  },
+
+  eslint: {
+    emitWarning: false,
+  },
+
+  typescript: {
+    typeCheck: !isProdEnv,
   },
 
   runtimeConfig: {
     stripeSecretKey: process.env.STRIPE_KEY,
     stripeEndpointSecret: process.env.STRIPE_KEY_PUBLIC,
     subscriptionGraceDays: 3,
-    initialPlanName: 'Free Trial',
+    initialPlanName: "Free Trial",
     initialPlanActiveMonths: 1,
     brevo: {
       SMTP_HOSTNAME: process.env.BREVO_SMTP_HOSTNAME,
@@ -78,8 +107,8 @@ export default defineNuxtConfig({
       SMTP_USER: process.env.BREVO_SMTP_USER,
     },
     public: {
-      URL: process.env.NUXT_PUBLIC_SITE_URL ?? 'http://localhost:3000/',
-      APP_NAME: 'Nuxa',
+      URL: process.env.NUXT_PUBLIC_SITE_URL ?? "http://localhost:3000/",
+      APP_NAME: "Nuxa",
       cdnBaseUrl: `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.S3_DEFAULT_REGION}.amazonaws.com/`,
     },
   },
@@ -96,4 +125,4 @@ export default defineNuxtConfig({
   devtools: {
     enabled: true,
   },
-})
+});

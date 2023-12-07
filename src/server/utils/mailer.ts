@@ -1,7 +1,7 @@
-import nodemailer, { createTransport, SendMailOptions } from "nodemailer";
-import path from "path";
+/* eslint-disable @typescript-eslint/no-unsafe-declaration-merging */
+import path from "node:path";
+import { createTransport } from "nodemailer";
 import hbs from "nodemailer-express-handlebars";
-import { string } from "zod";
 
 const config = useRuntimeConfig();
 
@@ -24,7 +24,7 @@ transport.use(
     },
     viewPath: path.resolve("./src/server/utils/html/"),
     extName: ".html",
-  })
+  }),
 );
 
 export enum templates {
@@ -36,7 +36,7 @@ interface Email {
   from?: string;
   subject?: string;
   template?: templates;
-  context?: any;
+  context?: unknown;
 }
 
 interface RecoveryEmail extends Email {
@@ -50,6 +50,7 @@ interface MailServiceContent extends Email {
 }
 
 interface MailService extends MailServiceContent {}
+
 class MailService {
   constructor(email: Email) {
     this.transport = transport;
@@ -59,6 +60,7 @@ class MailService {
     this.template = email.template;
     this.context = email.context;
   }
+
   async sendMail() {
     return await transport.sendMail(this);
   }
@@ -79,7 +81,7 @@ export const MailServices = {
   Recovery,
 };
 
-/* 
+/*
     const mail = new MailServices.Recovery({
       to: "gabrieltfserejo@gmail.com",
       context: {

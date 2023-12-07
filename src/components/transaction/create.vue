@@ -1,46 +1,65 @@
 <template>
   <Teleport to="body">
-    <Transition enter-active-class="animate__animated animate__fadeIn"
-      leave-active-class="animate__animated animate__fadeOut">
-      <div class="fixed inset-0 z-10 bg-black/50 flex" v-if="transaction.$isVisible()" />
+    <Transition
+      enter-active-class="animate__animated animate__fadeIn"
+      leave-active-class="animate__animated animate__fadeOut"
+    >
+      <div
+        v-if="transaction.$isVisible()"
+        class="fixed inset-0 z-10 flex bg-black/50"
+      />
     </Transition>
-    <Transition enter-active-class="animate__animated animate__fadeInUp"
-      leave-active-class="animate__animated animate__fadeOutDown">
-      <div class="fixed inset-0 z-20 flex" v-if="transaction.$isVisible()">
-        <div class="m-auto text-white border rounded-xl w-3xl overflow-hidden border-zinc-700">
-          <div class="p-6 bg-black text-3xl">
-            Criar Transação
-          </div>
-          <div class="p-6 bg-zinc-900 border-y border-zinc-700 grid gap-4">
+    <Transition
+      enter-active-class="animate__animated animate__fadeInUp"
+      leave-active-class="animate__animated animate__fadeOutDown"
+    >
+      <div v-if="transaction.$isVisible()" class="fixed inset-0 z-20 flex">
+        <div
+          class="w-3xl m-auto overflow-hidden rounded-xl border border-zinc-700 text-white"
+        >
+          <div class="bg-black p-6 text-3xl">Criar Transação</div>
+          <div class="grid gap-4 border-y border-zinc-700 bg-zinc-900 p-6">
             <label class="text-zinc-400">
-              <div class="mb-3">
-                Email do Usuário
-              </div>
-              <input v-model="transaction.requestState.userMail" type="text" class="bg-black border-zinc-700 rounded w-full">
+              <div class="mb-3">Email do Usuário</div>
+              <input
+                v-model="transaction.requestState.userMail"
+                type="text"
+                class="w-full rounded border-zinc-700 bg-black"
+              />
             </label>
             <label class="text-zinc-400">
-              <div class="mb-3">
-                Valor em compras
-              </div>
+              <div class="mb-3">Valor em compras</div>
               <div class="grid grid-flow-col rounded border border-zinc-700">
                 <div
-                  class="bg-zinc-950 flex items-center border-r border-zinc-700 justify-center px-4 text-xs truncate rounded-l">
+                  class="flex items-center justify-center truncate rounded-l border-r border-zinc-700 bg-zinc-950 px-4 text-xs"
+                >
                   R$
                 </div>
-                <input v-model.number="transaction.requestState.amount" type="number"
-                  class="bg-black border-black w-full rounded-r text-sm">
+                <input
+                  v-model.number="transaction.requestState.amount"
+                  type="number"
+                  class="w-full rounded-r border-black bg-black text-sm"
+                />
               </div>
             </label>
           </div>
-          <div class="p-6 bg-zinc-900 flex justify-between">
-            <button @click.prevent="transaction.$close()"
-              class="bg-black text-zinc-400 hover:border-white hover:text-white py-2 px-4 border border-zinc-700 rounded transition-all">
+          <div class="flex justify-between bg-zinc-900 p-6">
+            <button
+              class="rounded border border-zinc-700 bg-black px-4 py-2 text-zinc-400 transition-all hover:border-white hover:text-white"
+              @click.prevent="transaction.$close()"
+            >
               Cancel
             </button>
-            <button @click.prevent="createTransaction"
-              class="bg-white text-black hover:bg-black hover:text-white hover:border-white transition-all py-2 px-4 border border-white rounded relative">
-              <div v-if="businessStore.pendingBusinesses || transaction.pendingPayment"
-                class="absolute inset-0 flex items-center justify-center bg-purple-200 text-black cursor-wait">
+            <button
+              class="relative rounded border border-white bg-white px-4 py-2 text-black transition-all hover:border-white hover:bg-black hover:text-white"
+              @click.prevent="createTransaction"
+            >
+              <div
+                v-if="
+                  businessStore.pendingBusinesses || transaction.pendingPayment
+                "
+                class="absolute inset-0 flex cursor-wait items-center justify-center bg-purple-200 text-black"
+              >
                 <ui-spinner />
               </div>
               <div>Continue</div>
@@ -53,15 +72,14 @@
 </template>
 
 <script lang="ts" setup>
-
-const transaction = useTransactions()
+const transaction = useTransactions();
 const businessStore = useBusiness();
 
-
 const createTransaction = async () => {
+  if (businessStore.pendingBusinesses) {
+    return;
+  }
 
-  if (businessStore.pendingBusinesses) return;
-
-  transaction.$create()
-}
+  transaction.$create();
+};
 </script>

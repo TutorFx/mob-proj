@@ -1,74 +1,70 @@
-import { RouteLocationRaw } from "#vue-router";
+import type { RouteLocationRaw } from "#vue-router";
 
 const home = [
   {
     title: "Benefícios",
-    to: { path: "/", hash: "#beneficios" }
+    to: { path: "/", hash: "#beneficios" },
   },
   {
     title: "Nossos Clientes",
-    to: { path: "/", hash: "#nossos-clientes" }
+    to: { path: "/", hash: "#nossos-clientes" },
   },
   {
     title: "Preço",
-    to: { path: "/", hash: "#preco" }
-  }
-]
+    to: { path: "/", hash: "#preco" },
+  },
+];
 
 const StoreDashboard = [
   {
     icon: "mdi:view-dashboard-outline",
     title: "Informações",
-    to: { name: "dashboard-id" }
+    to: { name: "dashboard-id" },
   },
   {
     icon: "mdi:view-grid-outline",
     title: "Produtos",
-    to: { name: "dashboard-id-produto" }
+    to: { name: "dashboard-id-produto" },
   },
   {
     icon: "mdi:view-grid-plus-outline",
     title: "Novo Produto",
-    to: { name: "dashboard-id-produto-novo" }
+    to: { name: "dashboard-id-produto-novo" },
   },
   {
     icon: "mdi:store-settings-outline",
     title: "Perfil da Empresa",
-    to: { name: "dashboard-id-profile" }
+    to: { name: "dashboard-id-profile" },
   },
   {
     icon: "mdi:basket-fill",
     title: "Fechamentos",
-    to: { name: "dashboard-id-fechamento" }
-  }
-]
+    to: { name: "dashboard-id-fechamento" },
+  },
+];
 
 const AdminDashboard = [
   {
     icon: "ic:outline-business-center",
     title: "Empresas",
-    to: { name: "dashboard-admin" }
-  }
-]
+    to: { name: "dashboard-admin" },
+  },
+];
 
 export type MenuType = {
-  icon?: string,
-  title: string,
-  to: RouteLocationRaw,
-}
+  icon?: string;
+  title: string;
+  to: RouteLocationRaw;
+};
 
-export type MenuItems = MenuType[]
-
-interface MenuTypeObject<T> {
-  [key: string]: T[];
-}
+export type MenuItems = MenuType[];
 
 const menu = {
   home,
   StoreDashboard,
-  AdminDashboard
-}
+  AdminDashboard,
+};
 
 export const useMenu = (item: keyof typeof menu): MenuItems => {
-  return menu[item]
-}
+  return menu[item];
+};

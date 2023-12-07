@@ -1,7 +1,5 @@
-import { generateToken } from "../../../utils/token";
 import bcrypt from "bcryptjs";
-import { PrismaClient, Prisma } from "@prisma/client";
-import { useSchemas } from "~/composables/useSchemas";
+import { PrismaClient } from "@prisma/client";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
 import { Authentication } from "~/server/utils/auth";
@@ -17,25 +15,26 @@ export default defineEventHandler(async (event) => {
       },
     });
 
-    if (!user)
+    if (!user) {
       return sendError(
         event,
         createError({
           statusCode: 400,
           statusMessage: "User not found",
-        })
+        }),
       );
+    }
 
     if (!(await bcrypt.compare(password, user.password))) {
       console.error(
-        "Warning: Malicious login attempt registered, bad credentials provided"
+        "Warning: Malicious login attempt registered, bad credentials provided",
       );
       return sendError(
         event,
         createError({
           statusCode: 403,
           statusMessage: "Not Authenticated",
-        })
+        }),
       );
     }
 
@@ -43,13 +42,14 @@ export default defineEventHandler(async (event) => {
     auth.createCookie(event);
     return { status: 200, message: "Authenticated" };
   } catch (error) {
-    if (error instanceof ZodError)
+    if (error instanceof ZodError) {
       return sendError(
         event,
         createError({
           statusCode: 400,
           statusMessage: `${fromZodError(error)}`,
-        })
+        }),
       );
+    }
   }
 });

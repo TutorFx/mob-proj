@@ -1,32 +1,81 @@
 <template>
   <div class="stepper-cliqx">
-    <label v-for="(etapa, i) in steps" :class="i < props.modelValue
-        ? 'status-ok'
-        : i == props.modelValue
-          ? 'status-current'
-          : i > props.modelValue
-            ? 'status-waiting'
-            : null
-      " :key="i">
-      <div class="prefix-line"></div>
+    <label
+      v-for="(etapa, i) in steps"
+      :key="i"
+      :class="
+        i < props.modelValue
+          ? 'status-ok'
+          : i == props.modelValue
+            ? 'status-current'
+            : i > props.modelValue
+              ? 'status-waiting'
+              : null
+      "
+    >
+      <div class="prefix-line" />
       <span class="bubble">
         <Transition name="slide-left">
           <div v-if="i >= props.modelValue">
             {{ (i + 1).toString().padStart(2, "0") }}
           </div>
-          <svg v-else xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24">
-            <path fill="currentColor" d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" />
+          <svg
+            v-else
+            xmlns="http://www.w3.org/2000/svg"
+            width="10"
+            height="10"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="currentColor"
+              d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z"
+            />
           </svg>
         </Transition>
       </span>
-      <input type="radio" single :value="i" v-model="modelValue"
-        @change="emit('update:modelValue', Number($event.target.value))" />
-      <span class="text"><span class="inner-text">{{ etapa }}</span></span>
-      <div class="sufix-line"></div>
+      <input
+        v-model="modelValue"
+        type="radio"
+        single
+        :value="i"
+        @change="
+          $event.target &&
+            emit(
+              'update:modelValue',
+              Number(($event.target as HTMLInputElement).value),
+            )
+        "
+      />
+      <span class="text"
+        ><span class="inner-text">{{ etapa }}</span></span
+      >
+      <div class="sufix-line" />
     </label>
   </div>
 </template>
 
+<script setup lang="ts">
+const emit = defineEmits(["update:modelValue"]);
+const props = defineProps({
+  steps: {
+    required: true,
+    type: Array,
+  },
+  modelValue: {
+    required: false,
+    default: 0,
+    type: Number,
+  },
+});
+const modelValue = ref(props.modelValue);
+
+watch(
+  () => modelValue,
+  (newValue) => {
+    emit("update:modelValue", newValue);
+  },
+);
+</script>
 <style lang="scss">
 .stepper-cliqx {
   display: flex;
@@ -160,7 +209,9 @@
     .text {
       .inner-text {
         opacity: 1;
-        transition: width, opacity 300ms ease-in-out;
+        transition:
+          width,
+          opacity 300ms ease-in-out;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
@@ -213,25 +264,3 @@
   transform: translateX(-30px);
 }
 </style>
-<script setup lang="ts">
-const emit = defineEmits(["update:modelValue"]);
-const props = defineProps({
-  steps: {
-    required: true,
-    type: Array,
-  },
-  modelValue: {
-    required: false,
-    default: 0,
-    type: Number,
-  },
-});
-const modelValue = ref(props.modelValue);
-
-watch(
-  () => modelValue,
-  (newValue, oldValue) => {
-    emit("update:modelValue", newValue);
-  }
-);
-</script>

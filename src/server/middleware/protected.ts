@@ -1,12 +1,12 @@
-const api_path = "/api/v1";
-import { getServerSession } from "@/server/utils/auth";
 import type { H3Event } from "h3";
-import { PrismaClient, User } from "@prisma/client";
-import jwt from "jsonwebtoken";
+import type { User } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
+import { getServerSession } from "@/server/utils/auth";
+const apiPath = "/api/v1";
 const prisma = new PrismaClient();
 
-export default defineEventHandler(async (event) => {
-  const { url, method } = event.node.req;
+export default defineEventHandler((event) => {
+  const { url } = event.node.req;
   const session = getServerSession(event);
 
   const notAuth = (event: H3Event) =>
@@ -14,19 +14,27 @@ export default defineEventHandler(async (event) => {
       event,
       createError({
         statusCode: 401,
-        statusMessage: `Not authenticated`,
-      })
+        statusMessage: "Not authenticated",
+      }),
     );
 
-  if (!url) return;
+  if (!url) {
+    return;
+  }
 
-  if (!url.startsWith(`${api_path}/private`)) return;
+  if (!url.startsWith(`${apiPath}/private`)) {
+    return;
+  }
 
-  if (!session) return notAuth(event);
+  if (!session) {
+    return notAuth(event);
+  }
 
   const email = session?.user?.email;
 
-  if (!email) return;
+  if (!email) {
+    return;
+  }
   event.context.session = session;
   event.context.user = async (): Promise<User | null> =>
     await prisma.user.findUnique({
@@ -35,14 +43,17 @@ export default defineEventHandler(async (event) => {
       },
     });
 
-  if (!url.startsWith(`${api_path}/private/admin`)) return;
+  if (!url.startsWith(`${apiPath}/private/admin`)) {
+    return;
+  }
 
-  if (session.user.role !== "ADMIN")
+  if (session.user.role !== "ADMIN") {
     return sendError(
       event,
       createError({
         statusCode: 401,
-        statusMessage: `Not authenticated`,
-      })
+        statusMessage: "Not authenticated",
+      }),
     );
+  }
 });

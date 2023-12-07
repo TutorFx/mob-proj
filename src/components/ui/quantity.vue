@@ -1,12 +1,24 @@
 <template>
   <div>
-    <div class="grid grid-flow-col justify-start items-center">
-      <button class="btn btn-neutral rounded-r-none" @click.prevent="modelValue -= 1">
+    <div class="grid grid-flow-col items-center justify-start">
+      <button
+        class="btn-neutral btn rounded-r-none"
+        @click.prevent="modelValue -= 1"
+      >
         -
       </button>
-      <input type="text" v-model.number="modelValue" aria-labelledby="Número de produtos" v-maska data-maska="###"
-        class="h-full w-12 border-neutral text-center px-0">
-      <button class="btn btn-neutral rounded-l-none" @click.prevent="modelValue += 1">
+      <input
+        v-model.number="modelValue"
+        v-maska
+        type="text"
+        aria-labelledby="Número de produtos"
+        data-maska="###"
+        class="h-full w-12 border-neutral px-0 text-center"
+      />
+      <button
+        class="btn-neutral btn rounded-l-none"
+        @click.prevent="modelValue += 1"
+      >
         +
       </button>
     </div>
@@ -15,19 +27,23 @@
 
 <script setup lang="ts">
 const props = defineProps<{
-  modelValue: number
-}>()
+  modelValue: number;
+}>();
 const emits = defineEmits<{
-  (e: 'update:modelValue', value: number): void
-}>()
+  (e: "update:modelValue", value: number): void;
+}>();
 const modelValue = computed({
   get() {
-    return props.modelValue
+    return props.modelValue;
   },
   set(value) {
-    if (1 > value) return;
-    if (isNaN(value)) return;
-    emits('update:modelValue', value)
-  }
-})
+    if (value < 1) {
+      return;
+    }
+    if (isNaN(value)) {
+      return;
+    }
+    emits("update:modelValue", value);
+  },
+});
 </script>

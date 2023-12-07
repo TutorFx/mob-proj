@@ -1,37 +1,38 @@
-import { PrismaClient } from '@prisma/client';
-import { useSchemas } from '@/composables/useSchemas';
-import { z } from 'zod'
+import { PrismaClient } from "@prisma/client";
+import { useSchemas } from "@/composables/useSchemas";
 const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
   const id = event.context.params?.id;
   const checkout = event.context.params?.checkout;
-  const { uuid } = useSchemas
+  const { uuid } = useSchemas;
   try {
     uuid.parse(id);
     uuid.parse(checkout);
 
-    if (!id)
+    if (!id) {
       return sendError(
         event,
         createError({
           statusCode: 404,
-          statusMessage: `invalid business id`,
-        })
+          statusMessage: "invalid business id",
+        }),
       );
+    }
 
-    if (!checkout)
+    if (!checkout) {
       return sendError(
         event,
         createError({
           statusCode: 404,
-          statusMessage: `invalid checkout id`,
-        })
+          statusMessage: "invalid checkout id",
+        }),
       );
+    }
 
     const orders = await prisma.order.findUnique({
       where: {
-        id: checkout
+        id: checkout,
       },
       include: {
         contact: true,
@@ -39,32 +40,33 @@ export default defineEventHandler(async (event) => {
         ProductOnOrder: {
           include: {
             product: {
-              include: { images: { take: 1 } }
-            }
-          }
+              include: { images: { take: 1 } },
+            },
+          },
         },
         Business: { include: { Image: true } },
       },
-    })
+    });
 
-    if (orders?.businessId !== id)
+    if (orders?.businessId !== id) {
       return sendError(
         event,
         createError({
           statusCode: 404,
-          statusMessage: `Business not found`,
-        }))
+          statusMessage: "Business not found",
+        }),
+      );
+    }
 
-    return orders
-
+    return orders;
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return sendError(
       event,
       createError({
         statusCode: 404,
-        statusMessage: 'Businesses not found'
-      })
+        statusMessage: "Businesses not found",
+      }),
     );
   }
-})
+});

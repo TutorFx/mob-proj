@@ -1,66 +1,30 @@
-import { Prisma, PrismaClient, Product, Image } from '@prisma/client';
-import { ZodError } from 'zod';
-import { fromZodError } from 'zod-validation-error';
-import { useSchemas } from '~/composables/useSchemas';
-import { IProductCart } from '~/types/cart';
+import { Prisma } from "@prisma/client";
+import { IUseSchemas, useSchemas } from "~/composables/useSchemas";
 
-
-const prisma = new PrismaClient()
-const { cart } = useSchemas;
 export default defineEventHandler(async (event) => {
-
   try {
-    // @ts-ignore
-    const { slug } = event.context.params;
-    const body = await readBody(event);
+    const { requirePublicStore, cartList } = useSchemas;
+    const context = event.context.params;
 
-    cart.parse(body);
+    const { slug } = context as IUseSchemas["requirePublicStore"];
+    const body = await readBody<IUseSchemas["cartList"]>(event);
 
-    const ids = body.map((item: TItem) => item.id)
-    const products = (await prisma.product.findMany({
-      where: {
-        Business: {
-          slug
-        },
-        id: {
-          in: ids
-        }
-      },
-      include: {
-        images: {
-          select: {
-            Key: true
-          },
-          take: 1
-        }
-      }
-    })).map((item) => {
-      const cartitem = body?.find((record: TItem) => record.id == item.id)
-      const totalprice = cartitem.quantity * item.price
-      return ({
-        ...item, ...cartitem, totalprice
-      })
-    }) as IProductCart
+    requirePublicStore.parse(context);
+    cartList.parse(body);
 
-    const pricesum = products.reduce((accumulator, item) => {
-      return accumulator + item.totalprice
-    },0)
-    const quantitysum = products.reduce((accumulator, item) => {
-      return accumulator + item.quantity
-    },0)
-    return { items: products, info:{ pricesum, quantitysum }}
-
+    return getCartItemsByProductArray(slug, body);
   } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002')
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
       return sendError(
         event,
         createError({
           statusCode: 204,
-          statusMessage: 'Nao pode fazer entrada'
-        })
-      )
-
-    console.log(error)
-    return { items: [], info:{ pricesum: 0, quantitysum: 0 }}
+          statusMessage: "Nao pode fazer entrada",
+        }),
+      );
+    }
   }
-})
+});

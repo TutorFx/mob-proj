@@ -1,7 +1,9 @@
-type IObjectStatus = {
+export * from "~repository/index.d.ts";
+
+export type IObjectStatus = {
   [key: string]: string;
-}
-interface ILoginParams {
+};
+export interface ILoginParams {
   nome: string;
   sobrenome: string;
   cpf: string;
@@ -10,21 +12,21 @@ interface ILoginParams {
   password: string;
 }
 
-type IProductForm = {
+export type IProductForm = {
   name: string;
   description: string;
   price: number;
-  files: Array<File>
-}
+  files: Array<File>;
+};
 
-type INav = {
+export type INav = {
   slug: string;
   name: string;
   logo_url: string;
   id: string;
 } | null;
 
-type IAddress = {
+export type IAddress = {
   cep: string;
   endereco: string;
   numero: number | null;
@@ -32,9 +34,9 @@ type IAddress = {
   estado: number;
   cidade: number;
   complemento: string;
-}
+};
 
-type IViacep = {
+export type IViacep = {
   logradouro: string;
   complemento: string;
   bairro: string;
@@ -44,16 +46,16 @@ type IViacep = {
   gia: string;
   ddd: string;
   siafi: string;
-}
+};
 
-type TokenData = {
+export type TokenData = {
   id: string;
   nome: string | null;
   email: string;
   isCostumer: boolean;
-}
+};
 
-type IValidateToken = {
+export type IValidateToken = {
   id: string;
   nome: string | null;
   email: string;
@@ -62,16 +64,13 @@ type IValidateToken = {
   iat: number;
   exp: number;
   isCostumer: boolean;
+};
+
+export type ValidateResponse = { user: Session; token: string };
+
+export type TItem = { id: string; quantity: number };
+export type TCart = { [key: string]: Array<IUseSchemas["cartItem"]> };
+
+declare global {
+  ILoginParams, IItem, IAddress, IObjectStatus;
 }
-
-type Session = {
-  user: { nome: string | null; email: string; plan: string; isCostumer: boolean; role: string; }
-  id: string;
-}
-
-type ValidateResponse = { user: Session, token: string }
-
-type TItem = { id: string, quantity: number }
-export type TCart = { [key: string]: Array<TItem> }
-
-declare global { ILoginParams, IItem, IAddress, IObjectStatus };

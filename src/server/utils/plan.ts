@@ -5,7 +5,7 @@ class PlanDefault {
   public api_id: null | string = null;
 }
 
-class Free extends PlanDefault { }
+class Free extends PlanDefault {}
 
 class Basic extends PlanDefault {
   public business_amount = 1;
@@ -28,10 +28,18 @@ class Agency extends PlanDefault {
   public api_id = "price_1NYEVUHRsKrr5uaEo2juOH8v";
 }
 
-export const getPlan = ( plan: string) => {
-  if ( plan === 'FREE' ) return new Free;
-  if ( plan === 'BASIC' ) return new Basic;
-  if ( plan === 'ADVANCED' ) return new Advanced;
-  if ( plan === 'AGENCY' ) return new Agency;
-  return new PlanDefault
-}
+export const getPlan = (plan: string) => {
+  if (plan === "FREE") {
+    return new Free();
+  }
+  if (plan === "BASIC") {
+    return new Basic();
+  }
+  if (plan === "ADVANCED") {
+    return new Advanced();
+  }
+  if (plan === "AGENCY") {
+    return new Agency();
+  }
+  return new PlanDefault();
+};

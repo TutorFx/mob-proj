@@ -1,7 +1,7 @@
 <template>
-  <div class="card bg-base-100 border-base-200 border">
+  <div class="card border border-base-200 bg-base-100">
     <div class="card-body gap-y-6">
-      <div class="card-title justify-between flex-wrap">
+      <div class="card-title flex-wrap justify-between">
         <span>{{ title }}</span>
         <slot name="action" />
       </div>
@@ -13,5 +13,5 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{ title: string }>()
+defineProps<{ title: string }>();
 </script>

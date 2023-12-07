@@ -1,13 +1,12 @@
-import { useSchemas } from "@/composables/useSchemas";
 import { useTimestamp } from "@vueuse/core";
-import jwt from 'jsonwebtoken';
-import { useCookies } from '@vueuse/integrations/useCookies';
-import { ZodError, z } from "zod";
-import moment from 'moment';
-import { VerifyAuthentication } from "@/server/utils/auth"
+import { useCookies } from "@vueuse/integrations/useCookies";
+import type { z } from "zod";
+import { ZodError } from "zod";
+import moment from "moment";
 import { FetchError } from "ofetch";
-import { IValidateToken } from "@/types";
 import { defineStore } from "pinia";
+import type { IValidateToken } from "@/types";
+import { useSchemas } from "@/composables/useSchemas";
 type Login = z.infer<typeof useSchemas.loginSchema>;
 
 export const useAuthentication = defineStore("authentication", () => {
@@ -21,7 +20,7 @@ export const useAuthentication = defineStore("authentication", () => {
 
   const tokenData = computed(() => {
     try {
-      return JSON.parse(atob(token.value?.split(".")[1])) as validateToken;
+      return JSON.parse(atob(token.value?.split(".")[1])) as IValidateToken;
     } catch (e) {
       return false;
     }
@@ -29,16 +28,28 @@ export const useAuthentication = defineStore("authentication", () => {
 
   const session = computed(() => {
     try {
-      return JSON.parse(atob(token.value?.split('.')[1])) as IValidateToken
+      return JSON.parse(atob(token.value?.split(".")[1])) as IValidateToken;
     } catch (e) {
-      return { id: null, nome: null, email: null, plan: null, iat: null, exp: null, role: null }
+      return {
+        id: null,
+        nome: null,
+        email: null,
+        plan: null,
+        iat: null,
+        exp: null,
+        role: null,
+      };
     }
   });
 
   const isAuthenticated = computed(() => {
     try {
-      if (!tokenData.value) return false;
-      if (!moment.unix(tokenData.value?.exp).isValid()) return false;
+      if (!tokenData.value) {
+        return false;
+      }
+      if (!moment.unix(tokenData.value?.exp).isValid()) {
+        return false;
+      }
       const expiration = moment.unix(tokenData.value?.exp);
       const now = moment(timestamp.value);
       return Boolean(expiration.diff(now) > 0);
@@ -63,20 +74,28 @@ export class CreateAuthentication {
         const route = useRoute();
         const store = useAuthentication();
         const { callback } = route.query;
-        if (!callback) return useRouter().push("/dashboard");
-        if (store.isAuthenticated && !(callback instanceof Array))
+        if (!callback) {
+          return useRouter().push("/dashboard");
+        }
+        if (store.isAuthenticated && !(callback instanceof Array)) {
           return useRouter().push(decodeURI(callback));
-        else
+        } else {
           watch(
             () => store.isAuthenticated,
             (newVal, oldVal) => {
-              if (!(newVal && !oldVal)) return;
-              if (!(callback instanceof Array))
+              if (!(newVal && !oldVal)) {
+                return;
+              }
+              if (!(callback instanceof Array)) {
                 return useRouter().push(decodeURI(callback));
-            }
+              }
+            },
           );
+        }
       });
-    } catch (err) {}
+    } catch (err) {
+      /* empty */
+    }
   }
 }
 
@@ -84,9 +103,11 @@ export class CreateRecovery {
   state = ref({
     credential: "",
   });
+
   get = () => {
     return this.state.value;
   };
+
   async generate() {
     try {
       const alert = new NuxaAlert();
@@ -102,12 +123,13 @@ export class CreateRecovery {
     } catch (error) {
       const alert = new NuxaAlert();
       if (error instanceof FetchError) {
-        if (error.status === 404)
+        if (error.status === 404) {
           return alert.warning({
             title: "Usuário inválido",
             body: "Usuário não encontrado",
             cancel: "Voltar",
           });
+        }
 
         return alert.warning({
           title: "Erro inesperado",
@@ -124,9 +146,11 @@ export class UseRecovery {
     password: "",
     passwordConfirmation: "",
   });
+
   get = () => {
     return this.state.value;
   };
+
   async reset(token: string | string[]) {
     try {
       useSchemas.passwordReset.parse(this.get());
