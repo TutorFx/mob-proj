@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import { fileURLToPath } from "url";
+const isProdEnv = process.env.NODE_ENV === "production";
 
 export default defineNuxtConfig({
   srcDir: "src/",
@@ -89,7 +90,7 @@ export default defineNuxtConfig({
   },
 
   typescript: {
-    typeCheck: true,
+    typeCheck: !isProdEnv,
   },
 
   runtimeConfig: {
