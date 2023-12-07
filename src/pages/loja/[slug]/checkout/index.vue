@@ -126,9 +126,10 @@
 
 <script setup lang="ts">
 import { useGeolocation } from "@vueuse/core";
-import type { IOrder } from "~repository/order";
+import type { IOrder } from "@/types/";
 import type { TAddress } from "~/types/addr";
 import type { Tcontact } from "~/types/user";
+import type { IBusiness } from "~/types";
 
 const auth = useAuthentication();
 
@@ -174,8 +175,8 @@ const router = useRouter();
 const cart = useCart();
 const isAnonymous = ref<boolean>(false);
 
-const { data } = await useAsyncData(() =>
-  $fetch(`/api/v1/business/${route.params.slug}`),
+const { data } = await useAsyncData<IBusiness>(() =>
+  $fetch<unknown>(`/api/v1/business/${route.params.slug}`),
 );
 
 const PersonalState = ref<{

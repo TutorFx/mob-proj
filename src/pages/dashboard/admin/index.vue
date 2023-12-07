@@ -43,6 +43,6 @@ const {
   error,
   pending,
 } = await useAsyncData<IBusinessWithImage[]>("admin-business", () =>
-  $fetch("/api/v1/private/admin"),
+  $fetch<unknown>("/api/v1/private/admin"),
 );
 </script>

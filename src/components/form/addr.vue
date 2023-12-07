@@ -61,10 +61,10 @@ const [
     () => $fetch<IViacep>(`https://viacep.com.br/ws/${state.value.cep}/json/`),
     { immediate: false },
   ),
-  useAsyncData("state", () => $fetch("/api/v1/address/state")),
+  useAsyncData("state", () => $fetch<unknown>("/api/v1/address/state")),
   useAsyncData(
     "city",
-    () => $fetch(`/api/v1/address/city/${state.value.estado}`),
+    () => $fetch<unknown>(`/api/v1/address/city/${state.value.estado}`),
     { immediate: false },
   ),
 ]);

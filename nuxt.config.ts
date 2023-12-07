@@ -80,7 +80,7 @@ export default defineNuxtConfig({
 
   alias: {
     "~repository": fileURLToPath(
-      new URL("./src/server/utils/repository", import.meta.url),
+      new URL("./src/server/utils/repository/", import.meta.url),
     ),
   },
 

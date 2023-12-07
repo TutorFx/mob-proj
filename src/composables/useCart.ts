@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { useLocalStorage } from "@vueuse/core";
-import type { TCart } from "~/types";
+import { IUseSchemas } from "./useSchemas";
 
 export const useCart = defineStore("cart", () => {
   const defaultKey = () => {
@@ -9,7 +9,7 @@ export const useCart = defineStore("cart", () => {
   };
 
   const isVisible = ref(false);
-  const $raw = ref<Ref<TCart>>(useLocalStorage("cart", {}));
+  const $raw = ref<Ref<IUseSchemas["cartStore"]>>(useLocalStorage("cart", {}));
 
   const $quantity = computed(
     () =>
@@ -18,10 +18,10 @@ export const useCart = defineStore("cart", () => {
       }, 0) ?? 0,
   );
 
-  const { data: $get } = useAsyncData(
+  const { data: $get } = useAsyncData<ICartItems>(
     "cart",
     () =>
-      $fetch(`/api/v1/cart/${defaultKey()}`, {
+      $fetch<unknown>(`/api/v1/cart/${defaultKey()}`, {
         method: "POST",
         body: $raw.value[defaultKey()] ?? [],
       }),

@@ -45,3 +45,69 @@ export const getOrderByID = async (
 };
 
 export type IOrder = Prisma.OrderGetPayload<typeof OrderQuery>;
+
+const OrderWithFilterQuery = {
+  select: {
+    contact: {
+      select: {
+        nome: true,
+      },
+    },
+    id: true,
+    status: true,
+    createdAt: true,
+    // address: true,
+    ProductOnOrder: {
+      select: {
+        quantity: true,
+        product: {
+          select: {
+            price: true,
+            name: true,
+            images: {
+              take: 1,
+              select: { Key: true },
+            },
+          },
+        },
+      },
+    },
+    Business: { select: { Image: { select: { Key: true } } } },
+  },
+};
+
+/**
+ * Fetches multiple orders from database with specified ID and optional filters.
+ * @param {IUseSchemas["id"]} id - The ID of the business for filtering records.
+ * @param {IUseSchemas["getCheckout"] | undefined } query - The optional query filters.
+ * @return - The filtered records from 'order' collection, ordered by 'createdAt' in 'desc' order.
+ */
+export const getOrderWithFilterById = (
+  id: IUseSchemas["id"],
+  query?: IUseSchemas["getCheckout"],
+): Promise<IOrderWithFilter[]> =>
+  prisma.order.findMany({
+    where: {
+      businessId: id,
+      status: query?.status,
+      OR: [
+        {
+          contact: {
+            nome: {
+              contains: query?.search,
+              mode: "insensitive",
+            },
+          },
+        },
+        {
+          id: query?.search,
+        },
+      ],
+    },
+    ...OrderWithFilterQuery,
+    orderBy: { createdAt: "desc" },
+  });
+
+export type IOrderWithFilter = Prisma.OrderGetPayload<
+  typeof OrderWithFilterQuery
+>;

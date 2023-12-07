@@ -1,4 +1,4 @@
-export * from "~repository";
+export * from "~repository/index.d.ts";
 
 export type IObjectStatus = {
   [key: string]: string;
@@ -69,7 +69,7 @@ export type IValidateToken = {
 export type ValidateResponse = { user: Session; token: string };
 
 export type TItem = { id: string; quantity: number };
-export type TCart = { [key: string]: Array<TItem> };
+export type TCart = { [key: string]: Array<IUseSchemas["cartItem"]> };
 
 declare global {
   ILoginParams, IItem, IAddress, IObjectStatus;

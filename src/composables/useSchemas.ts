@@ -5,6 +5,10 @@ import { useRules } from "~/composables/useRules";
 const slug = z.string().nonempty("Campo obrigatório");
 const id = z.string().refine(useRules.uuid);
 const productName = z.string().nonempty("Campo obrigatório");
+const cartItem = z.object({
+  id,
+  quantity: z.number().min(1),
+});
 
 export const useSchemas = {
   registerSchema: z.object({
@@ -126,6 +130,10 @@ export const useSchemas = {
     slug,
   }),
   id,
+  cartItem,
+  idList: z.array(id),
+  cartList: z.array(cartItem),
+  cartStore: z.record(id, z.array(cartItem)),
 };
 
 export type IUseSchemas = {
