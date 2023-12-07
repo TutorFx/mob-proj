@@ -83,6 +83,8 @@ export default defineNuxtConfig({
     "~repository": fileURLToPath(
       new URL("./src/server/utils/repository/", import.meta.url),
     ),
+    ".prisma/client/index-browser":
+      "./node_modules/.prisma/client/index-browser.js",
   },
 
   eslint: {
