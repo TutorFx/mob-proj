@@ -2,9 +2,9 @@ import { OrderStatus } from "@prisma/client";
 import { z } from "zod";
 import { useRules } from "~/composables/useRules";
 
-const slug = z.string().nonempty("Campo obrigatório");
+const slug = z.string().min(1, "Campo obrigatório");
 const id = z.string().refine(useRules.uuid);
-const productName = z.string().nonempty("Campo obrigatório");
+const productName = z.string().min(1, "Campo obrigatório");
 const cartItem = z.object({
   id,
   quantity: z.number().min(1),
@@ -22,7 +22,7 @@ export const useSchemas = {
   }),
   User: z.object({
     id,
-    nome: z.string().nonempty("Campo obrigatório").nullable(),
+    nome: z.string().min(1, "Campo obrigatório").nullable(),
     email: z.string().min(1).max(50),
     iat: z.number(),
     exp: z.number(),
@@ -39,12 +39,12 @@ export const useSchemas = {
   businessContact: z.object({
     whatsapp: z
       .string({ invalid_type_error: "Campo obrigatório" })
-      .nonempty("Campo obrigatório")
+      .min(1, "Campo obrigatório")
       .min(14, "Número de telefone inválido")
       .max(16, "Número de telefone inválido"),
     email: z
       .string({ invalid_type_error: "Campo obrigatório" })
-      .nonempty("Campo obrigatório")
+      .min(1, "Campo obrigatório")
       .email("Email não é válido"),
   }),
   getBusinessPaymentSchema: z.object({
@@ -52,13 +52,13 @@ export const useSchemas = {
   }),
   createProductSchema: z.object({
     name: productName,
-    description: z.string().nonempty("Campo obrigatório"),
+    description: z.string().min(1, "Campo obrigatório"),
     price: z.number().nonnegative("O número deve ser positivo"),
     businessId: id,
   }),
   editProductSchema: z.object({
     name: productName,
-    description: z.string().nonempty("Campo obrigatório"),
+    description: z.string().min(1, "Campo obrigatório"),
     price: z.number().nonnegative("O número deve ser positivo"),
     businessId: id,
   }),
@@ -75,36 +75,36 @@ export const useSchemas = {
     }),
   ),
   contact: z.object({
-    nome: z.string().nonempty("Campo obrigatório"),
+    nome: z.string().min(1, "Campo obrigatório"),
     celular: z
       .string()
-      .nonempty("Campo obrigatório")
+      .min(1, "Campo obrigatório")
       .min(14, "Número de telefone inválido")
       .max(16, "Número de telefone inválido"),
     whatsapp: z.boolean(),
   }),
   address: z.object({
-    cep: z.string().nonempty("Campo obrigatório").min(9, "Cep inválido"),
+    cep: z.string().min(1, "Campo obrigatório").min(9, "Cep inválido"),
     estado: z.number().min(1, "Campo obrigatório"),
     cidade: z.number().min(1, "Campo obrigatório"),
     endereco: z
       .string({ required_error: "Campo obrigatório" })
-      .nonempty("Campo obrigatório"),
+      .min(1, "Campo obrigatório"),
     bairro: z
       .string({ required_error: "Campo obrigatório" })
-      .nonempty("Campo obrigatório"),
+      .min(1, "Campo obrigatório"),
     numero: z.number().nullable(),
     complemento: z.string().nullable(),
   }),
   gptDescription: z.object({
-    name: z.string().nonempty("Campo obrigatório"),
+    name: z.string().min(1, "Campo obrigatório"),
     price: z.number().nonnegative("O número deve ser positivo"),
     description: z.string().optional(),
   }),
   passwordReset: z
     .object({
-      password: z.string().nonempty("Campo obrigatório"),
-      passwordConfirmation: z.string().nonempty("Campo obrigatório"),
+      password: z.string().min(1, "Campo obrigatório"),
+      passwordConfirmation: z.string().min(1, "Campo obrigatório"),
     })
     .superRefine(({ passwordConfirmation, password }, ctx) => {
       if (passwordConfirmation !== password) {
@@ -128,6 +128,14 @@ export const useSchemas = {
   }),
   requirePublicStore: z.object({
     slug,
+  }),
+  mailer: z.object({
+    host: z.string(),
+    port: z.number(),
+    auth: z.object({
+      user: z.string(),
+      pass: z.string(),
+    }),
   }),
   id,
   cartItem,

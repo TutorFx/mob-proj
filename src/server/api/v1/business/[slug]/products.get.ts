@@ -1,6 +1,5 @@
 import { Prisma } from "@prisma/client";
 import sanitizeHtml from "sanitize-html";
-import { IUseSchemas, useSchemas } from "~/composables/useSchemas";
 
 export default defineEventHandler(async (event) => {
   try {

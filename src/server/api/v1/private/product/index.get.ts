@@ -3,7 +3,6 @@ import type { z } from "zod";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
 import sanitizeHtml from "sanitize-html";
-import { useSchemas } from "~/composables/useSchemas";
 
 const prisma = new PrismaClient();
 const { getProductSchema } = useSchemas;

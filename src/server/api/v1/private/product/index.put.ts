@@ -3,7 +3,6 @@ import type { z } from "zod";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
 import formidable from "formidable";
-import { useSchemas } from "~/composables/useSchemas";
 import { uploadToS3 } from "@/server/utils";
 
 const prisma = new PrismaClient();

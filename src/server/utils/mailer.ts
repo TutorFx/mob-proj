@@ -1,19 +1,23 @@
 /* eslint-disable @typescript-eslint/no-unsafe-declaration-merging */
+import type { BrevoConfig } from "@/types";
 import path from "node:path";
-import { createTransport } from "nodemailer";
 import hbs from "nodemailer-express-handlebars";
+import { createTransport } from "nodemailer";
 
-const config = useRuntimeConfig();
+const config = useRuntimeConfig() as { brevo?: BrevoConfig };
 
-const transport = createTransport({
-  // @ts-expect-error - it expects a undefined (???)
-  host: config.brevo.SMTP_HOSTNAME,
-  port: config.brevo.SMTP_PORT,
+const mailer = {
+  host: config.brevo?.SMTP_HOSTNAME,
+  port: config.brevo?.SMTP_PORT,
   auth: {
-    user: config.brevo.SMTP_USER,
-    pass: config.brevo.SMTP_KEY,
+    user: config.brevo?.SMTP_USER,
+    pass: config.brevo?.SMTP_KEY,
   },
-});
+} as IUseSchemas["mailer"];
+
+//useSchemas.mailer.parse(mailer);
+
+const transport = createTransport(mailer);
 
 transport.use(
   "compile",

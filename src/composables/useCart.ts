@@ -1,7 +1,5 @@
 import { defineStore } from "pinia";
-import { useLocalStorage } from "@vueuse/core";
-import { IUseSchemas } from "./useSchemas";
-
+import { StorageSerializers, useLocalStorage } from "@vueuse/core";
 export const useCart = defineStore("cart", () => {
   const defaultKey = () => {
     const slug = useRoute().params?.slug;
@@ -9,7 +7,9 @@ export const useCart = defineStore("cart", () => {
   };
 
   const isVisible = ref(false);
-  const $raw = ref<Ref<IUseSchemas["cartStore"]>>(useLocalStorage("cart", {}));
+  const $raw = ref<Ref<IUseSchemas["cartStore"]>>(
+    useLocalStorage("cart", {}, { serializer: StorageSerializers.object }),
+  );
 
   const $quantity = computed(
     () =>
