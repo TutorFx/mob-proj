@@ -1,5 +1,4 @@
 import { Prisma } from "@prisma/client";
-import { IUseSchemas, useSchemas } from "~/composables/useSchemas";
 
 export default defineEventHandler(async (event) => {
   try {

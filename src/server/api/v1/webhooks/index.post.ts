@@ -1,7 +1,8 @@
 import Stripe from "stripe";
+import type { ExtendedRuntimeConfig } from "@/types";
 // import AccountService from '~~/lib/services/account.service';
 
-const config = useRuntimeConfig();
+const config = useRuntimeConfig() as unknown as ExtendedRuntimeConfig;
 const stripe = new Stripe(config.stripeSecretKey, { apiVersion: "2022-11-15" });
 
 export default defineEventHandler(async (event) => {

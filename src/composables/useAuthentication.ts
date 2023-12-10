@@ -6,7 +6,6 @@ import moment from "moment";
 import { FetchError } from "ofetch";
 import { defineStore } from "pinia";
 import type { IValidateToken } from "@/types";
-import { useSchemas } from "@/composables/useSchemas";
 type Login = z.infer<typeof useSchemas.loginSchema>;
 
 export const useAuthentication = defineStore("authentication", () => {

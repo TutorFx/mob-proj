@@ -73,8 +73,8 @@
       >
         <div class="order-last grid gap-3 sm:order-first">
           <ui-cart-item
-            v-for="item in cart.$get?.items"
-            :key="item.id"
+            v-for="(item, i) in cart.$get?.items"
+            :key="i"
             class="lg:max-w-sm"
             :item="item"
           />

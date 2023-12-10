@@ -1,5 +1,3 @@
-import { useSchemas } from "@/composables/useSchemas";
-
 export default defineEventHandler(async (event) => {
   const id = event.context.params?.id as string;
   const { uuid } = useSchemas;

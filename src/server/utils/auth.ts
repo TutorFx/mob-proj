@@ -6,7 +6,9 @@ import { generateToken, validateToken } from "./token";
 import { useSchemas } from "@/composables/useSchemas";
 import type { IValidateToken, Session, TokenData } from "~/types";
 const config = useRuntimeConfig();
-const stripe = new Stripe(config.stripeSecretKey, { apiVersion: "2022-11-15" });
+const stripe = new Stripe(config.stripeSecretKey as string, {
+  apiVersion: "2022-11-15",
+});
 
 const prisma = new PrismaClient();
 

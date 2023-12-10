@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
-import { useSchemas } from "~/composables/useSchemas";
 
 const prisma = new PrismaClient();
 

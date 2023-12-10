@@ -28,8 +28,8 @@
               </button>
             </div>
             <ui-cart-item
-              v-for="item in cart.$get?.items"
-              :key="item.id"
+              v-for="(item, i) in cart.$get?.items"
+              :key="i"
               :item="item"
             />
             <div class="grid grid-flow-col justify-between">

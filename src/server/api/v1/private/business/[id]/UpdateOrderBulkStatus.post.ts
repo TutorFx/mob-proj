@@ -2,7 +2,6 @@ import { OrderStatus, PrismaClient } from "@prisma/client";
 import { sendError } from "h3";
 import { ZodError, z } from "zod";
 import { fromZodError } from "zod-validation-error";
-import { useSchemas } from "@/composables/useSchemas";
 
 export default defineEventHandler(async (event) => {
   const prisma = new PrismaClient();

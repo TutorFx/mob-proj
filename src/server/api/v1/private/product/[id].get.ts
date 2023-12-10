@@ -2,7 +2,6 @@ import { Prisma } from "@prisma/client";
 import type { z } from "zod";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
-import { useSchemas } from "~/composables/useSchemas";
 
 const { uuid } = useSchemas;
 type IUuid = z.infer<typeof uuid>;

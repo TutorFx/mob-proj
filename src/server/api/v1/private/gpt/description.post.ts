@@ -3,7 +3,6 @@ import OpenAI from "openai";
 import type { z } from "zod";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
-import { useSchemas } from "~/composables/useSchemas";
 
 const { gptDescription } = useSchemas;
 type IgptDescription = z.infer<typeof gptDescription>;

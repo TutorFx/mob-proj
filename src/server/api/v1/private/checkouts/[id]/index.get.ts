@@ -1,5 +1,4 @@
 import type { z } from "zod";
-import { IUseSchemas, useSchemas } from "@/composables/useSchemas";
 
 export default defineEventHandler(async (event) => {
   const { uuid } = useSchemas;

@@ -108,6 +108,12 @@ export default defineNuxtConfig({
       SMTP_KEY: process.env.BREVO_SMTP_KEY,
       SMTP_USER: process.env.BREVO_SMTP_USER,
     },
+    redis: {
+      host: process.env.REDIS_HOST,
+      port: process.env.REDIS_PORT,
+      username: process.env.REDIS_USERNAME,
+      password: process.env.REDIS_PASSWORD,
+    },
     public: {
       URL: process.env.NUXT_PUBLIC_SITE_URL ?? "http://localhost:3000/",
       APP_NAME: "Nuxa",
@@ -122,6 +128,11 @@ export default defineNuxtConfig({
   nitro: {
     preset: "vercel",
     experimental: { openAPI: true },
+    storage: {
+      cache: {
+        data: { driver: "vercelKV" },
+      },
+    },
   },
 
   devtools: {

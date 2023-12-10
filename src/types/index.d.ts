@@ -1,8 +1,42 @@
 export * from "~repository/index.d.ts";
 
+import type { RuntimeConfig } from "nuxt/schema";
+
 export type IObjectStatus = {
   [key: string]: string;
 };
+
+export interface BrevoConfig {
+  SMTP_HOSTNAME?: string;
+  SMTP_PORT?: number;
+  SMTP_USER?: string;
+  SMTP_KEY?: string;
+}
+
+interface RedisConfig {
+  host: string;
+  port: number;
+  username: string;
+  password: string;
+}
+
+interface Public {
+  URL: string;
+  APP_NAME: string;
+  cdnBaseUrl: string;
+}
+
+export interface ExtendedRuntimeConfig extends RuntimeConfig {
+  stripeSecretKey: string;
+  stripeEndpointSecret: string;
+  subscriptionGraceDays: number;
+  initialPlanName: string;
+  initialPlanActiveMonths: number;
+  redis: RedisConfig;
+  brevo: BrevoConfig;
+  public: Public;
+}
+
 export interface ILoginParams {
   nome: string;
   sobrenome: string;

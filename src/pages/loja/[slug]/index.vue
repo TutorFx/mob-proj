@@ -59,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import { IBusiness } from "~/types";
+import type { IBusiness } from "~/types";
 
 const route = useRoute();
 const config = useRuntimeConfig();
