@@ -128,6 +128,11 @@ export default defineNuxtConfig({
   nitro: {
     preset: "vercel",
     experimental: { openAPI: true },
+    storage: {
+      cache: {
+        data: { driver: "vercelKV" },
+      },
+    },
   },
 
   devtools: {
