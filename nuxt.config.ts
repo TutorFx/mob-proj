@@ -128,6 +128,17 @@ export default defineNuxtConfig({
   nitro: {
     preset: "vercel",
     experimental: { openAPI: true },
+    storage: {
+      redis: {
+        driver: "redis",
+        /* redis connector options */
+        host: process.env.REDIS_HOST,
+        port: process.env.REDIS_PORT,
+        username: process.env.REDIS_USERNAME,
+        password: process.env.REDIS_PASSWORD,
+        db: 0, // Defaults to 0
+      },
+    },
   },
 
   devtools: {
