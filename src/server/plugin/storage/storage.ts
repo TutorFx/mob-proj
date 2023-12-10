@@ -1,4 +1,4 @@
-import redisDriver from "unstorage/drivers/redis";
+/* import redisDriver from "unstorage/drivers/redis";
 import type { ExtendedRuntimeConfig } from "@/types";
 
 export default defineNitroPlugin(() => {
@@ -16,3 +16,4 @@ export default defineNitroPlugin(() => {
 
   storage.mount("redis", driver);
 });
+ */
