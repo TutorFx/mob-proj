@@ -60,10 +60,17 @@ export default defineNuxtConfig({
 
   routeRules: {
     "/api/auth/**": { cors: true },
-    "/api/v1/business/**/*": { isr: 60 },
+    "/api/v1/business/**/*": {
+      isr: true,
+      cache: {
+        base: "redis",
+      },
+    },
     "/api/v1/address/state/**": { swr: true },
     "/api/v1/order/status": { isr: true },
-    "/loja/**/*": { isr: 60 },
+    "/loja/**/*": {
+      isr: 60,
+    },
   },
 
   headlessui: {
@@ -131,6 +138,8 @@ export default defineNuxtConfig({
     storage: {
       redis: {
         driver: "redis",
+        url: `redis://${process.env.REDIS_USERNAME}:${process.env.REDIS_PASSWORD}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
+
         /* redis connector options */
         host: process.env.REDIS_HOST,
         port: process.env.REDIS_PORT,

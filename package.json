@@ -16,7 +16,8 @@
     "stripe:dev": ".stripe/stripe.exe listen --forward-to localhost:3000/api/v1/webhooks",
     "stripe:trigger": ".stripe/stripe.exe trigger customer.subscription.updated",
     "pull": "npx prisma db pull",
-    "typecheck": "yarn nuxi typecheck"
+    "typecheck": "yarn nuxi typecheck",
+    "prepare": "yarn typecheck"
   },
   "devDependencies": {
     "@nuxt/devtools": "npm:@nuxt/devtools-edge@latest",
