@@ -62,7 +62,7 @@ export default defineNuxtConfig({
   routeRules: {
     "/api/auth/**": { cors: true },
     "/api/v1/business/**/*": {
-      isr: true,
+      isr: 60 * 15, // Cleanup on every 15min
       cache: {
         base: "redis",
       },
@@ -70,7 +70,7 @@ export default defineNuxtConfig({
     "/api/v1/address/state/**": { swr: true },
     "/api/v1/order/status": { isr: true },
     "/loja/**/*": {
-      isr: 60,
+      isr: 60 * 15, // Cleanup on every 15min
     },
   },
 
