@@ -35,7 +35,7 @@
         class="relative rounded-lg"
         style="aspect-ratio: 1"
       >
-        <img
+        <nuxt-img
           v-if="image"
           class="h-full w-full rounded-lg object-cover"
           :alt="`uploaded-image-${i}`"

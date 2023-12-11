@@ -16,7 +16,7 @@
               :key="i"
               class="relative rounded-lg"
             >
-              <img
+              <nuxt-img
                 :src="usePrefixImages(image.Key)"
                 class="aspect-square h-full w-full rounded-lg object-cover"
               />

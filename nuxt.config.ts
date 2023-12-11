@@ -33,6 +33,7 @@ export default defineNuxtConfig({
   image: {
     domains: [
       "res.cloudinary.com",
+      "avatar.vercel.sh",
       `${process.env.S3_BUCKET_NAME}.s3.${process.env.S3_DEFAULT_REGION}.amazonaws.com/`,
     ],
     format: ["webp"],
