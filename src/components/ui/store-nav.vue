@@ -2,10 +2,17 @@
   <ui-nav>
     <template #default>
       <nuxt-link
-        :to="{ name: 'loja-slug', params: { slug } }"
+        v-if="!data.Image"
+        :to="{ name: 'loja-slug', params: { slug: data.slug } }"
         class="btn btn-ghost text-xl font-black normal-case"
       >
         {{ data?.name }}
+      </nuxt-link>
+      <nuxt-link
+        v-else
+        :to="{ name: 'loja-slug', params: { slug: data.slug } }"
+      >
+        <NuxtImg height="48px" :src="usePrefixImages(data.Image.Key)"></NuxtImg>
       </nuxt-link>
     </template>
     <template #end>
@@ -15,7 +22,6 @@
 </template>
 
 <script setup lang="ts">
-import type { IBusiness } from "~/types";
-defineProps<{ data: IBusiness }>();
-const { slug } = useRoute().params;
+import type { IBusinessWithImage } from "@/types";
+defineProps<{ data: IBusinessWithImage }>();
 </script>

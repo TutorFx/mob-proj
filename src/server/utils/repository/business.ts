@@ -20,6 +20,44 @@ export const getBusinessBySlug = async ({
   });
 };
 
+const PublicBusinessWithImagePayload = {
+  include: { Image: true },
+};
+
+export type IPublicBusinessWithImage = Prisma.BusinessGetPayload<
+  typeof PublicBusinessWithImagePayload
+>;
+
+/**
+ * Returns a public business with its associated image by its slug
+ * @param {Object} slug - The slug of the business.
+ * @returns {Promise<IPublicBusinessWithImage | null>} - A Promise that resolves to an IPublicBusinessWithImage object or null.
+ */
+export const getPublicBusinessWithImageBySlug = async ({
+  slug,
+}: IUseSchemas["requirePublicStore"]): Promise<IPublicBusinessWithImage | null> =>
+  prisma.business.findUnique({
+    where: {
+      slug,
+    },
+    ...PublicBusinessWithImagePayload,
+  });
+
+/**
+ * Returns a public business with its associated image by its id
+ * @param {number} id - The id of the business.
+ * @returns {Promise<IPublicBusinessWithImage | null>} - A Promise that resolves to an IPublicBusinessWithImage object or null.
+ */
+export const getPublicBusinessWithImageById = async (
+  id: IUseSchemas["id"],
+): Promise<IPublicBusinessWithImage | null> =>
+  prisma.business.findUnique({
+    where: {
+      id,
+    },
+    ...PublicBusinessWithImagePayload,
+  });
+
 /**
  * Returns a business by its id
  * @param {number} id - The id of the business.

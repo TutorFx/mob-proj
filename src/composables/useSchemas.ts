@@ -128,6 +128,10 @@ export const useSchemas = {
   }),
   requirePublicStore: z.object({
     slug,
+    // or id
+  }),
+  requirePublicStoreByID: z.object({
+    id,
   }),
   mailer: z.object({
     host: z.string(),

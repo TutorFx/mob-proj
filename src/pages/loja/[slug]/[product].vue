@@ -2,46 +2,37 @@
   <div>
     <NuxtLoadingIndicator color="false" class="bg-primary" />
     <div class="fill-screen container grid grid-rows-[max-content_1fr]">
-      <ui-store-nav :data="data" />
-      <ui-product-page :business-name="data?.name" :productdata="productdata" />
+      <ui-store-nav v-if="data" :data="data" />
+      <Suspense>
+        <template #default>
+          <ui-product
+            :slug="$route.params.slug"
+            :product="$route.params.product"
+          />
+        </template>
+        <template #fallback>
+          <ui-product-page-skeleton />
+        </template>
+      </Suspense>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { IItem } from "~/types/cart";
-import type { IBusiness } from "@/types";
+import type { IBusinessWithImage } from "@/types";
 
 const route = useRoute();
 
-const data = await $fetch<IBusiness>(
+const { data } = await useFetch<IBusinessWithImage>(
   `/api/v1/business/${route.params.slug}`,
-).catch(() => {
+);
+
+if (!data.value) {
   throw createError({
     statusCode: 404,
     statusMessage: "Estabelecimento não encontrado",
   });
-});
-
-const productdata = await $fetch<IItem>(
-  `/api/v1/business/${route.params.slug}/${route.params.product}`,
-).catch(() => {
-  throw createError({
-    statusCode: 404,
-    statusMessage: "Produto não encontrado",
-  });
-});
-
-const config = useRuntimeConfig();
-
-useSeoMeta({
-  title: `${productdata?.name} - ${data?.name} | ${config.public.APP_NAME}`,
-  ogTitle: productdata?.name,
-  description: productdata?.description,
-  ogDescription: productdata?.description,
-  ogImage: usePrefixImages(productdata?.images?.at(0)?.Key),
-  twitterCard: "summary_large_image",
-});
+}
 </script>
 
 <style lang="scss" scoped>

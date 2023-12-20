@@ -3,12 +3,22 @@
     class="fill-screen container grid grid-rows-[max-content_1fr] items-start gap-6"
   >
     <ui-nav class="grid grid-cols-[max-content_1fr] gap-3">
-      <template #default>
+      <template v-if="data" #default>
         <nuxt-link
-          :to="{ name: 'loja-slug' }"
+          v-if="!data.Image"
+          :to="{ name: 'loja-slug', params: { slug: data.slug } }"
           class="btn btn-ghost text-xl font-black normal-case"
         >
           {{ data?.name }}
+        </nuxt-link>
+        <nuxt-link
+          v-else
+          :to="{ name: 'loja-slug', params: { slug: data.slug } }"
+        >
+          <NuxtImg
+            height="48px"
+            :src="usePrefixImages(data.Image.Key)"
+          ></NuxtImg>
         </nuxt-link>
       </template>
       <template #end>
@@ -79,7 +89,7 @@
             :item="item"
           />
         </div>
-        <div class="border-b" />
+        <div class="border-b border-base-300" />
         <div class="order-first grid gap-4 sm:order-last">
           <div class="grid grid-flow-col justify-between">
             <div>Valor final</div>
@@ -129,7 +139,7 @@ import { useGeolocation } from "@vueuse/core";
 import type { IOrder } from "@/types/";
 import type { TAddress } from "~/types/addr";
 import type { Tcontact } from "~/types/user";
-import type { IBusiness } from "~/types";
+import type { IPublicBusinessWithImage } from "~/types";
 
 const auth = useAuthentication();
 
@@ -175,7 +185,7 @@ const router = useRouter();
 const cart = useCart();
 const isAnonymous = ref<boolean>(false);
 
-const { data } = await useAsyncData<IBusiness>(() =>
+const { data } = await useAsyncData<IPublicBusinessWithImage>(() =>
   $fetch<unknown>(`/api/v1/business/${route.params.slug}`),
 );
 

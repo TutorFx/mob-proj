@@ -2,7 +2,7 @@
   <div>
     <div class="grid grid-flow-col items-center justify-start">
       <button
-        class="btn-neutral btn rounded-r-none"
+        class="btn-base-300 btn rounded-r-none"
         @click.prevent="modelValue -= 1"
       >
         -
@@ -13,10 +13,10 @@
         type="text"
         aria-labelledby="Número de produtos"
         data-maska="###"
-        class="h-full w-12 border-neutral px-0 text-center"
+        class="h-full w-12 border-neutral bg-base-200 px-0 text-center"
       />
       <button
-        class="btn-neutral btn rounded-l-none"
+        class="btn-base-300 btn rounded-l-none"
         @click.prevent="modelValue += 1"
       >
         +

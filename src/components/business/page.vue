@@ -1,13 +1,13 @@
 <template>
   <div class="dashboard--business">
     <div class="performance">
-      <div class="base-300 min-h-full rounded-lg border p-6">
+      <div class="base-300 min-h-full rounded-lg border border-base-300 p-6">
         <div class="text-xl font-bold">Performance - aqui fica o gráfico</div>
       </div>
     </div>
     <div class="transactions">
       <div
-        class="base-300 grid min-h-full grid-rows-[min-content_1fr_min-content] gap-6 rounded-lg border p-6"
+        class="base-300 grid min-h-full grid-rows-[min-content_1fr_min-content] gap-6 rounded-lg border border-base-300 p-6"
       >
         <div class="text-xl font-bold">Resumo Transações</div>
         <div>
@@ -34,12 +34,12 @@
       </nuxt-link>
     </div>
     <div class="support">
-      <div class="base-300 min-h-full rounded-lg border p-6">
+      <div class="base-300 min-h-full rounded-lg border border-base-300 p-6">
         <div class="text-xl font-bold">Suporte tecnico</div>
       </div>
     </div>
     <div class="config">
-      <div class="base-300 min-h-full rounded-lg border p-6">
+      <div class="base-300 min-h-full rounded-lg border border-base-300 p-6">
         <div class="text-xl font-bold">Config</div>
       </div>
     </div>

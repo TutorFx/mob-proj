@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
 
     const { slug } = context as IUseSchemas["requirePublicStore"];
 
-    return getPublicProductsBySlug({ slug });
+    return await getPublicBusinessWithImageById(slug);
   } catch (error) {
     if (
       error instanceof Prisma.PrismaClientKnownRequestError &&
@@ -24,7 +24,6 @@ export default defineEventHandler(async (event) => {
       );
     }
 
-    console.log(error);
     return sendError(
       event,
       createError({

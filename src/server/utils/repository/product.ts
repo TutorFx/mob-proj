@@ -1,5 +1,6 @@
 import type { Prisma } from "@prisma/client";
 import { PrismaClient } from "@prisma/client";
+import sanitizeHtml from "sanitize-html";
 
 export const decodeProduct = (s: string) => decodeURI(decodeURIComponent(s));
 const prisma = new PrismaClient();
@@ -14,6 +15,12 @@ const ProductWithImagePayload = {
       select: {
         id: true,
         Key: true,
+      },
+    },
+    Business: {
+      select: {
+        slug: true,
+        name: true,
       },
     },
   },
@@ -84,6 +91,53 @@ export const getProductsWithImage = async ({
     },
   });
 };
+
+/**
+ * Async function to get products with an image by business id from the database
+ *
+ * @param {Object} params - Contains id of the business
+ * @param {string} params.id - id of the business
+ *
+ * @returns {Promise<IProductsWithImage|null>} - Promise that resolves to an object containing product details, including images, ordered by updated at field in descending order; null if no product found.
+ */
+export const getProductsWithImageById = async ({
+  id,
+}: IUseSchemas["requirePublicStoreByID"]): Promise<IProductsWithImage | null> => {
+  return await prisma.business.findUnique({
+    where: {
+      id,
+    },
+    select: {
+      Products: {
+        ...ProductWithImagePayload,
+        orderBy: { updatedAt: "desc" },
+      },
+    },
+  });
+};
+
+export type IPublicProducts = { slug: string }[] &
+  IProductsWithImage["Products"];
+
+export type IPublicProduct = IPublicProducts[1];
+
+export const getPublicProductsBySlug = async ({
+  slug,
+}: IUseSchemas["requirePublicStore"]): Promise<IPublicProducts | null> =>
+  (await getProductsWithImage({ slug }))?.Products.map((e) => ({
+    ...e,
+    slug: encodeURIComponent(e.name),
+    description: sanitizeHtml(e.description).replace(/<[^>]+>/g, ""),
+  })) ?? null;
+
+export const getPublicProductsById = async ({
+  id,
+}: IUseSchemas["requirePublicStoreByID"]): Promise<IPublicProducts | null> =>
+  (await getProductsWithImageById({ id }))?.Products.map((e) => ({
+    ...e,
+    slug: encodeURIComponent(e.name),
+    description: sanitizeHtml(e.description).replace(/<[^>]+>/g, ""),
+  })) ?? null;
 
 const ProductWithImageAndBusinessPayload = {
   include: {
