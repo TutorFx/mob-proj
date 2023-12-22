@@ -19,6 +19,8 @@
           class="max-h-12"
           width="auto"
           placeholder="16"
+          sizes="xs:16px sm:16px lg:48px xl:48px xxl:48px 2xl:48px"
+          densities="x1 x2 x3 x4"
           :modifiers="{ fit: 'contain' }"
           :src="usePrefixImages(data.Image.Key)"
         ></NuxtImg>

@@ -22,8 +22,18 @@ export default defineNuxtConfig({
   ],
 
   image: {
-    domains: ["res.cloudinary.com", "avatar.vercel.sh", awsBucketUrl],
+    screens: {
+      xs: 320,
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
+      xxl: 1536,
+      "2xl": 1536,
+    },
     format: ["webp"],
+    densities: [1, 2, 3],
+    domains: ["res.cloudinary.com", "avatar.vercel.sh", awsBucketUrl],
   },
 
   app: {
