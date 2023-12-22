@@ -1,9 +1,19 @@
-import type { Prisma } from "@prisma/client";
+import type { Prisma, Theme } from "@prisma/client";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export type IBusiness = Prisma.BusinessGetPayload<true>;
+const PublicBusinessWithImagePayload = {
+  include: { Image: true },
+};
+
+const BusinessWithImagesPayload = {
+  include: { Image: { select: { Key: true } } },
+};
+
+export type IBusiness = Prisma.BusinessGetPayload<
+  typeof BusinessWithImagesPayload
+>;
 
 /**
  * Returns a business by its slug
@@ -17,11 +27,8 @@ export const getBusinessBySlug = async ({
     where: {
       slug,
     },
+    ...BusinessWithImagesPayload,
   });
-};
-
-const PublicBusinessWithImagePayload = {
-  include: { Image: true },
 };
 
 export type IPublicBusinessWithImage = Prisma.BusinessGetPayload<
@@ -70,6 +77,7 @@ export const getBusinessById = async (
     where: {
       id,
     },
+    ...BusinessWithImagesPayload,
   });
 
 /**
@@ -84,6 +92,7 @@ export const getBusinessByOwnerId = async (
     where: {
       OwnerId,
     },
+    ...BusinessWithImagesPayload,
   });
 };
 
@@ -135,5 +144,22 @@ export const getBusinessProfileById = async (
       id,
     },
     ...BusinessProfileQuery,
+  });
+};
+
+/**
+ * Sets the business theme
+ * @param {number} id - The id of the business.
+ * @param {Object} theme - The theme of the business.
+ * @returns {Promise} - A Promise that resolves to the updated business.
+ */
+export const setBusinessTheme = async (id: IUseSchemas["id"], theme: Theme) => {
+  return await prisma.business.update({
+    where: {
+      id,
+    },
+    data: {
+      theme,
+    },
   });
 };

@@ -1,12 +1,12 @@
 <template>
   <div class="grid max-w-3xl grid-cols-1 justify-start gap-6 md:grid-cols-2">
     <div class="grid gap-3">
-      <div class="text-neutral">Nome do seu negócio</div>
+      <div class="text-base-content">Nome do seu negócio</div>
       <input
         ref="name"
         v-model="state.name"
         type="text"
-        class="input input-bordered w-full"
+        class="input border-base-300 w-full"
       />
       <ul>
         <li class="text-xs text-error">
@@ -15,11 +15,11 @@
       </ul>
     </div>
     <div class="grid gap-3">
-      <div class="text-neutral">Descrição</div>
+      <div class="text-base-content">Descrição</div>
       <input
         v-model="state.description"
         type="text"
-        class="input input-bordered w-full"
+        class="input border-base-300 w-full"
       />
       <ul>
         <li class="text-xs text-error">
@@ -27,7 +27,7 @@
         </li>
       </ul>
     </div>
-    <label class="text-neutral">
+    <label class="text-base-content">
       <div class="mb-3">Link da empresa</div>
       <div class="grid grid-flow-col rounded-lg border border-base-300">
         <div

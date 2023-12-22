@@ -1,38 +1,30 @@
 import { acceptHMRUpdate, defineStore } from "pinia";
-import type { Business } from "@prisma/client";
-import type { z } from "zod";
 import { FetchError } from "ofetch";
+import type { IUseSchemas } from "./useSchemas";
+import type { IBusiness } from "@/types";
 
 export const useBusiness = () => {
-  const { createBusinessSchema } = useSchemas;
-  type ICreateBusiness = z.infer<typeof createBusinessSchema>;
   const router = useRouter();
+  const route = useRoute();
 
   const business = defineStore("business", () => {
-    const starterFields = {
-      name: "",
-      slug: "",
-    } as ICreateBusiness;
-
-    const fields = ref<ICreateBusiness>({ ...starterFields });
-
     const registerFieldVisible = ref(false);
+    const creatingError = ref(false);
+    const isCreating = ref(false);
+    const selectedBusinessId = computed(() =>
+      Array.isArray(route.params.id) ? route.params.id[0] : route.params.id,
+    );
 
+    const selectedId = ref<IUseSchemas["id"]>();
     const {
       pending: pendingBusinesses,
       error: gettingBusinessError,
       data: scopedBusinesses,
       refresh: $refresh,
-    } = useAsyncData(
-      "business",
-      async () =>
-        await $fetch<Business[]>("/api/v1/private/business", {
-          method: "GET",
-        }),
-      {
-        immediate: true,
-        server: true,
-      },
+    } = useAsyncData<IBusiness[]>("business", () =>
+      $fetch<unknown>("/api/v1/private/business", {
+        headers: useRequestHeaders(["cookie"]),
+      }),
     );
 
     const $close = () => (registerFieldVisible.value = false);
@@ -40,10 +32,27 @@ export const useBusiness = () => {
       // if (!session.plan || (scopedBusinesses.value?.length ?? 0) > getPlan(session.plan).business_amount) return router.push({ name: 'dashboard-upgrade' });
       registerFieldVisible.value = true;
     };
-    const creatingError = ref(false);
-    const isCreating = ref(false);
+    const $setBusiness = (id?: IUseSchemas["id"]) => {
+      router.push({ name: "dashboard-id", params: { id } });
+    };
+    const $getBusiness = (): IBusiness | null => {
+      return (
+        scopedBusinesses.value?.find(
+          (e) => e.id === selectedBusinessId.value,
+        ) || null
+      );
+    };
 
-    const $createBusiness = async () => {
+    const getCurrentBusiness = computed(() => {
+      return $getBusiness();
+    });
+
+    const businessList = reactive<IBusiness[]>(scopedBusinesses.value ?? []);
+
+    const $createBusiness = async (
+      fields: IUseSchemas["createBusinessSchema"],
+    ) => {
+      useSchemas.createBusinessSchema.parse(fields);
       if (pendingBusinesses.value) {
         return;
       }
@@ -53,15 +62,13 @@ export const useBusiness = () => {
         const response = await $fetch("/api/v1/private/business", {
           method: "POST",
           body: {
-            ...fields.value,
+            ...fields,
           },
           headers: useRequestHeaders(["cookie"]),
         });
         if (!response) {
           creatingError.value = true;
         }
-
-        fields.value = starterFields;
         router.push({ path: `/dashboard/${response?.id}` });
         await $refresh();
       } catch (e) {
@@ -82,16 +89,21 @@ export const useBusiness = () => {
 
     return {
       $createBusiness,
+      $setBusiness,
+      $getBusiness,
       $refresh,
       $close,
       $open,
       $create,
-      fields,
+      getCurrentBusiness,
+      businessList,
       registerFieldVisible,
       scopedBusinesses,
+      selectedId,
       gettingBusinessError,
       creatingError,
       pendingBusinesses,
+      selectedBusinessId,
       isCreating,
     };
   });

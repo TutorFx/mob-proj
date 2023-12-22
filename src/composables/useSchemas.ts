@@ -1,4 +1,4 @@
-import { OrderStatus } from "@prisma/client";
+import { OrderStatus, Theme } from "@prisma/client";
 import { z } from "zod";
 import { useRules } from "~/composables/useRules";
 
@@ -9,6 +9,7 @@ const cartItem = z.object({
   id,
   quantity: z.number().min(1),
 });
+const theme = z.nativeEnum(Theme);
 
 export const useSchemas = {
   registerSchema: z.object({
@@ -101,6 +102,11 @@ export const useSchemas = {
     price: z.number().nonnegative("O número deve ser positivo"),
     description: z.string().optional(),
   }),
+  updateTheme: z.object({
+    theme,
+    id,
+  }),
+  theme,
   passwordReset: z
     .object({
       password: z.string().min(1, "Campo obrigatório"),

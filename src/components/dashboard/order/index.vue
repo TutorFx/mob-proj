@@ -6,7 +6,7 @@
           <input
             v-model="state"
             type="checkbox"
-            class="checkbox checkbox-primary border-dashed border-base-content checked:border-primary hover:border-base-content"
+            class="checkbox checkbox-primary bg-base-300 border-dashed border-base-content checked:border-primary hover:border-base-content"
             :value="order.id"
           />
         </label>
