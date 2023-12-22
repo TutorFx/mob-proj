@@ -21,7 +21,7 @@
 <script setup lang="ts">
 const { data, error } = await useCurrentStoreData();
 
-if (!error.value) {
+if (error.value) {
   throw createError({
     statusCode: 404,
     statusMessage: "Estabelecimento não encontrado",
