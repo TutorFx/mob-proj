@@ -1,5 +1,5 @@
 <template>
-  <div class="sticky top-0 grid gap-3 p-3">
+  <div class="sticky top-0 grid gap-3 p-3 z-50">
     <nuxt-link
       v-for="(item, i) in data"
       :key="i"

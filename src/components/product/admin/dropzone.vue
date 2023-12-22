@@ -123,8 +123,7 @@ const selectedFile = () => {
   justify-content: center;
   align-items: center;
   row-gap: 16px;
-  @apply border-dashed border-2 rounded-xl;
-  background-color: #fff;
+  @apply border-dashed border-2 rounded-xl bg-base-100 border-base-300;
   transition: 0.3s ease all;
 
   label {

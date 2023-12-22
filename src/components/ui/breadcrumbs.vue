@@ -3,14 +3,14 @@
     <ol class="flex list-none items-stretch gap-2">
       <li class="flex items-center gap-2">
         <nuxt-link
-          to="#"
-          class="flex max-w-[20ch] items-center gap-1 truncate whitespace-nowrap text-slate-700 transition-colors hover:text-primary"
+          :to="{ name: 'loja-slug', params: { slug: product.Business.slug } }"
+          class="flex max-w-[20ch] items-center gap-1 truncate whitespace-nowrap transition-colors hover:text-primary uppercase"
         >
-          Loja
+          {{ product.Business.name }}
         </nuxt-link>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="h-4 w-4 flex-none rotate-180 stroke-slate-700 transition-transform"
+          class="h-4 w-4 flex-none rotate-180 stroke-base transition-transform"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -35,11 +35,17 @@
       <li class="flex items-center gap-2">
         <nuxt-link
           to="#"
-          class="flex max-w-[20ch] items-center gap-1 truncate whitespace-nowrap text-slate-700 transition-colors hover:text-primary"
+          class="flex items-center gap-1 truncate whitespace-nowrap text-base transition-colors hover:text-primary uppercase"
         >
-          <slot />
+          {{ product.name }}
         </nuxt-link>
       </li>
     </ol>
   </nav>
 </template>
+
+<script setup lang="ts">
+defineProps<{
+  product: IProductWithImage;
+}>();
+</script>

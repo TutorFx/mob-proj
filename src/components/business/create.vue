@@ -27,9 +27,9 @@
             <label class="text-zinc-400">
               <div class="mb-3">Nome da empresa</div>
               <input
-                v-model="businessStore.fields.name"
+                v-model="starterFields.name"
                 type="text"
-                class="w-full rounded border border-base-300"
+                class="input input-bordered w-full rounded border border-base-300"
               />
             </label>
             <label class="text-zinc-400">
@@ -41,9 +41,9 @@
                   {{ url }}loja/
                 </div>
                 <input
-                  v-model="businessStore.fields.slug"
+                  v-model="starterFields.slug"
                   type="text"
-                  class="bg-base w-full rounded-r border-0 text-sm"
+                  class="input input-bordered w-full rounded-r border-0 text-sm"
                   placeholder="minha-empresa"
                 />
               </div>
@@ -60,7 +60,7 @@
             </button>
             <button
               class="btn btn-primary relative overflow-hidden"
-              @click.prevent="businessStore.$createBusiness()"
+              @click.prevent="createBusiness"
             >
               <div
                 v-if="businessStore.isCreating"
@@ -80,5 +80,18 @@
 <script lang="ts" setup>
 const businessStore = useBusiness();
 const config = useRuntimeConfig();
+
+const starterFields = {
+  name: "",
+  slug: "",
+};
+
+const fields = ref({ ...starterFields });
+
+const createBusiness = () => {
+  businessStore.$createBusiness(fields.value);
+  fields.value = { ...starterFields };
+};
+
 const url = config.public.URL;
 </script>

@@ -1,10 +1,10 @@
 <template>
   <div class="grid min-h-[100svh] grid-rows-[max-content_1fr] gap-3">
     <NuxtLoadingIndicator color="false" class="bg-primary" />
-    <div class="container">
-      <ui-store-nav :data="data?.Business" />
+    <div v-if="data" class="container">
+      <ui-store-nav :data="data.Business" />
     </div>
-    <div class="container grid gap-6 pb-6 md:grid-cols-2">
+    <div v-if="data" class="container grid gap-6 pb-6 md:grid-cols-2">
       <div>
         <div class="grid gap-3 py-6">
           <div class="text-3xl">
@@ -66,7 +66,7 @@
           <div class="border-b" />
           <div>
             <nuxt-link
-              v-if="data?.Business?.whatsapp"
+              v-if="data.Business.whatsapp"
               :href="`https://wa.me/${useMaskRemover(
                 data?.Business?.whatsapp,
               )}/?text=${formatted_message}`"

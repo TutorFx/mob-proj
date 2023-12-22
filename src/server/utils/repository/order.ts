@@ -14,9 +14,25 @@ const OrderQuery = {
         },
       },
     },
-    Business: { include: { Image: true } },
+    Business: {
+      include: {
+        Image: {
+          select: {
+            Key: true,
+          },
+        },
+        Owner: {
+          select: {
+            nome: true,
+            email: true,
+          },
+        },
+      },
+    },
   },
 };
+
+export type IOrder = Prisma.OrderGetPayload<typeof OrderQuery>;
 
 /**
  * Function to get order by ID
@@ -27,7 +43,7 @@ const OrderQuery = {
  */
 export const getOrderByID = async (
   params: Record<string, string> | undefined,
-) => {
+): Promise<IOrder | null> => {
   useSchemas.validateBusiness.parse(params);
   const { id, slug } = params as IUseSchemas["validateBusiness"];
 
@@ -43,8 +59,6 @@ export const getOrderByID = async (
 
   return order;
 };
-
-export type IOrder = Prisma.OrderGetPayload<typeof OrderQuery>;
 
 const OrderWithFilterQuery = {
   select: {

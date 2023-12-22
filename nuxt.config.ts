@@ -1,14 +1,17 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import { fileURLToPath } from "url";
+
 const isProdEnv = process.env.NODE_ENV === "production";
+const awsBucketUrl = `${process.env.S3_BUCKET_NAME}.s3.${process.env.S3_DEFAULT_REGION}.amazonaws.com`;
 
 export default defineNuxtConfig({
   srcDir: "src/",
 
   modules: [
     "@nuxt/devtools",
-    "nuxt-security",
     "@nuxtjs/tailwindcss",
+    "@nuxtjs/color-mode",
     "@nuxtjs/eslint-module",
     "nuxt-headlessui",
     "nuxt-icon",
@@ -18,24 +21,8 @@ export default defineNuxtConfig({
     "nuxt-simple-robots",
   ],
 
-  security: {
-    enabled: true,
-    nonce: true,
-    headers: {
-      contentSecurityPolicy: {
-        "script-src": ["'nonce-{{nonce}}'", "'strict-dynamic'"],
-      },
-      // 2.
-      crossOriginEmbedderPolicy: false,
-    },
-  },
-
   image: {
-    domains: [
-      "res.cloudinary.com",
-      "avatar.vercel.sh",
-      `${process.env.S3_BUCKET_NAME}.s3.${process.env.S3_DEFAULT_REGION}.amazonaws.com/`,
-    ],
+    domains: ["res.cloudinary.com", "avatar.vercel.sh", awsBucketUrl],
     format: ["webp"],
   },
 
@@ -99,9 +86,9 @@ export default defineNuxtConfig({
     emitWarning: false,
   },
 
-  typescript: {
+  /*   typescript: {
     typeCheck: !isProdEnv,
-  },
+  }, */
 
   runtimeConfig: {
     stripeSecretKey: process.env.STRIPE_KEY,
@@ -149,6 +136,11 @@ export default defineNuxtConfig({
         db: 0, // Defaults to 0
       },
     },
+  },
+
+  colorMode: {
+    preference: "light",
+    dataValue: "theme",
   },
 
   devtools: {

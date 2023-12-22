@@ -4,7 +4,7 @@ import path from "node:path";
 import hbs from "nodemailer-express-handlebars";
 import { createTransport } from "nodemailer";
 
-const config = useRuntimeConfig() as { brevo?: BrevoConfig };
+const config = useRuntimeConfig() as unknown as { brevo?: BrevoConfig };
 
 const mailer = {
   host: config.brevo?.SMTP_HOSTNAME,

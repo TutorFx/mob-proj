@@ -1,5 +1,4 @@
 import { Prisma } from "@prisma/client";
-import sanitizeHtml from "sanitize-html";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -10,11 +9,7 @@ export default defineEventHandler(async (event) => {
 
     const { slug } = context as IUseSchemas["requirePublicStore"];
 
-    return (await getProductsWithImage({ slug }))?.Products.map((e) => ({
-      ...e,
-      slug: encodeURIComponent(e.name),
-      description: sanitizeHtml(e.description).replace(/<[^>]+>/g, ""),
-    }));
+    return getPublicProductsBySlug({ slug });
   } catch (error) {
     if (
       error instanceof Prisma.PrismaClientKnownRequestError &&

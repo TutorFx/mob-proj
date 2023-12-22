@@ -1,14 +1,14 @@
 <template>
   <div class="grid max-w-3xl grid-cols-1 justify-start gap-6 md:grid-cols-2">
     <div class="grid gap-3">
-      <div class="text-neutral">Número de Whatsapp</div>
+      <div class="text-base-content">Número de Whatsapp</div>
       <input
         ref="whatsapp"
         v-model="state.whatsapp"
         v-maska
         type="text"
         data-maska="['(##) ####-####', '(##) # ####-####']"
-        class="input input-bordered w-full"
+        class="input border-base-300 w-full"
       />
       <ul>
         <li class="text-xs text-error">
@@ -17,11 +17,11 @@
       </ul>
     </div>
     <div class="grid gap-3">
-      <div class="text-neutral">Email Empresarial</div>
+      <div class="text-base-content">Email Empresarial</div>
       <input
         v-model="state.email"
         type="text"
-        class="input input-bordered w-full"
+        class="input border-base-300 w-full"
       />
       <ul>
         <li class="text-xs text-error">

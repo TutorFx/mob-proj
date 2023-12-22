@@ -2,7 +2,7 @@
   <div class="relative grid grid-flow-col justify-start gap-3">
     <label
       tabindex="0"
-      class="grid snap-center snap-always grid-flow-col items-center justify-start gap-1 rounded-full border p-2"
+      class="grid snap-center snap-always grid-flow-col items-center justify-start gap-1 rounded-full border border-base-100 p-2"
       :class="{ 'border-dashed border-primary': !state }"
     >
       <dashboard-order-status name="TUDO" />
@@ -17,7 +17,7 @@
       v-for="(status, i) in data"
       :key="i"
       tabindex="0"
-      class="grid snap-center snap-always grid-flow-col items-center justify-start gap-1 rounded-full border p-2"
+      class="grid snap-center snap-always grid-flow-col items-center justify-start gap-1 rounded-full border border-base-100 p-2"
       :class="{ 'border-dashed border-primary': state === status }"
     >
       <dashboard-order-status :name="status" />

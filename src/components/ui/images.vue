@@ -4,7 +4,7 @@
       <div>
         <client-only>
           <Swiper
-            class="fallimg"
+            class="[view-transition-name:selected-product]"
             :slides-per-view="1"
             :modules="[Pagination, Virtual, Autoplay]"
             :autoplay="{ delay: 5000 }"
@@ -25,7 +25,7 @@
           </Swiper>
           <template #fallback>
             <div
-              class="fallimg flex aspect-[4/3] items-center justify-center overflow-hidden lg:aspect-square"
+              class="[view-transition-name:selected-product] flex aspect-[4/3] items-center justify-center overflow-hidden lg:aspect-square"
             >
               <nuxt-img
                 v-if="images?.at(0)?.Key"
@@ -65,11 +65,5 @@ defineProps<{
 
 .swiper-pagination-bullet-active {
   @apply bg-primary;
-}
-</style>
-
-<style scoped>
-.fallimg {
-  view-transition-name: selected-product;
 }
 </style>

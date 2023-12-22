@@ -37,6 +37,11 @@ const StoreDashboard = [
     to: { name: "dashboard-id-profile" },
   },
   {
+    icon: "ic:outline-style",
+    title: "Tema da Empresa",
+    to: { name: "dashboard-id-theme" },
+  },
+  {
     icon: "mdi:basket-fill",
     title: "Fechamentos",
     to: { name: "dashboard-id-fechamento" },
