@@ -2,7 +2,7 @@
   <div class="dashboard--menu flex items-center justify-between">
     <div class="flex items-center gap-3">
       <user-avatar />
-      <user-select v-model="selected" />
+      <user-select-v2 v-model="selected" />
     </div>
     <div class="grid grid-flow-col gap-3">
       <slot />

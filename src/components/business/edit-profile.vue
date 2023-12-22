@@ -1,6 +1,17 @@
 <template>
   <div class="grid gap-6 bg-base-200">
-    <h2 class="text-xl font-bold">Perfil da Empresa</h2>
+    <h2 class="text-xl font-bold flex gap-3">
+      <span> Perfil da Empresa </span>
+      <NuxtLink
+        :to="{ name: 'loja-slug', params: { slug: business?.slug } }"
+        target="_Blank"
+      >
+        <NuxaButton size="sm" outlined>
+          <Icon name="codicon:open-preview" class="mr-2"></Icon>
+          <span class="">Ver Perfil</span>
+        </NuxaButton>
+      </NuxtLink>
+    </h2>
     <form-edit-image
       v-if="business"
       v-model="business"

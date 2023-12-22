@@ -4,7 +4,7 @@
       v-if="pending"
       class="grid gap-3 p-3 md:p-6 xl:grid-cols-2 2xl:grid-cols-3"
     >
-      <dashboard-order-skeleton />
+      <dashboard-order-skeleton v-for="i in 12" :key="i" />
     </div>
     <div
       v-else-if="orders"

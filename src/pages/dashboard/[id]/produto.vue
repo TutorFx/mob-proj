@@ -3,7 +3,7 @@
     class="grid min-h-full grid-flow-row grid-rows-[max-content] md:grid-flow-col md:grid-cols-[minmax(max-content,401px)_1fr] md:grid-rows-1"
   >
     <div
-      class="order-last grid grid-rows-[max-content] md:order-first md:grid-rows-[1fr_max-content] md:border-r"
+      class="order-last grid grid-rows-[max-content] md:order-first md:grid-rows-[1fr_max-content] md:border-r border-base-300"
     >
       <div class="relative">
         <div class="relative inset-0 overflow-y-auto md:absolute">
@@ -11,7 +11,7 @@
         </div>
       </div>
       <div
-        class="mb:border-b-0 order-first border-b border-t-0 md:order-last md:border-t"
+        class="mb:border-b-0 order-first border-b border-t-0 md:order-last md:border-t border-base-300"
       >
         <div v-if="$route.name === 'dashboard-id-produto-novo'" class="p-6">
           <nuxt-link

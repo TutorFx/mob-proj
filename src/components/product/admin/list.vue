@@ -3,7 +3,7 @@
     <nuxt-link
       v-for="(product, i) in data"
       :key="i"
-      class="group block border-b group-last:border-b-0"
+      class="group block border-b group-last:border-b-0 border-base-300"
       :to="`/dashboard/${useRoute().params?.id}/produto/${product.id}`"
     >
       <div
@@ -41,7 +41,7 @@
     <div
       v-for="i in 3"
       :key="i"
-      class="grid grid-cols-[max-content_1fr_1fr_max-content] items-center justify-start gap-3 border-b px-6 py-3 group-last:border-b-0"
+      class="grid grid-cols-[max-content_1fr_1fr_max-content] items-center justify-start gap-3 border-b px-6 py-3 group-last:border-b-0 border-base-300"
     >
       <div class="isloading h-8 w-8 overflow-hidden rounded-xl" />
       <div class="isloading h-3 w-full truncate font-semibold" />

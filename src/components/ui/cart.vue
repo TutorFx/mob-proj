@@ -4,7 +4,11 @@
       enter-active-class="animate__animated animate__fadeIn"
       leave-active-class="animate__animated animate__fadeOut"
     >
-      <div v-if="modelValue" class="fixed inset-0 z-40 bg-base-300/25" />
+      <div
+        v-if="modelValue"
+        :data-theme="data?.theme"
+        class="fixed inset-0 z-40 bg-base-300/25"
+      />
     </Transition>
     <Transition
       enter-active-class="animate__animated animate__fadeInRight"
@@ -14,6 +18,7 @@
         <div class="container flex max-h-full justify-end">
           <div
             ref="cartzone"
+            :data-theme="data?.theme"
             class="card-body max-w-md gap-3 rounded-xl bg-base-100"
           >
             <div class="grid grid-flow-col justify-between">
@@ -57,6 +62,7 @@
 
 <script setup lang="ts">
 import { onClickOutside } from "@vueuse/core";
+const { data } = await useCurrentStoreData();
 const cart = useCart();
 const cartzone = ref(null);
 const route = useRoute();

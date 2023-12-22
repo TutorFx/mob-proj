@@ -33,6 +33,38 @@ enum TokenStatus {
   USED
 }
 
+enum Theme {
+  light
+  dark
+  cupcake
+  bumblebee
+  emerald
+  corporate
+  synthwave
+  retro
+  cyberpunk
+  valentine
+  halloween
+  garden
+  forest
+  aqua
+  lofi
+  pastel
+  fantasy
+  wireframe
+  black
+  luxury
+  dracula
+  cmyk
+  autumn
+  business
+  acid
+  lemonade
+  night
+  coffee
+  winter
+}
+
 model User {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
@@ -80,6 +112,8 @@ model Business {
   Transaction Transaction[]
   Owner       User          @relation(fields: [OwnerId], references: [id])
   OwnerId     String
+
+  theme Theme @default(light)
 
   visible Boolean @default(true)
   banned  Boolean @default(false)
@@ -131,6 +165,8 @@ model Image {
   productId  String?
   Business   Business? @relation(fields: [businessId], references: [id], onDelete: Cascade)
   businessId String?   @unique
+
+  description String?
 
   @@map("image")
 }

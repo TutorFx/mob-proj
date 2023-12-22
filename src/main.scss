@@ -47,20 +47,21 @@
       &--business {
         @apply p-6 gap-6 min-h-full;
 
-        &>div {
+        & > div {
           @apply mb-6 block;
         }
 
         @screen sm {
           @apply grid;
 
-          &>div {
+          & > div {
             @apply mb-0;
           }
 
-          grid-template: "performance transactions" 1fr
-          "posts transactions" auto
-          "support config" 1fr;
+          grid-template:
+            "performance transactions" 1fr
+            "posts transactions" auto
+            "support config" 1fr;
         }
 
         .performance {
@@ -84,6 +85,19 @@
         }
       }
     }
+  }
+
+  ::view-transition-old(header),
+  ::view-transition-new(header) {
+    width: auto;
+  }
+  ::view-transition-old(subheader),
+  ::view-transition-new(subheader) {
+    width: auto;
+  }
+  ::view-transition-old(pricing),
+  ::view-transition-new(pricing) {
+    width: auto;
   }
 
   .scrollbar {
