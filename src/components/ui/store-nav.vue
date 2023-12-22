@@ -16,6 +16,7 @@
         <NuxtImg
           height="100%"
           max-height="48px"
+          class="max-h-12"
           width="auto"
           placeholder="16"
           :modifiers="{ fit: 'contain' }"
