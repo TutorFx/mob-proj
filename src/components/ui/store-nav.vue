@@ -12,7 +12,13 @@
         v-else
         :to="{ name: 'loja-slug', params: { slug: data.slug } }"
       >
-        <NuxtImg height="48px" :src="usePrefixImages(data.Image.Key)"></NuxtImg>
+        <NuxtImg
+          height="48px"
+          max-height="48px"
+          placeholder="16"
+          fit="contain"
+          :src="usePrefixImages(data.Image.Key)"
+        ></NuxtImg>
       </nuxt-link>
     </template>
     <template #end>

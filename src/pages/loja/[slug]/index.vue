@@ -19,9 +19,9 @@
 
 <script setup lang="ts">
 const config = useRuntimeConfig();
-const { data } = await useCurrentStoreData();
+const { data, error } = await useCurrentStoreData();
 
-if (!data.value) {
+if (error.value) {
   throw createError({
     statusCode: 404,
     statusMessage: "Estabelecimento não encontrado",
