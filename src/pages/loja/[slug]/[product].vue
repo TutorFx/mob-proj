@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :data-theme="THEME" class="min-h-[100dvh]">
     <NuxtLoadingIndicator color="false" class="bg-primary" />
     <div class="fill-screen container grid grid-rows-[max-content_1fr]">
       <ui-store-nav v-if="data" :data="data" />
@@ -19,13 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import type { IBusinessWithImage } from "@/types";
-
-const route = useRoute();
-
-const { data } = await useFetch<IBusinessWithImage>(
-  `/api/v1/business/${route.params.slug}`,
-);
+const { data } = await useCurrentStoreData();
 
 if (!data.value) {
   throw createError({
@@ -33,6 +27,8 @@ if (!data.value) {
     statusMessage: "Estabelecimento não encontrado",
   });
 }
+
+const THEME = computed(() => data.value?.theme ?? undefined);
 </script>
 
 <style lang="scss" scoped>

@@ -6,24 +6,26 @@ const NuxtLink = resolveComponent("NuxtLink");
 
 const styles = {
   primary: {
-    inside: "",
+    inside: "text-primary-content",
+    insideOutlined: "text-primary",
     outside: "bg-primary hover:bg-primary/80",
     outsideOutlined: "bg-none border border-primary",
   },
   secondary: {
-    inside: "",
-    outside: "bg-primary hover:bg-primary/80",
-    outsideOutlined: "bg-none border border-primary",
+    inside: "text-secondary-content",
+    insideOutlined: "text-secondary",
+    outside: "bg-secondary hover:bg-secondary/80",
+    outsideOutlined: "bg-none border border-secondary",
   },
 };
 
 const sizes = {
   md: {
-    inside: "",
+    inside: "text-md",
     outside: "px-3 py-2 rounded-lg",
   },
   sm: {
-    inside: "",
+    inside: "text-sm",
     outside: "px-2 py-1 rounded-md",
   },
 };
@@ -37,11 +39,15 @@ const props = withDefaults(
     outlined?: boolean;
     size?: Size;
     style?: Style;
+    rounded?: boolean;
+    loading: boolean;
   }>(),
   {
     style: "primary",
     size: "md",
     outlined: false,
+    loading: false,
+    rounded: false,
   },
 );
 
@@ -54,7 +60,11 @@ const outside = computed(() =>
 );
 
 const inside = computed(() =>
-  twMerge("text-center", sizes[props.size].inside, styles[props.style].inside),
+  twMerge(
+    "text-center uppercase",
+    sizes[props.size].inside,
+    styles[props.style][props.outlined ? "insideOutlined" : "inside"],
+  ),
 );
 </script>
 
@@ -66,7 +76,13 @@ const inside = computed(() =>
     :to="to"
   >
     <div class="select-none" :class="inside">
-      <slot />
+      <Icon
+        v-if="loading"
+        class="mr-3"
+        size="20"
+        name="line-md:loading-twotone-loop"
+      />
+      <slot v-else />
     </div>
   </component>
 </template>

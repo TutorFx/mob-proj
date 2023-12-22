@@ -28,14 +28,16 @@
         </dashboard-menu>
         <ui-side-menu-mobile
           v-if="$route.name?.toString().startsWith('dashboard-id')"
+          keepalive
           :data="useMenu('StoreDashboard')"
         />
         <ui-side-menu-mobile
           v-if="$route.name?.toString().startsWith('dashboard-admin')"
+          keepalive
           :data="useMenu('AdminDashboard')"
         />
       </div>
-      <NuxtPage />
+      <NuxtPage v-else keepalive />
     </div>
   </div>
 </template>

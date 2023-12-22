@@ -11,6 +11,7 @@ export default defineNuxtConfig({
   modules: [
     "@nuxt/devtools",
     "@nuxtjs/tailwindcss",
+    "@nuxtjs/color-mode",
     "@nuxtjs/eslint-module",
     "nuxt-headlessui",
     "nuxt-icon",
@@ -137,11 +138,12 @@ export default defineNuxtConfig({
     },
   },
 
+  colorMode: {
+    preference: "light",
+    dataValue: "theme",
+  },
+
   devtools: {
     enabled: true,
-
-    timeline: {
-      enabled: true,
-    },
   },
 });

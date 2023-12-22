@@ -1,7 +1,7 @@
 export default cachedEventHandler(
   async () => {
-    const business = await $fetch("/api/v1/crawler/business");
-    return business.map((p) => {
+    const { data: business } = useFetch("/api/v1/crawler/business");
+    return business.value?.map((p) => {
       return {
         loc: p._path,
         lastmod: p.modifiedAt,

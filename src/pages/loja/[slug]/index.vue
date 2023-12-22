@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :data-theme="THEME" class="min-h-[100dvh]">
     <NuxtLoadingIndicator color="false" class="bg-primary" />
     <div v-if="data" class="container">
       <ui-store-nav :data="data" />
@@ -18,14 +18,8 @@
 </template>
 
 <script setup lang="ts">
-import type { IBusinessWithImage } from "~/types";
-
-const route = useRoute();
 const config = useRuntimeConfig();
-
-const { data } = await useFetch<IBusinessWithImage>(
-  `/api/v1/business/${route.params.slug}`,
-);
+const { data } = await useCurrentStoreData();
 
 if (!data.value) {
   throw createError({
@@ -35,6 +29,8 @@ if (!data.value) {
 }
 
 const PAGE_NAME = data.value?.name;
+
+const THEME = computed(() => data.value?.theme ?? undefined);
 
 useSeoMeta({
   title: `${PAGE_NAME} | ${config.public.APP_NAME}`,

@@ -10,7 +10,11 @@
       enter-active-class="animate__animated animate__fadeInRight"
       leave-active-class="animate__animated animate__fadeOutRight"
     >
-      <div v-if="modelValue" class="fixed inset-0 z-50 pt-16">
+      <div
+        v-if="modelValue"
+        :data-theme="data?.theme"
+        class="fixed inset-0 z-50 pt-16"
+      >
         <div class="container flex max-h-full justify-end">
           <div
             ref="cartzone"
@@ -57,6 +61,7 @@
 
 <script setup lang="ts">
 import { onClickOutside } from "@vueuse/core";
+const { data } = await useCurrentStoreData();
 const cart = useCart();
 const cartzone = ref(null);
 const route = useRoute();

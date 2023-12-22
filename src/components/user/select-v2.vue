@@ -4,16 +4,25 @@
     <Menu as="div" class="relative inline-block text-left">
       <div>
         <MenuButton
-          class="inline-flex w-full justify-center rounded-md bg-base-200 hover:bg-base-300 px-4 py-2 text-sm font-medium text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
+          class="group inline-flex w-full justify-center rounded-md bg-base-200 hover:bg-base-300 px-4 py-2 text-sm font-medium text-base-content focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
         >
-          <nuxt-img
+          <div
             v-if="business.getCurrentBusiness?.Image"
-            :src="usePrefixImages(business.getCurrentBusiness.Image.Key)"
-            class="mr-2 h-5 w-5 text-violet-400"
-          />
-          {{ choice }}
+            class="isloading mr-2 h-5 w-5 mask mask-hexagon"
+          >
+            <nuxt-img
+              width="20px"
+              height="20px"
+              :src="usePrefixImages(business.getCurrentBusiness.Image.Key)"
+              class="mr-2 h-5 w-5"
+            />
+          </div>
+          <span v-if="choice">
+            {{ choice }}
+          </span>
+          <span v-else class="h-5 w-16 isloading rounded-lg" />
           <Icon
-            class="-mr-1 ml-2 h-5 w-5 text-violet-200 hover:text-violet-100"
+            class="-mr-1 ml-2 h-5 w-5 text-base-content group-hover:text-primary"
             aria-hidden="true"
             name="mdi:chevron-down"
           />
@@ -36,7 +45,9 @@
               <NuxtLink :to="{ name: 'dashboard' }" @mouseup="close">
                 <button
                   :class="[
-                    active ? 'bg-base-200 text-white' : 'text-base-content',
+                    active
+                      ? 'bg-base-200 text-base-content'
+                      : 'text-base-content',
                     'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                   ]"
                 >
@@ -53,6 +64,16 @@
           </div>
 
           <div class="px-1 py-1">
+            <div v-if="business.pendingBusinesses">
+              <div
+                v-for="i in 3"
+                :key="i"
+                class="text-base-content group flex w-full items-center rounded-md px-2 py-2 text-sm gap-3"
+              >
+                <span class="isloading w-5 h-5 rounded-full" />
+                <span class="isloading w-full h-5" />
+              </div>
+            </div>
             <MenuItem
               v-for="(store, i) in business.businessList"
               v-slot="{ active, close }"
@@ -64,7 +85,9 @@
               >
                 <button
                   :class="[
-                    active ? 'bg-base-200 text-white' : 'text-base-content',
+                    active
+                      ? 'bg-base-200 text-base-content'
+                      : 'text-base-content',
                     'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                   ]"
                 >
@@ -75,13 +98,16 @@
                     aria-hidden="true"
                     name="material-symbols:account-circle"
                   />
-                  <NuxtImg
-                    v-else
-                    :active="active"
-                    class="mr-2 h-5 w-5"
-                    aria-hidden="true"
-                    :src="usePrefixImages(store.Image?.Key)"
-                  />
+                  <div v-else class="mask mask-hexagon isloading mr-2 h-5 w-5">
+                    <NuxtImg
+                      :active="active"
+                      width="20px"
+                      height="20px"
+                      aria-hidden="true"
+                      :src="usePrefixImages(store.Image?.Key)"
+                    />
+                  </div>
+
                   {{ store.name }}
                 </button>
               </NuxtLink>
@@ -89,13 +115,18 @@
           </div>
 
           <div class="px-1 py-1">
-            <MenuItem v-slot="{ active }">
+            <MenuItem v-slot="{ active, close }">
               <button
                 :class="[
-                  active ? 'bg-base-200 text-white' : 'text-base-content',
+                  active
+                    ? 'bg-base-200 text-base-content'
+                    : 'text-base-content',
                   'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                 ]"
-                @click="business.$open()"
+                @click="
+                  business.$open();
+                  close();
+                "
               >
                 <Icon
                   :active="active"

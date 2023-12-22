@@ -53,7 +53,7 @@
     "@aws-sdk/client-s3": "^3.397.0",
     "@heroicons/vue": "^2.0.17",
     "@nuxt/image-edge": "^1.1.0-28355789.b3279fe",
-    "@nuxtjs/color-mode": "^3.2.0",
+    "@nuxtjs/color-mode": "^3.3.2",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "@nuxtjs/eslint-module": "^4.1.0",
     "@nuxtjs/supabase": "^0.3.5",

@@ -47,7 +47,9 @@ export const useBusiness = () => {
       return $getBusiness();
     });
 
-    const businessList = reactive<IBusiness[]>(scopedBusinesses.value ?? []);
+    const businessList = computed<IBusiness[]>(
+      () => scopedBusinesses.value ?? [],
+    );
 
     const $createBusiness = async (
       fields: IUseSchemas["createBusinessSchema"],

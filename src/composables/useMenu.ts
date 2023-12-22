@@ -38,8 +38,8 @@ const StoreDashboard = [
   },
   {
     icon: "ic:outline-style",
-    title: "Estilo da Empresa",
-    to: { name: "dashboard-id-style" },
+    title: "Tema da Empresa",
+    to: { name: "dashboard-id-theme" },
   },
   {
     icon: "mdi:basket-fill",

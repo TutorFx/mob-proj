@@ -27,7 +27,7 @@
               <!-- Hide on checked -->
               <Icon v-show="s !== state" name="ic:outline-circle" />
             </span>
-            <span class="flex-grow text-sm">{{ s }}</span>
+            <span class="flex-grow text-sm truncate">{{ s }}</span>
             <span class="flex h-full flex-shrink-0 flex-wrap gap-1">
               <span class="bg-primary w-2 rounded"></span>
               <span class="bg-secondary w-2 rounded"></span>
