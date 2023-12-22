@@ -20,6 +20,7 @@
             max-height="48px"
             placeholder="16"
             fit="contain"
+            :modifiers="{ fit: 'contain' }"
             :src="usePrefixImages(data.Image.Key)"
           ></NuxtImg>
         </nuxt-link>
