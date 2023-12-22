@@ -6,5 +6,11 @@
 </template>
 
 <script setup lang="ts">
-const { data } = await useCurrentStoreData();
+import type { IBusinessWithImage } from "@/types";
+
+const route = useRoute();
+
+const { data } = await useFetch<IBusinessWithImage>(
+  `/api/v1/business/${route.params.id}/id`,
+);
 </script>

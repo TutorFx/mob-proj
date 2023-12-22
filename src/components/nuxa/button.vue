@@ -40,7 +40,7 @@ const props = withDefaults(
     size?: Size;
     style?: Style;
     rounded?: boolean;
-    loading: boolean;
+    loading?: boolean;
   }>(),
   {
     style: "primary",
