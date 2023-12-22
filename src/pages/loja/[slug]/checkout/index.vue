@@ -13,10 +13,11 @@
         </nuxt-link>
         <nuxt-link
           v-else
+          class="max-h-12"
           :to="{ name: 'loja-slug', params: { slug: data.slug } }"
         >
           <NuxtImg
-            height="48px"
+            height="100%"
             max-height="48px"
             width="auto"
             placeholder="16"
