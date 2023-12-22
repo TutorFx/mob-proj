@@ -27,7 +27,7 @@
             <label class="text-zinc-400">
               <div class="mb-3">Nome da empresa</div>
               <input
-                v-model="starterFields.name"
+                v-model="fields.name"
                 type="text"
                 class="input input-bordered w-full rounded border border-base-300"
               />
@@ -41,7 +41,7 @@
                   {{ url }}loja/
                 </div>
                 <input
-                  v-model="starterFields.slug"
+                  v-model="fields.slug"
                   type="text"
                   class="input input-bordered w-full rounded-r border-0 text-sm"
                   placeholder="minha-empresa"
