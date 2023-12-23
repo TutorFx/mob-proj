@@ -4,6 +4,7 @@ export const useCurrentStoreData = () => {
   const route = useRoute();
   const nuxtApp = useNuxtApp();
   return useFetch<IBusinessWithImage>(`/api/v1/business/${route.params.slug}`, {
+    key: "business-data",
     headers: {
       Accept: "application/json",
     },
@@ -15,6 +16,7 @@ export const useCurrentStoreData = () => {
     },
     getCachedData(key) {
       const data = nuxtApp.payload.data[key] || nuxtApp.static.data[key];
+      console.log(data);
       // If data is not fetched yet
       if (!data) {
         // Fetch the first time
