@@ -1,6 +1,6 @@
 <template>
   <div
-    class="mb-6 grid grid-cols-1 grid-rows-[max-content_1fr] items-start gap-6 overflow-hidden lg:mb-0 lg:grid-cols-2 lg:grid-rows-[1fr] lg:items-center"
+    class="grid grid-cols-1 grid-rows-[max-content_1fr] items-start gap-6 overflow-hidden lg:mb-0 lg:grid-cols-2 lg:grid-rows-[1fr] lg:items-center"
   >
     <div>
       <ui-images :images="product.images" />
