@@ -23,6 +23,7 @@ export const useCurrentStoreData = () => {
 
       // Is the data too old?
       const expirationDate = new Date(data.fetchedAt);
+      // set the expiration date to be 10 seconds from the fetched time
       expirationDate.setTime(expirationDate.getTime() + 10 * 1000);
       const isExpired = expirationDate.getTime() < Date.now();
       if (isExpired) {

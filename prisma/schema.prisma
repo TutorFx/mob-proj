@@ -3,10 +3,178 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
-  shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations
+  provider          = "postgresql"
+  url               = env("POSTGRES_PRISMA_URL")
+  directUrl         = env("POSTGRES_URL_NON_POOLING")
+  shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model User {
+  id                     String        @id @default(uuid())
+  createdAt              DateTime      @default(now())
+  updatedAt              DateTime      @updatedAt
+  email                  String        @unique
+  password               String
+  phone                  String?       @unique
+  cpf                    String?       @unique
+  nome                   String?
+  birthday               String?
+  role                   Role          @default(USER)
+  plan                   Plan          @default(FREE)
+  stripe_costumer_id     String?
+  stripe_subscription_id String?
+  productId              String?
+  reset_token            ResetToken[]
+  Address                Address[]
+  business               Business[]
+  Contact                Contact[]
+  Order                  Order[]
+  Product                Product[]
+  transactionsAsOrigin   Transaction[] @relation("originTransactions")
+  transactionsAsUser     Transaction[] @relation("userTransactions")
+
+  @@map("user")
+}
+
+model ResetToken {
+  status    TokenStatus @default(PENDING)
+  id        String      @id @default(uuid())
+  createdAt DateTime    @default(now())
+  userId    String
+  User      User        @relation(fields: [userId], references: [id])
+}
+
+model Business {
+  id          String        @id @default(uuid())
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  OwnerId     String
+  theme       Theme         @default(light)
+  visible     Boolean       @default(true)
+  banned      Boolean       @default(false)
+  whatsapp    String?
+  email       String?
+  imageId     String?
+  addressId   String?
+  name        String
+  description String?
+  slug        String        @unique @default(uuid())
+  logo_url    String?
+  Address     Address?
+  Owner       User          @relation(fields: [OwnerId], references: [id])
+  Image       Image?
+  Order       Order[]
+  Products    Product[]
+  Transaction Transaction[]
+
+  @@map("business")
+}
+
+model Product {
+  id             String           @id @default(uuid())
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  name           String           @unique
+  description    String
+  price          Float
+  businessId     String
+  userId         String
+  ProductOnOrder ProductOnOrder[]
+  images         Image[]
+  Business       Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  User           User             @relation(fields: [userId], references: [id])
+
+  @@map("product")
+}
+
+model Image {
+  id          String    @id @default(uuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  bytes       Int?
+  Key         String
+  productId   String?
+  businessId  String?   @unique
+  description String?
+  Business    Business? @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  Product     Product?  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("image")
+}
+
+model ProductOnOrder {
+  id       String
+  orderId  String
+  quantity Int
+  product  Product @relation(fields: [id], references: [id], onDelete: Cascade)
+  order    Order   @relation(fields: [orderId], references: [id])
+
+  @@id([id, orderId])
+}
+
+model Contact {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  nome      String
+  celular   String
+  whatsapp  Boolean
+  userId    String?
+  User      User?    @relation(fields: [userId], references: [id])
+  Order     Order[]
+
+  @@map("contact")
+}
+
+model Order {
+  id             String           @id @default(uuid())
+  createdAt      DateTime         @default(now())
+  businessId     String
+  userId         String?
+  contactId      String?
+  addressId      String?
+  status         OrderStatus      @default(NEW)
+  ProductOnOrder ProductOnOrder[]
+  address        Address?         @relation(fields: [addressId], references: [id])
+  Business       Business         @relation(fields: [businessId], references: [id])
+  contact        Contact?         @relation(fields: [contactId], references: [id])
+  User           User?            @relation(fields: [userId], references: [id])
+
+  @@map("order")
+}
+
+model Address {
+  id          String    @id @default(uuid())
+  createdAt   DateTime  @default(now())
+  cep         String
+  estado      Int
+  cidade      Int
+  endereco    String
+  bairro      String
+  numero      Int?
+  complemento String
+  orderId     String?
+  userId      String?
+  businessId  String?   @unique
+  Business    Business? @relation(fields: [businessId], references: [id])
+  User        User?     @relation(fields: [userId], references: [id])
+  Order       Order[]
+
+  @@map("address")
+}
+
+model Transaction {
+  id         String   @id @default(uuid())
+  createdAt  DateTime @default(now())
+  amount     Float
+  businessId String
+  userId     String
+  originId   String
+  business   Business @relation(fields: [businessId], references: [id])
+  origin     User     @relation("originTransactions", fields: [originId], references: [id])
+  user       User     @relation("userTransactions", fields: [userId], references: [id])
+
+  @@map("transaction")
 }
 
 enum Role {
@@ -63,188 +231,4 @@ enum Theme {
   night
   coffee
   winter
-}
-
-model User {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  email    String  @unique
-  password String
-  phone    String? @unique
-  cpf      String? @unique
-  nome     String?
-  birthday String?
-  role     Role    @default(USER)
-  plan     Plan    @default(FREE)
-
-  stripe_costumer_id     String?
-  stripe_subscription_id String?
-
-  reset_token ResetToken[]
-
-  business             Business[]
-  transactionsAsUser   Transaction[] @relation("userTransactions")
-  transactionsAsOrigin Transaction[] @relation("originTransactions")
-  Product              Product[]
-  productId            String?
-  Order                Order[]
-  Address              Address[]
-  Contact              Contact[]
-
-  @@map("user")
-}
-
-model ResetToken {
-  status    TokenStatus @default(PENDING)
-  id        String      @id @default(uuid())
-  createdAt DateTime    @default(now())
-  User      User        @relation(fields: [userId], references: [id])
-  userId    String
-}
-
-model Business {
-  id          String        @id @default(uuid())
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  Products    Product[]
-  Transaction Transaction[]
-  Owner       User          @relation(fields: [OwnerId], references: [id])
-  OwnerId     String
-
-  theme Theme @default(light)
-
-  visible Boolean @default(true)
-  banned  Boolean @default(false)
-
-  whatsapp String?
-  email    String?
-
-  Image   Image?
-  imageId String?
-
-  Address   Address?
-  addressId String?
-
-  name        String
-  description String?
-  slug        String  @unique @default(uuid())
-  logo_url    String?
-  Order       Order[]
-
-  @@map("business")
-}
-
-model Product {
-  id             String           @id @default(uuid())
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  name           String           @unique
-  description    String
-  price          Float
-  Business       Business         @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  businessId     String
-  User           User             @relation(fields: [userId], references: [id])
-  userId         String
-  images         Image[]
-  ProductOnOrder ProductOnOrder[]
-
-  @@map("product")
-}
-
-model Image {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  bytes Int?
-  Key   String
-
-  Product    Product?  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId  String?
-  Business   Business? @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  businessId String?   @unique
-
-  description String?
-
-  @@map("image")
-}
-
-model ProductOnOrder {
-  product  Product @relation(fields: [id], references: [id], onDelete: Cascade)
-  id       String // relation scalar field (used in the `@relation` attribute above)
-  order    Order   @relation(fields: [orderId], references: [id])
-  orderId  String // relation scalar field (used in the `@relation` attribute above)
-  quantity Int
-
-  @@id([id, orderId])
-}
-
-model Contact {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  nome      String
-  celular   String
-  whatsapp  Boolean
-  User      User?    @relation(fields: [userId], references: [id])
-  userId    String?
-  Order     Order[]
-
-  @@map("contact")
-}
-
-model Order {
-  id             String           @id @default(uuid())
-  createdAt      DateTime         @default(now())
-  ProductOnOrder ProductOnOrder[]
-  Business       Business         @relation(fields: [businessId], references: [id])
-  businessId     String
-  User           User?            @relation(fields: [userId], references: [id])
-  userId         String?
-  contact        Contact?         @relation(fields: [contactId], references: [id])
-  address        Address?         @relation(fields: [addressId], references: [id])
-  contactId      String?
-  addressId      String?
-  status         OrderStatus      @default(NEW)
-
-  @@map("order")
-}
-
-model Address {
-  id          String   @id @default(uuid())
-  createdAt   DateTime @default(now())
-  cep         String
-  estado      Int
-  cidade      Int
-  endereco    String
-  bairro      String
-  numero      Int?
-  complemento String
-  Order       Order[]
-  User        User?    @relation(fields: [userId], references: [id])
-  orderId     String?
-  userId      String?
-
-  Business   Business? @relation(fields: [businessId], references: [id])
-  businessId String?   @unique
-
-  @@map("address")
-}
-
-model Transaction {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-
-  business Business @relation(fields: [businessId], references: [id])
-  user     User     @relation("userTransactions", fields: [userId], references: [id])
-  origin   User     @relation("originTransactions", fields: [originId], references: [id])
-
-  amount     Float
-  businessId String
-  userId     String
-  originId   String
-
-  @@map("transaction")
 }
