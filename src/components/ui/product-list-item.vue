@@ -10,6 +10,8 @@
           fit="cover"
           width="362"
           height="120"
+          sizes="xs:362px sm:362px lg:362px xl:362px xxl:362px 2xl:362px"
+          densities="x0.2 x0.5 x1 x2"
           :src="usePrefixImages(product.images.at(0)?.Key)"
           alt=""
         />
