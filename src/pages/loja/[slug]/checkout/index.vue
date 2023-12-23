@@ -23,7 +23,7 @@
             width="auto"
             placeholder="16"
             sizes="xs:60px sm:60px lg:80px xl:120px xxl:120px 2xl:120px"
-            densities="x1 x2 x3 x4"
+            densities="x0.2 x0.5 x1 x2"
             :modifiers="{ fit: 'contain' }"
             :src="usePrefixImages(data.Image.Key)"
           ></NuxtImg>

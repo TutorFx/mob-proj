@@ -17,6 +17,8 @@
               >
                 <nuxt-img
                   :src="usePrefixImages(image?.Key)"
+                  sizes="xs:340px sm:340px lg:360px xl:400px xxl:440px 2xl:480px"
+                  densities="x0.2 x0.5 x1 x2"
                   class="min-h-full min-w-full object-cover"
                   :alt="'product-image-' + i"
                 />
@@ -30,6 +32,8 @@
               <nuxt-img
                 v-if="images?.at(0)?.Key"
                 :src="usePrefixImages(images?.at(0)?.Key)"
+                sizes="xs:340px sm:340px lg:360px xl:400px xxl:440px 2xl:480px"
+                densities="x0.2 x0.5 x1 x2"
                 class="min-h-full min-w-full object-cover"
                 alt="product-image"
               />

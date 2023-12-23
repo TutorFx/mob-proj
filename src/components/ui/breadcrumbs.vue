@@ -1,7 +1,7 @@
 <template>
   <nav aria-label="Breadcrumb">
-    <ol class="flex list-none items-stretch gap-2">
-      <li class="flex items-center gap-2">
+    <ol class="grid-flow-col grid list-none truncate items-stretch gap-2">
+      <li class="flex items-center gap-2 truncate">
         <nuxt-link
           :to="{ name: 'loja-slug', params: { slug: product.Business.slug } }"
           class="flex max-w-[20ch] items-center gap-1 truncate whitespace-nowrap transition-colors hover:text-primary uppercase"
@@ -32,7 +32,7 @@
           />
         </svg>
       </li>
-      <li class="flex items-center gap-2">
+      <li class="grid grid-flow-col items-center truncate gap-2">
         <nuxt-link
           to="#"
           class="flex items-center gap-1 truncate whitespace-nowrap text-base transition-colors hover:text-primary uppercase"
