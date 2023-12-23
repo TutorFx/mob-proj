@@ -32,7 +32,7 @@ export default defineNuxtConfig({
       "2xl": 1536,
     },
     format: ["webp"],
-    densities: [1, 2, 3],
+    densities: [0.2, 0.5, 1, 2],
     domains: ["res.cloudinary.com", "avatar.vercel.sh", awsBucketUrl],
   },
 
