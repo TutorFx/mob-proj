@@ -4,7 +4,7 @@
     <div v-if="data" class="container">
       <ui-store-nav :data="data" />
     </div>
-    <div class="container">
+    <div class="container pb-6">
       <Suspense>
         <template #default>
           <ui-product-list :slug="$route.params.slug" />

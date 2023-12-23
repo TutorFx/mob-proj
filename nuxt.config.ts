@@ -67,7 +67,7 @@ export default defineNuxtConfig({
     "/api/v1/address/state/**": { swr: true },
     "/api/v1/order/status": { isr: true },
     "/loja/**/*": {
-      isr: 60 * 15, // Cleanup on every 15min
+      isr: 60 * 2, // Cleanup on every 2min
     },
   },
 
