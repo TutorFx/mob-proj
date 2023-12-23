@@ -1,6 +1,7 @@
 {
     "recommendations": [
         "prisma.prisma",
-        "hancel.markdown-image"
+        "hancel.markdown-image",
+        "mhutchie.git-graph"
     ]
 }

@@ -10,7 +10,7 @@
       </nuxt-link>
       <nuxt-link
         v-else
-        class="min-h-12"
+        class="min-h-12 grid items-center"
         :to="{ name: 'loja-slug', params: { slug: data.slug } }"
       >
         <NuxtImg
@@ -19,7 +19,7 @@
           class="max-h-12"
           width="auto"
           placeholder="16"
-          sizes="xs:48px sm:48px lg:48px xl:60px xxl:60px 2xl:60px"
+          sizes="xs:60px sm:60px lg:80px xl:120px xxl:120px 2xl:120px"
           densities="x1 x2 x3 x4"
           :modifiers="{ fit: 'contain' }"
           :src="usePrefixImages(data.Image.Key)"

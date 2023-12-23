@@ -1,5 +1,5 @@
 <template>
-  <div :data-theme="THEME" class="min-h-[100dvh]">
+  <div :data-theme="THEME" class="min-h-[100lvh]">
     <NuxtLoadingIndicator color="false" class="bg-primary" />
     <div v-if="data" class="container">
       <ui-store-nav :data="data" />
