@@ -1,5 +1,5 @@
 <template>
-  <div :data-theme="data?.theme">
+  <div :data-theme="data?.theme" class="min-h-[100lvh]">
     <nuxt-page />
   </div>
 </template>

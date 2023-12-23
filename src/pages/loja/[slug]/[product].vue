@@ -1,7 +1,7 @@
 <template>
   <div :data-theme="THEME" class="min-h-[100lvh]">
     <NuxtLoadingIndicator color="false" class="bg-primary" />
-    <div class="fill-screen container grid grid-rows-[max-content_1fr]">
+    <div class="pb-6 fill-screen container grid grid-rows-[max-content_1fr]">
       <ui-store-nav v-if="data" :data="data" />
       <Suspense>
         <template #default>

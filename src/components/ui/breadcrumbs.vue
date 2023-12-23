@@ -1,6 +1,6 @@
 <template>
   <nav aria-label="Breadcrumb">
-    <ol class="flex list-none items-stretch gap-2">
+    <ol class="grid-flow-col grid list-none items-stretch gap-2">
       <li class="flex items-center gap-2">
         <nuxt-link
           :to="{ name: 'loja-slug', params: { slug: product.Business.slug } }"
