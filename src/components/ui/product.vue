@@ -24,7 +24,7 @@ if (!product.value) {
 const PRODUCT_NAME = product.value.name;
 const PRODUCT_DESCRIPTION = product.value.description;
 const PRODUCT_IMAGE = usePrefixImages(product.value.images.at(0)?.Key);
-const BUSINESS_NAME = product.value.name;
+const BUSINESS_NAME = product.value.Business.name;
 
 const config = useRuntimeConfig();
 
