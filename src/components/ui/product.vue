@@ -26,10 +26,23 @@ const PRODUCT_DESCRIPTION = product.value.description;
 const PRODUCT_IMAGE = usePrefixImages(product.value.images.at(0)?.Key);
 const BUSINESS_NAME = product.value.Business.name;
 
-const config = useRuntimeConfig();
+/**
+ * Lost 2 programming hours here,
+ * striving to enhance the user experience
+ * by creating a dynamic OG image.
+ * TODO: Check if the Nuxt team fixed that shit.
+ */
+
+/* defineOgImage({
+  component: "OGProductThumbnail",
+  props: {
+    title: "PRODUCT_NAME",
+    image: "PRODUCT_IMAGE",
+  },
+}); */
 
 useSeoMeta({
-  title: `${PRODUCT_NAME} - ${BUSINESS_NAME} | ${config.public.APP_NAME}`,
+  title: `${PRODUCT_NAME} - ${BUSINESS_NAME}`,
   ogTitle: PRODUCT_NAME,
   description: PRODUCT_DESCRIPTION,
   ogDescription: PRODUCT_DESCRIPTION,
