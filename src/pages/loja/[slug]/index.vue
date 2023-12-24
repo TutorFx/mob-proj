@@ -21,7 +21,6 @@
 </template>
 
 <script setup lang="ts">
-const config = useRuntimeConfig();
 const { data, error } = await useCurrentStoreData();
 
 if (error.value) {
@@ -36,8 +35,8 @@ const PAGE_NAME = computed(() => data.value?.name ?? undefined);
 const THEME = computed(() => data.value?.theme ?? undefined);
 
 useSeoMeta({
-  title: `${PAGE_NAME.value} | ${config.public.APP_NAME}`,
-  ogTitle: `${PAGE_NAME.value} | ${config.public.APP_NAME}`,
+  title: `${PAGE_NAME.value}`,
+  ogTitle: `${PAGE_NAME.value}`,
 });
 </script>
 
