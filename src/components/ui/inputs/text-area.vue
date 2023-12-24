@@ -6,6 +6,7 @@
 
 <script setup lang="ts">
 import { EditorContent, useEditor } from "@tiptap/vue-3";
+import { watchDebounced } from "@vueuse/core";
 import StarterKit from "@tiptap/starter-kit";
 
 const props = defineProps<{ modelValue: string }>();
@@ -39,8 +40,11 @@ const editor = useEditor({
   extensions: [StarterKit],
 });
 
-// watchEffect(() => editor.value?.commands.setContent(state.value))
-watch(state, () => {
-  editor.value?.commands.setContent(state.value);
-});
+watchDebounced(
+  state,
+  () => {
+    editor.value?.commands.setContent(state.value);
+  },
+  { debounce: 200, maxWait: 1000 },
+);
 </script>
