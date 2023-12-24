@@ -4,7 +4,6 @@
       <div>
         <client-only>
           <Swiper
-            class="[view-transition-name:selected-product]"
             :slides-per-view="1"
             :modules="[Pagination, Virtual, Autoplay]"
             :autoplay="{ delay: 5000 }"
