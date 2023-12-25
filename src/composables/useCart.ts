@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { StorageSerializers, useLocalStorage } from "@vueuse/core";
+import { useStorageAsync } from "@vueuse/core";
 export const useCart = defineStore("cart", () => {
   const defaultKey = () => {
     const slug = useRoute().params?.slug;
@@ -7,9 +7,11 @@ export const useCart = defineStore("cart", () => {
   };
 
   const isVisible = ref(false);
-  const $raw = ref<Ref<IUseSchemas["cartStore"]>>(
-    useLocalStorage("cart", {}, { serializer: StorageSerializers.object }),
-  );
+  const $raw = useStorageAsync<IUseSchemas["cartStore"]>("cart", {});
+
+  if (!useSchemas.cartStore.safeParse($raw.value).success) {
+    $raw.value = {};
+  }
 
   const $quantity = computed(
     () =>

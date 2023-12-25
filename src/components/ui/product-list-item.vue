@@ -2,7 +2,10 @@
   <div class="grid">
     <div>
       <div
-        class="[view-transition-name:img-container] grid aspect-video items-center justify-center overflow-hidden p-3"
+        class="grid aspect-video items-center justify-center overflow-hidden p-3"
+        :class="{
+          '[view-transition-name:img-container]': active === product.id,
+        }"
       >
         <nuxt-img
           v-if="product.images.at(0)?.Key"
@@ -20,14 +23,27 @@
 
     <div class="grid gap-3 grid-flow-col justify-between p-3">
       <div class="grid">
-        <span class="[view-transition-name:header] truncate text-lg font-bold">
+        <span
+          class="truncate text-lg font-bold"
+          :class="{
+            '[view-transition-name:header]': active === product.id,
+          }"
+        >
           {{ product.name }}
         </span>
-        <span class="[view-transition-name:subheader] truncate font-medium">
+        <span
+          class="truncate font-medium"
+          :class="{
+            '[view-transition-name:subheader]': active === product.id,
+          }"
+        >
           {{ product.description }}
         </span>
         <span
-          class="[view-transition-name:pricing] truncate text-xl font-medium"
+          class="truncate text-xl font-medium"
+          :class="{
+            '[view-transition-name:pricing]': active === product.id,
+          }"
         >
           {{ useMoney(product.price) }}
         </span>
@@ -48,4 +64,6 @@ import type { IPublicProduct } from "~/types";
 defineProps<{
   product: IPublicProduct;
 }>();
+
+const active = useState();
 </script>

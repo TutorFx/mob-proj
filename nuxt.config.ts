@@ -17,8 +17,8 @@ export default defineNuxtConfig({
     "nuxt-icon",
     "@pinia/nuxt",
     "@nuxt/image-edge",
-    "nuxt-simple-sitemap",
-    "nuxt-simple-robots",
+    "@nuxtseo/module",
+    "nuxt-og-image",
   ],
 
   image: {
@@ -37,14 +37,24 @@ export default defineNuxtConfig({
   },
 
   app: {
-    // pageTransition: { name: 'page', mode: 'out-in' },
     head: {
-      title: "Mob-Proj 0.1v",
-      meta: [{ name: "description", content: "Lorem ipsun!." }],
+      titleTemplate: "%s %separator %siteName",
       htmlAttrs: {
         lang: "pt-BR",
       },
     },
+  },
+
+  site: {
+    name: "Nuxa.io",
+    description: `Descubra o nuxa, a plataforma de comércio eletrônico intuitiva
+      que torna a loja digital acessível para todos. Crie sua loja online, 
+      personalize-a ao seu gosto, adicione produtos e comece a vender hoje mesmo. 
+      Junte-se ao mundo digital com o nuxa e faça o seu negócio crescer.`,
+    identity: {
+      type: "Organization",
+    },
+    defaultLocale: "pt-BR",
   },
 
   css: ["@/main.scss"],
@@ -128,6 +138,7 @@ export default defineNuxtConfig({
 
   experimental: {
     viewTransition: true,
+    componentIslands: true,
   },
 
   nitro: {
