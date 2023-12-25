@@ -17,6 +17,18 @@ const styles = {
     outside: "bg-secondary hover:bg-secondary/80",
     outsideOutlined: "bg-none border border-secondary",
   },
+  success: {
+    inside: "text-success-content",
+    insideOutlined: "text-success",
+    outside: "bg-success hover:bg-success/80",
+    outsideOutlined: "bg-none border border-success",
+  },
+  danger: {
+    inside: "text-error-content",
+    insideOutlined: "text-error",
+    outside: "bg-error hover:bg-error/80",
+    outsideOutlined: "bg-none border border-error",
+  },
 };
 
 const sizes = {
@@ -38,12 +50,12 @@ const props = withDefaults(
     to?: RouteLocationRaw | string;
     outlined?: boolean;
     size?: Size;
-    style?: Style;
+    color?: Style;
     rounded?: boolean;
     loading?: boolean;
   }>(),
   {
-    style: "primary",
+    color: "primary",
     size: "md",
     outlined: false,
     loading: false,
@@ -55,7 +67,7 @@ const outside = computed(() =>
   twMerge(
     "cursor-pointer",
     sizes[props.size].outside,
-    styles[props.style][props.outlined ? "outsideOutlined" : "outside"],
+    styles[props.color][props.outlined ? "outsideOutlined" : "outside"],
   ),
 );
 
@@ -63,7 +75,7 @@ const inside = computed(() =>
   twMerge(
     "text-center uppercase",
     sizes[props.size].inside,
-    styles[props.style][props.outlined ? "insideOutlined" : "inside"],
+    styles[props.color][props.outlined ? "insideOutlined" : "inside"],
   ),
 );
 </script>
