@@ -50,9 +50,14 @@ const StoreDashboard = [
 
 const AdminDashboard = [
   {
-    icon: "ic:outline-business-center",
+    icon: "ic:sharp-business",
     title: "Empresas",
-    to: { name: "dashboard-admin" },
+    to: { name: "dashboard-admin-business" },
+  },
+  {
+    icon: "material-symbols:account-circle-full",
+    title: "Usuários",
+    to: { name: "dashboard-admin-user" },
   },
 ];
 

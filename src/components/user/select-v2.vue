@@ -96,7 +96,7 @@
                     :active="active"
                     class="mr-2 h-5 w-5 text-primary"
                     aria-hidden="true"
-                    name="material-symbols:account-circle"
+                    name="ic:outline-business"
                   />
                   <div v-else class="mask mask-hexagon isloading mr-2 h-5 w-5">
                     <NuxtImg
@@ -136,6 +136,29 @@
                 />
                 Adicionar Empresa
               </button>
+            </MenuItem>
+            <MenuItem
+              v-if="auth.session.role === 'ADMIN'"
+              v-slot="{ active, close }"
+            >
+              <NuxtLink :to="{ name: 'dashboard-admin' }" @mouseup="close">
+                <button
+                  :class="[
+                    active
+                      ? 'bg-base-200 text-base-content'
+                      : 'text-base-content',
+                    'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                  ]"
+                >
+                  <Icon
+                    :active="active"
+                    class="mr-2 h-5 w-5 text-primary"
+                    aria-hidden="true"
+                    name="ic:outline-admin-panel-settings"
+                  />
+                  Administrativo
+                </button>
+              </NuxtLink>
             </MenuItem>
           </div>
         </MenuItems>
