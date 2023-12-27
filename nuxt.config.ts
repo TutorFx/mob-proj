@@ -76,9 +76,14 @@ export default defineNuxtConfig({
     },
     "/api/v1/address/state/**": { swr: true },
     "/api/v1/order/status": { isr: true },
+    "/": { prerender: true },
+    "/login/": { prerender: true },
+    "/register": { prerender: true },
+    "/recovery": { prerender: true },
     "/**/*": {
       isr: 60 * 2, // Cleanup on every 2min
     },
+    "/dashboard/**/*": { ssr: false },
   },
 
   headlessui: {
