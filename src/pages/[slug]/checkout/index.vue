@@ -6,7 +6,7 @@
       <template v-if="data" #default>
         <nuxt-link
           v-if="!data.Image"
-          :to="{ name: 'loja-slug', params: { slug: data.slug } }"
+          :to="{ name: 'slug', params: { slug: data.slug } }"
           class="btn btn-ghost text-xl font-black normal-case"
         >
           {{ data?.name }}
@@ -14,7 +14,7 @@
         <nuxt-link
           v-else
           class="min-h-12 grid items-center"
-          :to="{ name: 'loja-slug', params: { slug: data.slug } }"
+          :to="{ name: 'slug', params: { slug: data.slug } }"
         >
           <NuxtImg
             height="100%"
@@ -114,7 +114,7 @@
             </div>
             <nuxt-link
               v-else
-              :to="{ name: 'loja-slug' }"
+              :to="{ name: 'slug' }"
               class="btn btn-primary btn-block"
             >
               Adicionar produtos
@@ -262,7 +262,7 @@ const finalizar = async () => {
         cart: cart.$current_cart,
       },
     });
-    router.push({ name: "loja-slug-checkout-id", params: { id: data.id } });
+    router.push({ name: "slug-checkout-id", params: { id: data.id } });
     cart.clean_cart();
     cart.isVisible = false;
   } catch (e) {

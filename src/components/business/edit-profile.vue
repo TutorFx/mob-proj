@@ -3,7 +3,7 @@
     <h2 class="text-xl font-bold flex gap-3">
       <span> Perfil da Empresa </span>
       <NuxtLink
-        :to="{ name: 'loja-slug', params: { slug: business?.slug } }"
+        :to="{ name: 'slug', params: { slug: business?.slug } }"
         target="_Blank"
       >
         <NuxaButton size="sm" outlined>
