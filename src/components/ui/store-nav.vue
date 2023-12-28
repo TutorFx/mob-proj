@@ -3,7 +3,7 @@
     <template #default>
       <nuxt-link
         v-if="!data.Image"
-        :to="{ name: 'slug', params: { slug: data.slug } }"
+        :to="{ name: 'loja-slug', params: { slug: data.slug } }"
         class="btn btn-ghost text-xl font-black normal-case"
       >
         {{ data?.name }}
@@ -11,7 +11,7 @@
       <nuxt-link
         v-else
         class="min-h-12 grid items-center"
-        :to="{ name: 'slug', params: { slug: data.slug } }"
+        :to="{ name: 'loja-slug', params: { slug: data.slug } }"
       >
         <NuxtImg
           height="100%"

@@ -15,7 +15,7 @@
     <div class="col-span-1 grid gap-3 md:col-span-2">
       <div class="text-base-content">Link da empresa</div>
       <div class="text-content truncate text-lg">
-        <span class="text-base-content">{{ `${url}` }}</span
+        <span class="text-base-content">{{ `${url}loja/` }}</span
         >{{ state.slug }}
       </div>
     </div>

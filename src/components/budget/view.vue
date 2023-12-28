@@ -33,7 +33,7 @@
               <Icon name="Coin" size="16" />
             </span>
           </div>
-          <nuxt-link :to="`/${wallet.slug}`" class="p-3">
+          <nuxt-link :to="`/loja/${wallet.slug}`" class="p-3">
             <button class="btn btn-circle btn-ghost btn-sm aspect-square">
               <Icon name="material-symbols:add-shopping-cart" size="24" />
             </button>

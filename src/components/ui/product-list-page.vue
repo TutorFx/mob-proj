@@ -8,7 +8,7 @@
         :key="i"
         :class="{ active: active === product.id }"
         :to="{
-          name: 'slug-product',
+          name: 'loja-slug-product',
           params: { slug: product.Business.slug, product: product.slug },
         }"
         class="bg-base group relative overflow-hidden rounded-lg border border-base-300 shadow-3xl shadow-neutral/10"

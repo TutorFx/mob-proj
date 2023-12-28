@@ -38,7 +38,7 @@
                 <div
                   class="bg-base flex items-center justify-center truncate rounded-l border-r border-base-300 px-4 text-xs"
                 >
-                  {{ url }}
+                  {{ url }}loja/
                 </div>
                 <input
                   v-model="fields.slug"

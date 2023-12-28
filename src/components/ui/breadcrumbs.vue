@@ -3,7 +3,7 @@
     <ol class="grid-flow-col grid list-none truncate items-stretch gap-2">
       <li class="flex items-center gap-2 truncate">
         <nuxt-link
-          :to="{ name: 'slug', params: { slug: product.Business.slug } }"
+          :to="{ name: 'loja-slug', params: { slug: product.Business.slug } }"
           class="flex max-w-[20ch] items-center gap-1 truncate whitespace-nowrap transition-colors hover:text-primary uppercase"
         >
           {{ product.Business.name }}
