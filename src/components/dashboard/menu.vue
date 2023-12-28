@@ -12,7 +12,7 @@
         data-tip="Visualizar loja"
       >
         <nuxt-link
-          :to="{ name: 'loja-slug', params: { slug: selected?.slug } }"
+          :to="{ name: 'slug', params: { slug: selected?.slug } }"
           target="_blank"
           class="btn btn-circle btn-ghost"
         >

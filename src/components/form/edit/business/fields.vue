@@ -33,7 +33,7 @@
         <div
           class="bg-base grid items-center rounded-l-lg border-r border-base-300 px-4 text-xs"
         >
-          <div class="truncate">{{ url }}loja/</div>
+          <div class="truncate">{{ url }}</div>
         </div>
         <input
           v-model="state.slug"

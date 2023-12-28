@@ -18,11 +18,11 @@ export default defineEventHandler(async (event) => {
       })
     ).map((business) => [
       {
-        _path: `/loja/${business.slug}`,
+        _path: `/${business.slug}`,
         modifiedAt: business.updatedAt,
       },
       ...business.Products.map((product) => ({
-        _path: `/loja/${business.slug}/${product.name}`,
+        _path: `/${business.slug}/${product.name}`,
         modifiedAt: product.updatedAt,
       })),
     ]);

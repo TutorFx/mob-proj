@@ -46,7 +46,7 @@
                 :disabled="cart.$quantity === 0 ? true : undefined"
                 class="btn btn-primary btn-block"
                 :to="{
-                  name: 'loja-slug-checkout',
+                  name: 'slug-checkout',
                   params: { slug: route.params.slug },
                 }"
               >
