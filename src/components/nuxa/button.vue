@@ -70,7 +70,7 @@ const inside = computed(() =>
 
 <template>
   <component
-    :is="to ? NuxtLink : 'div'"
+    :is="to ? NuxtLink : 'button'"
     class="select-none"
     :class="outside"
     :to="to"

@@ -1,110 +1,107 @@
 <template>
-  <div
-    class="login flex min-h-full items-center justify-center px-4 py-12 sm:px-6 lg:px-8"
-  >
-    <div class="w-full max-w-md space-y-8">
-      <div>
-        <h2
-          class="mt-6 text-center text-3xl font-bold tracking-tight text-primary"
-        >
-          Login
-        </h2>
-        <p class="mt-2 text-center text-sm text-gray-600">
-          ou
-          <nuxt-link
-            :to="{ name: 'register', query: $route.query }"
-            class="font-medium text-primary hover:text-secondary"
-          >
-            Cadastre-se
-          </nuxt-link>
-        </p>
+  <div class="min-h-full flex flex-col justify-center items-center">
+    <div class="xl:min-w-[450px] px-8">
+      <div class="block lg:hidden">
+        <Icon name="Logotype" size="124" />
       </div>
-      <form class="mt-8 space-y-6" action="#" method="POST">
-        <input type="hidden" name="remember" value="true" />
-        <div class="shadow-sm -space-y-px rounded-md">
-          <div>
-            <label for="email-address" class="sr-only">Email ou CPF</label>
-            <input
-              id="email-address"
-              v-model="userdata.username"
-              name="email"
-              type="email"
-              autocomplete="email"
-              required
-              class="relative block w-full rounded-t-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
-              placeholder="Email ou CPF"
-            />
-          </div>
-          <div>
-            <label for="password" class="sr-only">Senha</label>
-            <input
-              id="password"
-              v-model="userdata.password"
-              name="password"
-              type="password"
-              autocomplete="current-password"
-              required
-              class="relative block w-full rounded-b-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
-              placeholder="Password"
-            />
-          </div>
-        </div>
-
-        <div class="flex items-center justify-between">
-          <div class="flex items-center">
-            <input
-              id="remember-me"
-              name="remember-me"
-              type="checkbox"
-              class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
-            />
-            <label for="remember-me" class="ml-2 block text-sm text-gray-900"
-              >Continuar logado</label
-            >
-          </div>
-
-          <div class="text-sm">
-            <nuxt-link
-              :to="{ name: 'recovery' }"
-              class="font-medium text-primary hover:text-secondary"
-            >
-              Esqueceu a senha?
-            </nuxt-link>
-          </div>
-        </div>
-
-        <div>
-          <button
-            class="group relative flex w-full justify-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white focus-visible:outline hover:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-            @click.prevent="auth.login(userdata)"
-          >
-            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-              <svg
-                class="h-5 w-5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z"
-                  clip-rule="evenodd"
+      <div class="mb-8 hidden lg:block" />
+      <div class="mb-8">
+        <h3 class="mb-1">Bem-vindo de volta!</h3>
+        <p>Por favor, preencha suas credenciais.</p>
+      </div>
+      <div>
+        <form @submit.prevent="auth.login(userdata)">
+          <div class="form-container vertical grid gap-2">
+            <div class="form-item vertical">
+              <NuxaInput
+                id="username"
+                v-model="userdata.username"
+                v-maska
+                :data-maska="isUsernameCpf ? '###.###.###-##' : undefined"
+                placeholder="E-mail ou CPF"
+                label="Login"
+                :theme="
+                  auth.isdirty.value && usernameError.length
+                    ? 'danger'
+                    : 'primary'
+                "
+              />
+              <NuxaDisplayError
+                v-if="auth.isdirty.value && usernameError.length"
+                :data="usernameError"
+              />
+              <div v-else class="min-h-6"></div>
+            </div>
+            <div class="form-item vertical">
+              <NuxaInput
+                id="password"
+                v-model="userdata.password"
+                placeholder="******"
+                type="password"
+                label="Senha"
+                :theme="
+                  auth.isdirty.value && passwordError.length
+                    ? 'danger'
+                    : 'primary'
+                "
+              />
+              <NuxaDisplayError
+                v-if="auth.isdirty.value && passwordError.length"
+                :data="passwordError"
+              />
+              <div v-else class="min-h-6"></div>
+            </div>
+            <div class="flex justify-between mb-6">
+              <label class="checkbox-label flex gap-2 mb-0 items-center">
+                <input
+                  class="checkbox checkbox-primary checkbox-sm"
+                  type="checkbox"
+                  name="rememberMe"
+                  value="true"
                 />
-              </svg>
-            </span>
-            Entrar
-          </button>
-        </div>
-      </form>
+                <span class="ltr:ml-2 rtl:mr-2">Lembre-me</span></label
+              >
+              <NuxtLink
+                class="text-primary hover:underline"
+                :to="{ name: 'recovery' }"
+                >Esqueceu a senha?</NuxtLink
+              >
+            </div>
+            <NuxaButton type="submit" :loading="auth.pending.value">
+              Entrar
+            </NuxaButton>
+            <div class="mt-4 text-center">
+              <span>Não tem conta ainda? </span>
+              <NuxtLink
+                class="text-primary hover:underline"
+                :to="{ name: 'register', query: $route.query }"
+              >
+                Cadastrar
+              </NuxtLink>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  layout: "auth",
+});
+
 const auth = new CreateAuthentication();
+const isUsernameCpf = computed(
+  () => !isNaN(Number(userdata.value.username.substring(0, 3))),
+);
 
 const userdata = ref({
   username: "",
   password: "",
 });
+
+const errors = useZodError("loginSchema", userdata);
+const usernameError = useZodFieldError("username", errors);
+const passwordError = useZodFieldError("password", errors);
 </script>

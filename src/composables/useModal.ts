@@ -41,7 +41,7 @@ export const useModal = defineStore("modal", () => {
   }
 
   const first = computed(() => queue.value?.at(0));
-  const visible = computed(() => queue.value?.length > 0 ?? false);
+  const visible = computed(() => queue.value?.length > 0);
 
   const accept = async () => {
     if (first.value?.callback) {

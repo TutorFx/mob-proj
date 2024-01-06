@@ -46,6 +46,7 @@ module.exports = {
       colors: {
         nuxa: {
           DEFAULT: "#F42272",
+          content: "#232e21",
           50: "#FDD1E2",
           100: "#FCBDD5",
           200: "#FA97BC",

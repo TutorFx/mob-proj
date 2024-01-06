@@ -9,9 +9,10 @@ export default defineEventHandler(async (event) => {
   const { username, password } = body;
   try {
     const prisma = new PrismaClient();
+    const cpf = removeMask(username);
     const user = await prisma.user.findFirst({
       where: {
-        OR: [{ email: username }, { cpf: username }],
+        OR: [{ email: username }, { cpf }],
       },
     });
 

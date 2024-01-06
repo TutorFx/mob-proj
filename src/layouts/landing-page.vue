@@ -29,7 +29,7 @@
     <div class="grid min-h-[100svh] grid-rows-[max-content_1fr_max-content]">
       <landing-page-menu v-model="menuVisible" />
       <div>
-        <slot />
+        <NuxtPage />
       </div>
       <landing-page-footer />
     </div>

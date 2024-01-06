@@ -33,7 +33,12 @@ export default defineNuxtConfig({
     },
     format: ["webp"],
     densities: [0.2, 0.5, 1, 2],
-    domains: ["res.cloudinary.com", "avatar.vercel.sh", awsBucketUrl],
+    domains: [
+      "res.cloudinary.com",
+      "avatar.vercel.sh",
+      "media.licdn.com",
+      awsBucketUrl,
+    ],
   },
 
   app: {

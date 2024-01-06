@@ -105,3 +105,5 @@ export const deleteFromS3 = async (
     }),
   );
 };
+
+export const removeMask = (val: string) => val.replace(/\D/g, "");

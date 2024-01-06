@@ -25,10 +25,11 @@ export default defineEventHandler(async (event) => {
   }
   try {
     const hash = await bcrypt.hash(body.password, 10);
+    const cpf = removeMask(body.cpf);
     await prisma.user.create({
       data: {
         email: body.email,
-        cpf: body.cpf,
+        cpf: cpf,
         password: hash,
       },
     });

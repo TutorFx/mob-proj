@@ -6,12 +6,13 @@ const { public: global } = useRuntimeConfig();
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const { credential } = body;
+  const { credentials } = body;
   try {
     const prisma = new PrismaClient();
+    const cpf = removeMask(credentials);
     const user = await prisma.user.findFirst({
       where: {
-        OR: [{ email: credential }, { cpf: credential }],
+        OR: [{ email: credentials }, { cpf }],
       },
     });
 

@@ -2,6 +2,27 @@ import { OrderStatus, Theme } from "@prisma/client";
 import { z } from "zod";
 import { useRules } from "~/composables/useRules";
 
+const cpf = (message = "Digite um cpf válido.") =>
+  z.string().refine((cpf: string) => {
+    if (typeof cpf !== "string") return false;
+    cpf = cpf.replace(/[^\d]+/g, "");
+    if (cpf.length !== 11 || !!cpf.match(/(\d)\1{10}/)) return false;
+    const cpfDigits = cpf.split("").map((el) => +el);
+    const rest = (count: number): number => {
+      return (
+        ((cpfDigits
+          .slice(0, count - 12)
+          .reduce((soma, el, index) => soma + el * (count - index), 0) *
+          10) %
+          11) %
+        10
+      );
+    };
+    return rest(10) === cpfDigits[9] && rest(11) === cpfDigits[10];
+  }, message);
+
+const senha = z.string().min(3, "Digite uma senha válida");
+const email = z.string().email("O e-mail deve ser válido");
 const slug = z.string().min(1, "Campo obrigatório");
 const id = z.string().refine(useRules.uuid);
 const productName = z.string().min(1, "Campo obrigatório");
@@ -13,13 +34,16 @@ const theme = z.nativeEnum(Theme);
 
 export const useSchemas = {
   registerSchema: z.object({
-    email: z.string().min(1).max(50),
-    password: z.string(),
-    cpf: z.string(),
+    email: email,
+    password: z.string().min(3, "Digite uma senha válida"),
+    cpf: cpf("Insira um CPF válido"),
   }),
   loginSchema: z.object({
-    username: z.string().min(1).max(50),
-    password: z.string(),
+    username: z.union([cpf("Insira um CPF ou E-mail válido"), email]),
+    password: z.string().min(3, "Digite uma senha válida"),
+  }),
+  resetSchema: z.object({
+    credentials: z.union([cpf("Insira um CPF ou E-mail válido"), email]),
   }),
   User: z.object({
     id,
@@ -109,14 +133,15 @@ export const useSchemas = {
   theme,
   passwordReset: z
     .object({
-      password: z.string().min(1, "Campo obrigatório"),
-      passwordConfirmation: z.string().min(1, "Campo obrigatório"),
+      password: senha,
+      passwordConfirmation: senha,
     })
     .superRefine(({ passwordConfirmation, password }, ctx) => {
       if (passwordConfirmation !== password) {
         ctx.addIssue({
           code: "custom",
           message: "As senhas não conferem",
+          path: ["password", "passwordConfirmation"],
         });
       }
     }),

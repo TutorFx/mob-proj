@@ -6,7 +6,9 @@ import moment from "moment";
 import { FetchError } from "ofetch";
 import { defineStore } from "pinia";
 import type { IValidateToken } from "@/types";
+import type { IUseSchemas } from "./useSchemas";
 type Login = z.infer<typeof useSchemas.loginSchema>;
+type Register = z.infer<typeof useSchemas.registerSchema>;
 
 export const useAuthentication = defineStore("authentication", () => {
   const cookies = useCookies(["token"]);
@@ -60,138 +62,161 @@ export const useAuthentication = defineStore("authentication", () => {
   return { token, isAuthenticated, session };
 });
 
-export class CreateAuthentication {
-  static status: number;
-  static message: string;
-  login(state: Login) {
+class Auth {
+  public lastRequest: Ref<number | null> = ref(null);
+  public isdirty = computed(() => {
+    const r = this.lastRequest.value;
+    const t = useTimestamp({ offset: 0 });
+    const now = new Date(t.value);
+
+    if (typeof r !== "number") return false;
+
+    const lastRequest = new Date(r);
+    const nextTime = lastRequest.setSeconds(lastRequest.getSeconds() + 3);
+
+    if (now.valueOf() > nextTime.valueOf()) return false;
+
+    return true;
+  });
+  touch() {
+    const now = new Date();
+    this.lastRequest.value = now.valueOf();
+  }
+}
+
+export class CreateAuthentication extends Auth {
+  public status = ref(200);
+  public pending: Ref<boolean> = ref(false);
+
+  async login(state: Login) {
     try {
+      this.touch();
       useSchemas.loginSchema.parse(state);
-      $fetch("/api/v1/auth/login", {
+      this.pending.value = true;
+      await $fetch("/api/v1/auth/login", {
         method: "POST",
         body: state,
-      }).then(() => {
-        const route = useRoute();
-        const store = useAuthentication();
-        const { callback } = route.query;
-        if (!callback) {
-          return useRouter().push("/dashboard");
-        }
-        if (store.isAuthenticated && !(callback instanceof Array)) {
-          return useRouter().push(decodeURI(callback));
+      });
+      const route = useRoute();
+      const store = useAuthentication();
+      const { callback } = route.query;
+      if (!callback) {
+        return useRouter().push("/dashboard");
+      }
+      if (store.isAuthenticated && !(callback instanceof Array)) {
+        return useRouter().push(decodeURI(callback));
+      } else {
+        watch(
+          () => store.isAuthenticated,
+          (newVal, oldVal) => {
+            if (!(newVal && !oldVal)) {
+              return;
+            }
+            if (!(callback instanceof Array)) {
+              return useRouter().push(decodeURI(callback));
+            }
+          },
+        );
+      }
+    } catch (err) {
+      if (err instanceof FetchError) {
+        if (err.statusCode) {
+          this.status.value = err.statusCode;
         } else {
-          watch(
-            () => store.isAuthenticated,
-            (newVal, oldVal) => {
-              if (!(newVal && !oldVal)) {
-                return;
-              }
-              if (!(callback instanceof Array)) {
-                return useRouter().push(decodeURI(callback));
-              }
-            },
-          );
+          this.status.value = 204;
         }
+      }
+      if (err instanceof ZodError) {
+        this.status.value = 204;
+      }
+    } finally {
+      this.pending.value = false;
+    }
+  }
+  async register(state: Register) {
+    try {
+      this.touch();
+      this.pending.value = true;
+      useSchemas.registerSchema.parse(state);
+      await $fetch("/api/v1/register", {
+        method: "POST",
+        body: {
+          ...state,
+        },
+      });
+      this.login({
+        username: state.email,
+        password: state.password,
       });
     } catch (err) {
-      /* empty */
+      if (err instanceof FetchError) {
+        if (err.statusCode) {
+          this.status.value = err.statusCode;
+        } else {
+          this.status.value = 204;
+        }
+      }
+      if (err instanceof ZodError) {
+        this.status.value = 204;
+      }
+    } finally {
+      this.pending.value = false;
     }
   }
-}
-
-export class CreateRecovery {
-  state = ref({
-    credential: "",
-  });
-
-  get = () => {
-    return this.state.value;
-  };
-
-  async generate() {
+  async requestReset(state: IUseSchemas["resetSchema"]) {
     try {
-      const alert = new NuxaAlert();
+      this.pending.value = true;
+      this.touch();
+      useSchemas.resetSchema.parse(state);
       await $fetch("/api/v1/auth/request-reset", {
         method: "POST",
-        body: { ...this.get() },
+        body: state,
       });
-      return alert.success({
-        title: "Sucesso",
-        body: "Enviamos um email para redefinir sua senha",
-        cancel: "Voltar",
-      });
-    } catch (error) {
-      const alert = new NuxaAlert();
-      if (error instanceof FetchError) {
-        if (error.status === 404) {
-          return alert.warning({
-            title: "Usuário inválido",
-            body: "Usuário não encontrado",
-            cancel: "Voltar",
-          });
+    } catch (err) {
+      if (err instanceof FetchError) {
+        if (err.statusCode) {
+          this.status.value = err.statusCode;
+        } else {
+          this.status.value = 204;
         }
-
-        return alert.warning({
-          title: "Erro inesperado",
-          body: "Ocorreu um erro ao processar seu pedido, tente novamente mais tarde.",
-          cancel: "Voltar",
-        });
       }
+      if (err instanceof ZodError) {
+        this.status.value = 204;
+      }
+    } finally {
+      this.pending.value = false;
     }
   }
-}
-
-export class UseRecovery {
-  state = ref({
-    password: "",
-    passwordConfirmation: "",
-  });
-
-  get = () => {
-    return this.state.value;
-  };
-
-  async reset(token: string | string[]) {
+  async applyReset(
+    state: IUseSchemas["passwordReset"],
+    token: string | string[],
+  ) {
     try {
-      useSchemas.passwordReset.parse(this.get());
+      this.pending.value = true;
+      this.touch();
+      useSchemas.passwordReset.parse(state);
       const router = useRouter();
       await $fetch("/api/v1/auth/apply-reset", {
         method: "POST",
         body: {
-          password: this.state.value.password,
+          password: state.password,
           token,
         },
       });
       await router.push("/dashboard");
-    } catch (error) {
-      const alert = new NuxaAlert();
-      if (error instanceof ZodError) {
-        return alert.warning({
-          title: "Senha inválida",
-          body: /* html */ `
-          <div>
-            Tente novamente, utilizando senhas que atendem aos seguintes critérios:
-            <div class="prose">
-              <div>
-                <ol class="w-auto mx-auto grid">
-                  <li>Pelo menos 8 caracteres</li>
-                  <li>Pelo menos 1 letra maiúscula</li>
-                  <li>Pelo menos 1 número</li>
-                  <li>As senhas devem conferir</li>
-                </ol>
-              </div>
-            </div>
-          </div>
-          `,
-          cancel: "Voltar",
-        });
+    } catch (err) {
+      if (err instanceof FetchError) {
+        if (err.statusCode) {
+          this.status.value = err.statusCode;
+        } else {
+          this.status.value = 204;
+        }
       }
-      if (error instanceof FetchError) {
-        return alert.warning({
-          title: "Erro ao enviar dados",
-          body: "Tente novamente mais tarde",
-          cancel: "Voltar",
-        });
+      if (err instanceof ZodError) {
+        this.status.value = 204;
       }
+    } finally {
+      this.pending.value = false;
     }
   }
 }
