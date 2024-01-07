@@ -42,7 +42,7 @@ export default defineEventHandler(async (event) => {
       },
     });
 
-    service.sendMail();
+    await service.sendMail();
 
     return { status: 200, message: "Redefine token sent" };
   } catch (error) {
