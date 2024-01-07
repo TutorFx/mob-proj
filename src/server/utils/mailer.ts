@@ -1,21 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unsafe-declaration-merging */
-import type { BrevoConfig } from "@/types";
 import path from "node:path";
 import hbs from "nodemailer-express-handlebars";
 import { createTransport } from "nodemailer";
 
-const config = useRuntimeConfig() as unknown as { brevo?: BrevoConfig };
+const config = useRuntimeConfig();
 
 const mailer = {
-  host: config.brevo?.SMTP_HOSTNAME,
-  port: config.brevo?.SMTP_PORT,
+  host: config.smtp.SMTP_HOSTNAME,
+  port: Number(config.smtp.SMTP_PORT),
   auth: {
-    user: config.brevo?.SMTP_USER,
-    pass: config.brevo?.SMTP_KEY,
+    user: config.smtp.SMTP_USER,
+    pass: config.smtp.SMTP_KEY,
   },
-} as IUseSchemas["mailer"];
-
-//useSchemas.mailer.parse(mailer);
+};
 
 const transport = createTransport(mailer);
 
@@ -71,7 +68,7 @@ class MailService {
 }
 
 class Recovery extends MailService {
-  from = "noreply@nuxa.io";
+  from = "suporte@nuxa.io";
   subject = "Recuperação de senha";
   template = templates.recovery;
   constructor(email: RecoveryEmail) {

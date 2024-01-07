@@ -6,11 +6,11 @@ export type IObjectStatus = {
   [key: string]: string;
 };
 
-export interface BrevoConfig {
-  SMTP_HOSTNAME?: string;
-  SMTP_PORT?: number;
-  SMTP_USER?: string;
-  SMTP_KEY?: string;
+export interface SmtpConfig {
+  SMTP_HOSTNAME: string;
+  SMTP_PORT: number;
+  SMTP_USER: string;
+  SMTP_KEY: string;
 }
 
 interface RedisConfig {
@@ -33,7 +33,7 @@ export interface ExtendedRuntimeConfig extends RuntimeConfig {
   initialPlanName: string;
   initialPlanActiveMonths: number;
   redis: RedisConfig;
-  brevo: BrevoConfig;
+  smtp: SmtpConfig;
   public: Public;
 }
 

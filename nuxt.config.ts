@@ -121,12 +121,11 @@ export default defineNuxtConfig({
     subscriptionGraceDays: 3,
     initialPlanName: "Free Trial",
     initialPlanActiveMonths: 1,
-    brevo: {
-      SMTP_HOSTNAME: process.env.BREVO_SMTP_HOSTNAME,
-      SMTP_PORT: process.env.BREVO_SMTP_PORT,
-      API_KEY: process.env.BREVO_API_KEY,
-      SMTP_KEY: process.env.BREVO_SMTP_KEY,
-      SMTP_USER: process.env.BREVO_SMTP_USER,
+    smtp: {
+      SMTP_HOSTNAME: process.env.SMTP_HOSTNAME,
+      SMTP_PORT: process.env.SMTP_PORT,
+      SMTP_KEY: process.env.SMTP_KEY,
+      SMTP_USER: process.env.SMTP_USER,
     },
     redis: {
       host: process.env.REDIS_HOST,
