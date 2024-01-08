@@ -121,11 +121,15 @@ export default defineNuxtConfig({
     subscriptionGraceDays: 3,
     initialPlanName: "Free Trial",
     initialPlanActiveMonths: 1,
-    smtp: {
-      SMTP_HOSTNAME: process.env.SMTP_HOSTNAME,
-      SMTP_PORT: process.env.SMTP_PORT,
-      SMTP_KEY: process.env.SMTP_KEY,
-      SMTP_USER: process.env.SMTP_USER,
+    google: {
+      client: process.env.GOOGLE_CLIENT,
+      apiKey: process.env.GOOGLE_API,
+    },
+    email: {
+      user: process.env.SMTP_USER,
+      password: process.env.SMTP_PASSWORD,
+      host: process.env.SMTP_HOST,
+      port: process.env.SMTP_PORT,
     },
     redis: {
       host: process.env.REDIS_HOST,

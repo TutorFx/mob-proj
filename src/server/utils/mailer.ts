@@ -6,11 +6,11 @@ import { createTransport } from "nodemailer";
 const config = useRuntimeConfig();
 
 const mailer = {
-  host: config.smtp.SMTP_HOSTNAME,
-  port: Number(config.smtp.SMTP_PORT),
+  host: config.email.host,
+  port: Number(config.email.port),
   auth: {
-    user: config.smtp.SMTP_USER,
-    pass: config.smtp.SMTP_KEY,
+    user: config.email.user,
+    pass: config.email.password,
   },
 };
 
