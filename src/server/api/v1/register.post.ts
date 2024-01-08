@@ -35,6 +35,7 @@ export default defineEventHandler(async (event) => {
     });
     return { message: "Created" };
   } catch (error) {
+    console.log(error);
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       // The .code property can be accessed in a type-safe manner
       if (error.code === "P2002") {

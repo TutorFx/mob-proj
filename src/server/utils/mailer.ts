@@ -81,13 +81,3 @@ export const MailServices = {
   Default: MailService,
   Recovery,
 };
-
-/*
-    const mail = new MailServices.Recovery({
-      to: "gabrieltfserejo@gmail.com",
-      context: {
-        token: "123",
-      }
-    });
-    const response = mail.sendMail();
-*/
